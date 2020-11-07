@@ -1,0 +1,4 @@
+Bzgl. des Herunterladens der Website:
+- Beim Aufrufen der Website checken, welche href-Einträge vorhanden sind, die auf .js, oder .css enden
+und diese herunterladen.
+- Die hrefs in der heruntergeladenen HTML-Datei anpassen.
