@@ -2,7 +2,6 @@ from urllib.parse import urljoin
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from bs4 import BeautifulSoup
-from time import sleep
 
 url = "https://www.instagram.com/jimmyfallon/"
 base_url = "https://www.instagram.com/"
@@ -14,7 +13,6 @@ driver.get(url)
 # Auf Englisch kann es Accept heißen
 driver.find_element_by_xpath("//*[text()='Akzeptieren']").click()
 driver.find_element_by_class_name("dCJp8").click()
-sleep(2)
 content = driver.page_source
 soup = BeautifulSoup(content)
 driver.close()
