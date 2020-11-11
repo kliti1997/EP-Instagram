@@ -7,9 +7,7 @@ class InstagramStore:
     #als 'href="/static/test/trash.css"' im Code eingebettet ist. Der String beginnt mit 'href="/' und 
     #endet mit '"'
 
-    #link_list := [link_name, link_beg_pos, link_end_pos]
-    def findAdditionals(self, page, substr_list, link_list):
-        return None
+    # to do: Suche alle .css und .js Dateien, die heruntergeladen werden müssen.
 
     def downloadAdditionals(self, driver, link_list, destination_directory):
         links = [link_triple[0] for link_triple in link_list]
@@ -28,11 +26,6 @@ class InstagramStore:
                 f.write(driver.page_source)
 
     def __init__(self, monitoring_map):
-        options = Options()
-        options.headless = True
-        options.binary_location = '/usr/bin/firefox-esr'
-        serv = Service('./driver/geckodriver')
-        driver = webdriver.Firefox(service=serv, options=options)
         print("\n\n\t********STORING PHASE********")
         for url in monitoring_map["instagram"]:
             print("store the html code of : ("+url["href"]+ ") in "+url["monitoring_folder"]+"old.html")
