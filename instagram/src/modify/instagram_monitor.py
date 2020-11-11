@@ -1,4 +1,5 @@
-from EP-Instagramm-1/data/config.py import *
+from instagram.data.config import *
+from instagram.src.instagram import Instagram
 
 class InstagramMonitor:
     def __init__(self, monitoring_map):

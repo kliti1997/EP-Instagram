@@ -1,3 +1,5 @@
+from instagram.data.config import *
+
 class InstagramStore:
     #substr_list := [substr, substr_ending_token]
     #Zum Beispiel: ['href="/', '"']
@@ -7,29 +9,7 @@ class InstagramStore:
 
     #link_list := [link_name, link_beg_pos, link_end_pos]
     def findAdditionals(self, page, substr_list, link_list):
-        first_substr_ending_token = ""
-        first_substr_beg = -1
-        first_substr_end = -1
-        former_position = -1
-        while True:
-            find_first = 9999999999
-            for substr, substr_ending_token in substr_list:
-                pos_beg = page.find(substr, first_substr_beg+1)
-                if pos_beg != -1:
-                    pos_beg += len(substr)
-                if find_first > pos_beg and pos_beg != -1:
-                    find_first = pos_beg
-                    first_substr_ending_token = substr_ending_token
-            first_substr_beg = find_first
-            if first_substr_beg < former_position or first_substr_beg == -1 or find_first == 9999999999:
-                break
-            first_substr_end = page.find(first_substr_ending_token, first_substr_beg)
-            if first_substr_beg == first_substr_end:
-                first_substr_beg = first_substr_beg-1
-            #print(page[first_substr_beg : first_substr_end])
-            link_list.append([page[first_substr_beg : first_substr_end], first_substr_beg, first_substr_end])
-            former_position = first_substr_beg
-            first_substr_beg = first_substr_end
+        return None
 
     def downloadAdditionals(self, driver, link_list, destination_directory):
         links = [link_triple[0] for link_triple in link_list]
