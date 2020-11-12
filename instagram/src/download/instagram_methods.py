@@ -5,6 +5,8 @@ def login(username, password):
     driver.get(login_url)
     cookie_consent()
 
+    sleep(1)
+
     driver.find_element_by_name("username").send_keys(username)
     driver.find_element_by_name("password").send_keys(password)
 
@@ -12,6 +14,7 @@ def login(username, password):
         driver.find_element_by_xpath("//*[text()='Log In']").click()
     else:
         driver.find_element_by_xpath("//*[text()='Anmelden']").click()
+    sleep(4)
 
 # Ggf. das cookie consent Fenster akzeptieren.
 def cookie_consent():

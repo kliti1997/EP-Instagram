@@ -5,6 +5,7 @@ from selenium.webdriver import ActionChains
 from collections import defaultdict
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
+from time import sleep
 import os
 import logging
 
