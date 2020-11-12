@@ -1,0 +1,118 @@
+1605201034152	geckodriver	INFO	Listening on 127.0.0.1:51680
+1605201034586	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofileAdHMjs"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1605201038891	Marionette	INFO	Listening on port 51698
+1605201043502	Marionette	INFO	Stopped listening on port 51698
+1605201048664	geckodriver	INFO	Listening on 127.0.0.1:51740
+1605201048672	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofilexLxVnG"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1605201050512	Marionette	INFO	Listening on port 51749
+1605201050534	Marionette	WARN	TLS certificate errors will be ignored for this session
+1605201225284	geckodriver	INFO	Listening on 127.0.0.1:51880
+1605201226310	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofile2C34pS"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1605201228498	Marionette	INFO	Listening on port 51893
+1605201228585	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: Region.jsm: "Error fetching region" (new AbortError("The operation was aborted. ", (void 0), 697))
+console.error: Region.jsm: "Failed to fetch region" (new Error("NO_RESULT", "resource://gre/modules/Region.jsm", 351))
+1605201263444	Marionette	INFO	Stopped listening on port 51893
+1605201266733	geckodriver	INFO	Listening on 127.0.0.1:51967
+1605201267752	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofileA0Ouk7"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1605201269668	Marionette	INFO	Listening on port 51980
+1605201269718	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x1D0011,name=PBackgroundStorage::Msg_Observe) Channel error: cannot send/recv
+
+1605201295497	Marionette	INFO	Stopped listening on port 51980
+1605201391161	Marionette	INFO	Stopped listening on port 51749
+1605202105817	geckodriver	INFO	Listening on 127.0.0.1:52413
+1605202106841	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofile6w2j21"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1605202109641	Marionette	INFO	Listening on port 52425
+1605202109731	Marionette	WARN	TLS certificate errors will be ignored for this session
+1605202203953	geckodriver	INFO	Listening on 127.0.0.1:52529
+1605202203960	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofilejflGQt"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1605202205818	Marionette	INFO	Listening on port 52538
+1605202205917	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: Region.jsm: "Error fetching region" (new AbortError("The operation was aborted. ", (void 0), 697))
+console.error: Region.jsm: "Failed to fetch region" (new Error("NO_RESULT", "resource://gre/modules/Region.jsm", 351))
+JavaScript warning: https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js, line 11: Script terminated by timeout at:
+destructor@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:90740
+ze@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:14131
+h@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:1841
+p@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:1571
+v@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:1913
+Me@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:14997
+mi@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:116555
+We@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:15583
+Ve@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:16307
+Be@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:15827
+e.unstable_runWithPriority@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:13:3497
+Vt@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:24432
+Fr@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:61397
+Le@https://www.instagram.com/static/bundles/es6/Vendor.js/c911f5848b78.js:11:15269
+
+1605202408565	Marionette	INFO	Stopped listening on port 52538
+1605202419429	geckodriver	INFO	Listening on 127.0.0.1:52727
+1605202420449	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofileqvA5J0"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1605202422381	Marionette	INFO	Listening on port 52738
+1605202422406	Marionette	WARN	TLS certificate errors will be ignored for this session
+1605202449715	Marionette	INFO	Stopped listening on port 52738
+JavaScript warning: https://www.instagram.com/accounts/onetap/?next=%2Flogin%2F, line 258: Script terminated by timeout at:
+r@https://www.instagram.com/accounts/onetap/?next=%2Flogin%2F:258:292
+n<@https://www.instagram.com/static/bundles/es6/Consumer.js/eb4735520ac1.js:1269:140
+
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+JavaScript error: https://cdn.vox-cdn.com/packs/js/chorus-19b2f7391c56f9a3c59e.js, line 2: TypeError: window.dataLayer.hide is undefined
+1605202913483	geckodriver	INFO	Listening on 127.0.0.1:53081
+1605202914505	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofile6GpHB9"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1605202916536	Marionette	INFO	Listening on port 53096
+1605202916573	Marionette	WARN	TLS certificate errors will be ignored for this session
+1605202953623	Marionette	INFO	Stopped listening on port 53096
+1605202962595	geckodriver	INFO	Listening on 127.0.0.1:53197
+1605202963615	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofilekDrX8i"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1605202965603	Marionette	INFO	Listening on port 53208
+1605202965673	Marionette	WARN	TLS certificate errors will be ignored for this session
+1605202994538	Marionette	INFO	Stopped listening on port 53208

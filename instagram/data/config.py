@@ -8,8 +8,10 @@ from bs4 import BeautifulSoup
 import os
 import logging
 
+CONFIG_FOLDER = os.path.dirname(os.path.abspath(__file__))
+
 # Selenium Einsetllungen
-geckodriver = os.path.join(os.getcwd(), "geckodriver")
+geckodriver = os.path.join(CONFIG_FOLDER, "geckodriver")
 driver = webdriver.Firefox(executable_path = geckodriver)
 
 # Logger um error und info messages zu speichern
@@ -19,6 +21,10 @@ f_format = logging.Formatter('%(asctime)s - %(message)s')
 f_handler.setFormatter(f_format)
 logger.addHandler(f_handler)
 
+# Instagram Login-Daten
+login_url = "https://www.instagram.com/accounts/login/?next=%2Flogin%2F&source=desktop_nav"
+ig_credentials = {"user": "swp_ep_ig_1_test",
+                  "pass": "Test123!"}
 
 # URL's zum testen
 monitoring_map = defaultdict(list)
