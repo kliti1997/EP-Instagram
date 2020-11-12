@@ -8,10 +8,12 @@ from bs4 import BeautifulSoup
 import os
 import logging
 
-CONFIG_FOLDER = os.path.dirname(os.path.abspath(__file__))
+# Pfade
+config_folder = os.path.dirname(os.path.abspath(__file__))
+monitoring_folder = os.path.join(config_folder, "files")
+geckodriver = os.path.join(config_folder, "geckodriver")
 
 # Selenium Einsetllungen
-geckodriver = os.path.join(CONFIG_FOLDER, "geckodriver")
 driver = webdriver.Firefox(executable_path = geckodriver)
 
 # Logger um error und info messages zu speichern
@@ -30,7 +32,7 @@ ig_credentials = {"user": "swp_ep_ig_1_test",
 monitoring_map = defaultdict(list)
 url1 = {"id":"polizei.hannover",
     "href":"https://www.instagram.com/polizei.hannover/",
-    "type":"posts","mode":"1","monitoring_folder":"./polizei.hannover/posts/",
+    "type":"posts","mode":"1","monitoring_folder": monitoring_folder,
     "change":"","notify":"","err":""}
 #url2 = {"id":"polizei.hannover",
 #    "href":"https://www.instagram.com/polizei.hannover/channel",

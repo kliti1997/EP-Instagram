@@ -22,11 +22,14 @@ def cookie_consent():
 
 # Lade den Html-Code der Beiträge-Seite herunter.
 def html_posts(url):
-    driver.get(url)
+    driver.get(url["href"])
     content = driver.page_source
     soup = BeautifulSoup(content)
-    f = open("posts.html", "w")
+
+    f = open(url["monitoring_folder"]+ "/posts.html", "w")
     f.write(soup.prettify())
     f.close()
 
 login(ig_credentials["user"], ig_credentials["pass"])
+for url in monitoring_map["instagram"]:
+    html_posts(url)
