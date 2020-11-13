@@ -26,20 +26,6 @@ def cookie_consent():
     elif driver.find_element_by_xpath("//*[text()='Accept']"): # Existiert es auf englisch?
         driver.find_element_by_xpath("//*[text()='Accept']").click()
 
-# Lade den Html-Code der Beiträge-Seite herunter.
-def html_posts(url):
-    driver.get(url["href"])
-    #TODO Zufahlswert generieren
-    sleep(2)
-    content = driver.page_source
-    soup = BeautifulSoup(content)
-
-    convert_links(base_url=base_url, soup=soup)
-
-    f = open(os.path.join(url["monitoring_folder"], "posts.html"), "w")
-    f.write(soup.prettify())
-    f.close()
-
 # Ändert die relativen links aller img, a und link tags, indem es die
 # base_url an die relativen Pfade anhängt.
 def convert_links(base_url, soup):
@@ -58,11 +44,11 @@ def convert_links(base_url, soup):
     for link in soup.find_all("link"):
         if not link["href"].startswith("http"):
             link["href"] = urljoin(base_url, link["href"])
-    
+    #TODO Scripts mit enbinden. Vgl. Marlons .html-Datei
+    """ 
     for script in soup.find_all("script", src=True):
         if not script["src"].startswith("http"):
             script["src"] = urljoin(base_url, script["src"])
-    
     # Ändere die relativen Pfade im Source-Code der <script> Tags.
     for script in soup.find_all("script"):
         if script.contents: # not empty?
@@ -79,9 +65,39 @@ def convert_links(base_url, soup):
             print(script_tmp)
             print()
             script.string.replace_with(script_tmp)
+    """
+# Lade den Html-Code der Beiträge-Seite herunter.
+def html_posts(url):
+    driver.get(url["href"])
+    #TODO Zufahlswert generieren
+    sleep(3)
+    content = driver.page_source
+    soup = BeautifulSoup(content)
+
+    convert_links(base_url=base_url, soup=soup)
+
+    f = open(os.path.join(url["monitoring_folder"], "posts.html"), "w")
+    f.write(soup.prettify())
+    f.close()
+
+# Lade den Html-Code der Beiträge-Seite herunter.
+def html_igtv(url):
+    driver.get(url["href"] + "channel")
+    #TODO Zufahlswert generieren
+    sleep(3)
+    content = driver.page_source
+    soup = BeautifulSoup(content)
+
+    convert_links(base_url=base_url, soup=soup)
+
+    f = open(os.path.join(url["monitoring_folder"], "igtv.html"), "w")
+    f.write(soup.prettify())
+    f.close()
 
 # ------ Funktionsaufrufe zum testen ------
 login(ig_credentials["user"], ig_credentials["pass"])
 for url in monitoring_map["instagram"]:
     html_posts(url)
+    sleep(2)
+    html_igtv(url)
 driver.quit()
