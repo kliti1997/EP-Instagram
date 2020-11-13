@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from time import sleep
 import os
 import logging
+import re
 
 # Pfade
 config_folder = os.path.dirname(os.path.abspath(__file__))
@@ -24,7 +25,8 @@ f_format = logging.Formatter('%(asctime)s - %(message)s')
 f_handler.setFormatter(f_format)
 logger.addHandler(f_handler)
 
-# Instagram Login-Daten
+# Instagram Daten
+base_url = "https://www.instagram.com"
 login_url = "https://www.instagram.com/accounts/login/?next=%2Flogin%2F&source=desktop_nav"
 ig_credentials = {"user": "swp_ep_ig_1_test",
                   "pass": "Test123!"}
