@@ -72,7 +72,7 @@ def html_posts(url):
     #TODO Zufahlswert generieren
     sleep(5)
     content = driver.page_source
-    soup = BeautifulSoup(content)
+    soup = BeautifulSoup(content, features="html.parser")
 
     convert_links(base_url=base_url, soup=soup)
 
@@ -86,7 +86,7 @@ def html_igtv(url):
     #TODO Zufahlswert generieren
     sleep(5)
     content = driver.page_source
-    soup = BeautifulSoup(content)
+    soup = BeautifulSoup(content, features="html.parser")
 
     convert_links(base_url=base_url, soup=soup)
 
@@ -100,7 +100,7 @@ def html_tagged(url):
     #TODO Zufahlswert generieren
     sleep(5)
     content = driver.page_source
-    soup = BeautifulSoup(content)
+    soup = BeautifulSoup(content, features="html.parser")
 
     convert_links(base_url=base_url, soup=soup)
 
