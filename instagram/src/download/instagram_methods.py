@@ -70,7 +70,7 @@ def convert_links(base_url, soup):
 def html_posts(url):
     driver.get(url["href"])
     #TODO Zufahlswert generieren
-    sleep(3)
+    sleep(5)
     content = driver.page_source
     soup = BeautifulSoup(content)
 
@@ -84,7 +84,7 @@ def html_posts(url):
 def html_igtv(url):
     driver.get(url["href"] + "channel")
     #TODO Zufahlswert generieren
-    sleep(3)
+    sleep(5)
     content = driver.page_source
     soup = BeautifulSoup(content)
 
@@ -94,10 +94,26 @@ def html_igtv(url):
     f.write(soup.prettify())
     f.close()
 
+# Lädt den Html-Code der Markiert-Seite herunter
+def html_tagged(url):
+    driver.get(url["href"] + "tagged")
+    #TODO Zufahlswert generieren
+    sleep(5)
+    content = driver.page_source
+    soup = BeautifulSoup(content)
+
+    convert_links(base_url=base_url, soup=soup)
+
+    f = open(os.path.join(url["monitoring_folder"], "tagged.html"), "w")
+    f.write(soup.prettify())
+    f.close()
+
 # ------ Funktionsaufrufe zum testen ------
 login(ig_credentials["user"], ig_credentials["pass"])
 for url in monitoring_map["instagram"]:
     html_posts(url)
     sleep(2)
     html_igtv(url)
+    sleep(2)
+    html_tagged(url)
 driver.quit()
