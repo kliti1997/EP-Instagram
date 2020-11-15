@@ -107,13 +107,3 @@ def html_tagged(url):
     f = open(os.path.join(url["monitoring_folder"], "tagged.html"), "w")
     f.write(soup.prettify())
     f.close()
-
-# ------ Funktionsaufrufe zum testen ------
-login(ig_credentials["user"], ig_credentials["pass"])
-for url in monitoring_map["instagram"]:
-    html_posts(url)
-    sleep(2)
-    html_igtv(url)
-    sleep(2)
-    html_tagged(url)
-driver.quit()
