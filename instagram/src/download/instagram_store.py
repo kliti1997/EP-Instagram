@@ -1,5 +1,5 @@
 from instagram.data.config import *
-from instagram.src.download.instagram_methods import login, html_posts, html_igtv, html_tagged
+from instagram.src.download.instagram_methods import login, html_posts, html_igtv, html_tagged, random_sleep
 
 class InstagramStore:
     def __init__(self, monitoring_map):
@@ -9,10 +9,10 @@ class InstagramStore:
             print("store the html code of : (" + url["href"] + ") in " + url["monitoring_folder"] + "old.html")
             print("OR in " + url["monitorind_folder"] + "new.html")
             print("--------------------------------------------\n")
-            #TODO sleep statements zufällig generieren
+
             html_posts(url)
-            sleep(2)
+            random_sleep(10)
             html_igtv(url)
-            sleep(2)
+            random_sleep(10)
             html_tagged(url)
             driver.quit()

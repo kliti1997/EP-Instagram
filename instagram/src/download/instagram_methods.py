@@ -1,12 +1,12 @@
 from instagram.data.config import *
+from random import randint
 
 # Loggt sich auf Instagram ein.
 def login(username, password):
     driver.get(login_url)
     cookie_consent()
 
-    #TODO Zufahlswert generieren
-    sleep(1)
+    random_sleep(10)
 
     driver.find_element_by_name("username").send_keys(username)
     driver.find_element_by_name("password").send_keys(password)
@@ -16,8 +16,7 @@ def login(username, password):
     else:
         driver.find_element_by_xpath("//*[text()='Anmelden']").click()
 
-    #TODO Zufahlswert generieren
-    sleep(4)
+    random_sleep(10)
 
 # Ggf. das cookie consent Fenster akzeptieren.
 def cookie_consent():
@@ -69,8 +68,7 @@ def convert_links(base_url, soup):
 # Lade den Html-Code der Beiträge-Seite herunter.
 def html_posts(url):
     driver.get(url["href"])
-    #TODO Zufahlswert generieren
-    sleep(5)
+    random_sleep(10)
     content = driver.page_source
     soup = BeautifulSoup(content, features="html.parser")
 
@@ -83,8 +81,7 @@ def html_posts(url):
 # Lade den Html-Code der Beiträge-Seite herunter.
 def html_igtv(url):
     driver.get(url["href"] + "channel")
-    #TODO Zufahlswert generieren
-    sleep(5)
+    random_sleep(10)
     content = driver.page_source
     soup = BeautifulSoup(content, features="html.parser")
 
@@ -97,8 +94,7 @@ def html_igtv(url):
 # Lädt den Html-Code der Markiert-Seite herunter
 def html_tagged(url):
     driver.get(url["href"] + "tagged")
-    #TODO Zufahlswert generieren
-    sleep(5)
+    random_sleep(10)
     content = driver.page_source
     soup = BeautifulSoup(content, features="html.parser")
 
@@ -107,3 +103,12 @@ def html_tagged(url):
     f = open(os.path.join(url["monitoring_folder"], "tagged.html"), "w")
     f.write(soup.prettify())
     f.close()
+
+
+def random_sleep(max_time):
+    # set arbitrary minimum sleep time
+    min_time = 3
+    if max_time < min_time:
+        max_time = min_time + 10
+    random_time = randint(3, max_time)
+    sleep(random_time)
