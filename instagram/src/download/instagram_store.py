@@ -7,7 +7,7 @@ class InstagramStore:
         login(ig_credentials["user"], ig_credentials["pass"])
         for url in monitoring_map["instagram"]:
             print("store the html code of : (" + url["href"] + ") in " + url["monitoring_folder"] + "old.html")
-            print("OR in " + url["monitorind_folder"] + "new.html")
+            print("OR in " + url["monitoring_folder"] + "new.html")
             print("--------------------------------------------\n")
 
             html_posts(url)
