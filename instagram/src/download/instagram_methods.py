@@ -89,46 +89,6 @@ def save_html(url):
         f.write(content)
 
 
-# Lade den Html-Code der Beiträge-Seite herunter.
-def html_posts(url):
-    driver.get(url["href"])
-    random_sleep(10)
-    content = convert_links(driver.execute_script("return document.documentElement.outerHTML"))
-    parser = etree.XMLParser(remove_blank_text=True)
-    tree = etree.fromstring(content, etree.HTMLParser())
-
-    with open(os.path.join(monitoring_folder, url["monitoring_folder"], "posts.html"), "w") as f:
-        f.write(content)
-
-
-# Lade den Html-Code der Beiträge-Seite herunter.
-def html_igtv(url):
-    driver.get(url["href"] + "channel")
-    random_sleep(10)
-    content = driver.page_source
-    soup = BeautifulSoup(content, features="html.parser")
-
-    convert_links(soup=soup)
-
-    f = open(os.path.join(monitoring_folder, url["monitoring_folder"], "igtv.html"), "w")
-    f.write(soup.prettify())
-    f.close()
-
-
-# Lädt den Html-Code der Markiert-Seite herunter
-def html_tagged(url):
-    driver.get(url["href"] + "tagged")
-    random_sleep(10)
-    content = driver.page_source
-    soup = BeautifulSoup(content, features="html.parser")
-
-    convert_links(soup=soup)
-
-    f = open(os.path.join(monitoring_folder, url["monitoring_folder"], "tagged.html"), "w")
-    f.write(soup.prettify())
-    f.close()
-
-
 def random_sleep(max_time):
     # set arbitrary minimum sleep time
     min_time = 3
