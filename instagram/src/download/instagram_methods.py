@@ -76,11 +76,12 @@ def convert_links(source):
 def save_html(url):
     type = str(url["type"])
     link = str(url["href"])
-    if (type != 'posts'):
+    if type != 'posts':
         link += type
     driver.get(link)
     random_sleep(10)
-    content = convert_links(driver.execute_script("return document.documentElement.outerHTML"))
+    content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
+    print(content)
     parser = etree.XMLParser(remove_blank_text=True)
     tree = etree.fromstring(content, etree.HTMLParser())
 
