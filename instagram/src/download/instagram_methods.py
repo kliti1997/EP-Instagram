@@ -4,6 +4,7 @@ from random import randint
 from selenium.common.exceptions import NoSuchElementException
 from pprint import pprint
 from lxml import etree
+from pathlib import Path
 
 
 # Loggt sich auf Instagram ein.
@@ -72,6 +73,23 @@ def convert_links(source):
 
 
 # Lade den Html-Code der Beiträge-Seite herunter.
+def save_html(url):
+    type = str(url["type"])
+    link = str(url["href"])
+    if (type != 'posts'):
+        link += type
+    driver.get(link)
+    random_sleep(10)
+    content = convert_links(driver.execute_script("return document.documentElement.outerHTML"))
+    parser = etree.XMLParser(remove_blank_text=True)
+    tree = etree.fromstring(content, etree.HTMLParser())
+
+    pre_download(url)
+    with open(os.path.join(monitoring_folder, url["monitoring_folder"], type + ".html"), "w") as f:
+        f.write(content)
+
+
+# Lade den Html-Code der Beiträge-Seite herunter.
 def html_posts(url):
     driver.get(url["href"])
     random_sleep(10)
@@ -118,3 +136,17 @@ def random_sleep(max_time):
         max_time = min_time + 10
     random_time = randint(3, max_time)
     sleep(random_time)
+
+
+def pre_download(url):
+    folder = os.path.join(monitoring_folder, url["monitoring_folder"])
+    type = str(url["type"])
+    filepath = os.path.join(monitoring_folder, url["monitoring_folder"], type + ".html")
+    oldFilepath = os.path.join(monitoring_folder, url["monitoring_folder"], type + "_old.html")
+
+    Path(folder).mkdir(parents=True, exist_ok=True)
+        
+    if os.path.exists(oldFilepath):        
+        os.path.remove(oldFilepath)
+    if os.path.exists(filepath):        
+        os.rename(filepath, oldFilepath)
