@@ -147,6 +147,6 @@ def pre_download(url):
     Path(folder).mkdir(parents=True, exist_ok=True)
         
     if os.path.exists(oldFilepath):        
-        os.path.remove(oldFilepath)
+        os.remove(oldFilepath)
     if os.path.exists(filepath):        
         os.rename(filepath, oldFilepath)
