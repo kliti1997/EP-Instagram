@@ -7,8 +7,21 @@ from lxml import etree
 from pathlib import Path
 
 
-# Loggt sich auf Instagram ein.
+MIN_TIME = 3
+SUMMAND = 10
+"""
+Module level constans
+"""
+
 def login(username, password):
+    """
+    The function is used to perform the login process at instagram.com.
+    It also accepts the cookie banner and saves the login information.
+
+    Args:
+        username (str): The username which is used to log in.
+        password (str): The password which is used to log in.
+    """
     driver.get(login_url)
     random_sleep(5)
     cookie_consent()
@@ -17,71 +30,74 @@ def login(username, password):
     driver.find_element_by_name("username").send_keys(username)
     driver.find_element_by_name("password").send_keys(password)
 
-    try:  # Existiert as Element auf englisch?
+    if driver.find_elements_by_xpath("//*[text()='Log In']"):
         driver.find_element_by_xpath("//*[text()='Log In']").click()
-    except NoSuchElementException:
-        try:
-            driver.find_element_by_xpath("//*[text()='Anmelden']").click()
-        except NoSuchElementException:
-            raise RuntimeError
+    else:
+        driver.find_element_by_xpath("//*[text()='Anmelden']") 
 
     random_sleep(10)
 
     if "onetap" in driver.current_url:  # "Save your Login?"-Page
-        try:  # Existiert as Element auf englisch?
+        if driver.find_elements_by_xpath("//*[text()='Save Info']"):
             driver.find_element_by_xpath("//*[text()='Save Info']").click()
-        except NoSuchElementException:
-            try:
-                driver.find_element_by_xpath("//*[text()='Informationen speichern']").click()
-            except NoSuchElementException:
-                raise RuntimeError
-
+        else:
+            driver.find_element_by_xpath("//*[text()='Informationen speichern']").click()
+ 
     random_sleep(10)
 
 
-# Ggf. das cookie consent Fenster akzeptieren.
 def cookie_consent():
-    try:  # Existiert as Element auf deutsch?
+    """
+    Accepts the cookie banner, if it exists. Otherwise the downloaded html-files
+    are obfuscated by the banner.
+    """
+    if driver.find_elements_by_xpath("//*[text()='Akzeptieren']"):
         driver.find_element_by_xpath("//*[text()='Akzeptieren']").click()
-    except NoSuchElementException:  # Existiert es auf englisch?
-        try:
-            driver.find_element_by_xpath("//*[text()='Accept']").click()
-        except NoSuchElementException:
-            pass
+    elif driver.find_elements_by_xpath("//*[text()='Accept']"):
+        driver.find_element_by_xpath("//*[text()='Accept']").click()
 
 
-# Ändert die relativen links aller img, a und link tags, indem es die
-# base_url an die relativen Pfade anhängt.
 def convert_links(source):
-    """for img in soup.find_all("img", src=True):
-        if not img["src"].startswith("http"):
-            img["src"] = urljoin(base_url, img["src"])
+    """
+    Converts relative to absolute links in a given string by appending a base-url, which is specified 
+    in the config-file.
+    Only links which are the content of the html attributes href, src, or srcset, or of a dictionary
+    will be changed.
 
-    for img in soup.find_all("img", srcset=True):
-        if not img["srcset"].startswith("http"):
-            img["srcset"] = urljoin(base_url, img["srcset"])
+    Example:
+        Let's assume the base_url is https://instagram.com
+        <a href="/sta/exmpl.css"> will be converted to <a href="https://instagram.com/sta/exmpl.css">
+        dic = {a: "/sta/exmpl.css"} will be converted tod ic = {a: "https://instagram.com/sta/exmpl.css"} 
 
-    for a in soup.find_all("a"):
-        if not a["href"].startswith("http"):
-            a["href"] = urljoin(base_url, a["href"])
-
-    for link in soup.find_all("link"):
-        if not link["href"].startswith("http"):
-            link["href"] = urljoin(base_url, link["href"])"""
-
+    Args:
+        source (str): The string representation of the parsed html file.
+    
+    Returns:
+        str: The same string as source, but with converted links.
+    """
     return re.sub(r'(href="|src="|srcset="|:")/', r'\1' + base_url, source)
 
 
-# Lade den Html-Code der Beiträge-Seite herunter.
 def save_html(url):
+    """
+    Saves the html content of a website and saves it in a file.
+    Depending on the input, the function will either save the content of the "posts" intsagram subdirectory, 
+    the "tagged" subdirectory, or the "IGTV" subdirectory.
+
+    Args:
+        url (dict): Containts the url to the website that has to be saved, as well as the type in terms of
+                    "posts", "tagged", or "IGTV". It also contains a path where the generated files are going 
+                    to be saved.
+    """
     type = str(url["type"])
     link = str(url["href"])
     if type != 'posts':
         link += type
+
     driver.get(link)
     random_sleep(10)
+
     content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
-    print(content)
     parser = etree.XMLParser(remove_blank_text=True)
     tree = etree.fromstring(content, etree.HTMLParser())
 
@@ -91,15 +107,29 @@ def save_html(url):
 
 
 def random_sleep(max_time):
-    # set arbitrary minimum sleep time
-    min_time = 3
-    if max_time < min_time:
-        max_time = min_time + 10
-    random_time = randint(3, max_time)
+    """
+    Pauses the program sequence for a pseudo random time, depending on the input.
+    The program sequence will be paused for at least 3 seconds.
+
+    Args:
+        max_time (int): Determines how long the program sequence is paused at most.
+    """
+    if max_time < MIN_TIME:
+        max_time = MIN_TIME + SUMMAND
+    random_time = randint(MIN_TIME, max_time)
     sleep(random_time)
 
 
 def pre_download(url):
+    """
+    If a file already exists in the monitoring folder, it's name will be changed
+    by prepending _old.html.
+    If there is already an old file, it will be deleted.
+
+    Args:
+        url (dict): Containts the path of the monitoring folder and one of the types
+                    "posts", "tagged", or "IGTV" to determine the file name.
+    """
     folder = os.path.join(monitoring_folder, url["monitoring_folder"])
     type = str(url["type"])
     filepath = os.path.join(monitoring_folder, url["monitoring_folder"], type + ".html")
