@@ -1,8 +1,14 @@
 from instagram.data.config import *
 from random import randint
 
-# Loggt sich auf Instagram ein.
 def login(username, password):
+    """
+    That function is used to perform the login process at instagram.com.
+
+    Args:
+        param1 (str): The username to log in.
+        param2 (str): The password to log in.
+    """
     driver.get(login_url)
     cookie_consent()
 
@@ -18,8 +24,11 @@ def login(username, password):
 
     random_sleep(10)
 
-# Ggf. das cookie consent Fenster akzeptieren.
 def cookie_consent():
+    """
+    Accepts the cookie banner, if it exists. Otherwise the downloaded html-files
+    are obfuscated by the banner.
+    """
     if driver.find_element_by_xpath("//*[text()='Akzeptieren']"): # Existiert as Element auf deutsch?
         driver.find_element_by_xpath("//*[text()='Akzeptieren']").click()
     elif driver.find_element_by_xpath("//*[text()='Accept']"): # Existiert es auf englisch?
