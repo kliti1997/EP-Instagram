@@ -67,7 +67,7 @@ def convert_links(source):
     Example:
         Let's assume the base_url is https://instagram.com
         <a href="/sta/exmpl.css"> will be converted to <a href="https://instagram.com/sta/exmpl.css">
-        dic = {a: "/sta/exmpl.css"} will be converted tod ic = {a: "https://instagram.com/sta/exmpl.css"} 
+        dic = {a: "/sta/exmpl.css"} will be converted to dic = {a: "https://instagram.com/sta/exmpl.css"} 
 
     Args:
         source (str): The string representation of the parsed html file.
@@ -123,7 +123,7 @@ def random_sleep(max_time):
 def pre_download(url):
     """
     If a file already exists in the monitoring folder, it's name will be changed
-    by prepending _old.html.
+    by appending _old.html.
     If there is already an old file, it will be deleted.
 
     Args:
