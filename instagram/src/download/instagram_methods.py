@@ -10,7 +10,7 @@ from pathlib import Path
 MIN_TIME = 3
 SUMMAND = 10
 """
-Module level constans
+Module level constants
 """
 
 def login(username, password):
