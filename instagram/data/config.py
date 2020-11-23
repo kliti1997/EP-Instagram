@@ -9,6 +9,7 @@ from time import sleep
 import os
 import logging
 import re
+from pathlib import Path
 
 # Pfade
 config_folder = os.path.dirname(os.path.abspath(__file__))
