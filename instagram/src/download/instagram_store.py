@@ -11,12 +11,5 @@ class InstagramStore:
             print("--------------------------------------------\n")
             
             save_html(url)
-
-            """
-            html_posts(url)
             random_sleep(10)
-            html_igtv(url)
-            random_sleep(10)
-            html_tagged(url)
-            """
-            driver.quit()
+        driver.quit()

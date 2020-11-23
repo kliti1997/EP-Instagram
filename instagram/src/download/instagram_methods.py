@@ -13,6 +13,8 @@ SUMMAND = 10
 Module level constants
 """
 
+
+
 def login(username, password):
     """
     The function is used to perform the login process at instagram.com.
@@ -22,20 +24,22 @@ def login(username, password):
         username (str): The username which is used to log in.
         password (str): The password which is used to log in.
     """
-    driver.get(login_url)
+    driver.get(base_url)
     random_sleep(5)
-    cookie_consent()
-    random_sleep(5)
-
-    driver.find_element_by_name("username").send_keys(username)
-    driver.find_element_by_name("password").send_keys(password)
-
-    if driver.find_elements_by_xpath("//*[text()='Log In']"):
-        driver.find_element_by_xpath("//*[text()='Log In']").click()
-    else:
-        driver.find_element_by_xpath("//*[text()='Anmelden']") 
-
-    random_sleep(10)
+    if driver.find_elements_by_xpath("//*[text()='Cookies']"):
+        cookie_consent()
+        random_sleep(5)
+    
+    # Log into account only if not already logged in.
+    if driver.find_elements_by_xpath("//*[text()='Log In']") or driver.find_elements_by_xpath("//*[text()='Anmelden']"):
+        driver.find_element_by_name("username").send_keys(username)
+        driver.find_element_by_name("password").send_keys(password)
+        if driver.find_elements_by_xpath("//*[text()='Log In']"):
+            driver.find_element_by_xpath("//*[text()='Log In']").click()
+        else:
+            driver.find_element_by_xpath("//*[text()='Anmelden']").click() 
+        random_sleep(10)
+    
 
     if "onetap" in driver.current_url:  # "Save your Login?"-Page
         if driver.find_elements_by_xpath("//*[text()='Save Info']"):
@@ -91,9 +95,7 @@ def save_html(url):
     """
     type = str(url["type"])
     link = str(url["href"])
-    if type != 'posts':
-        link += type
-
+    
     driver.get(link)
     random_sleep(10)
 

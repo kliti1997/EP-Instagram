@@ -9,14 +9,18 @@ from time import sleep
 import os
 import logging
 import re
+from pathlib import Path
 
 # Pfade
 config_folder = os.path.dirname(os.path.abspath(__file__))
 monitoring_folder = os.path.join(config_folder, "files")
+profile_folder = os.path.join(config_folder, "profile")
 geckodriver = os.path.join(config_folder, "geckodriver")
 
 # Selenium Einsetllungen
-driver = webdriver.Firefox(executable_path = geckodriver)
+Path(profile_folder).mkdir(parents=True, exist_ok=True)
+driver_profile = webdriver.FirefoxProfile(profile_folder)
+driver = webdriver.Firefox(firefox_profile=driver_profile, executable_path = geckodriver)
 
 # Logger um error und info messages zu speichern
 logger = logging.getLogger("myLogger")
