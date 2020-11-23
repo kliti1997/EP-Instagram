@@ -1,9 +1,11 @@
 import re
+import os
 from instagram.data.config import *
 from random import randint
 from selenium.common.exceptions import NoSuchElementException
+from selenium import webdriver
 from pprint import pprint
-from lxml import etree
+from lxml import etree, html
 from pathlib import Path
 
 
@@ -109,5 +111,49 @@ def pre_download(url):
         
     if os.path.exists(oldFilepath):        
         os.remove(oldFilepath)
-    if os.path.exists(filepath):        
+    if os.path.exists(filepath):
         os.rename(filepath, oldFilepath)
+
+
+def compare_posts():
+    old_html_url = "instagram/data/files/polizei.hannover/posts/posts_old.html"
+    new_html_url = "instagram/data/files/polizei.hannover/posts/posts.html"
+    # TODO Zur richtige Verzeichnis wechseln, muss noch geaendert werden
+    os.chdir("..")
+    os.chdir("..")
+    os.chdir("..")
+
+    # Links in alte Datei rausholen
+    tree = html.parse(old_html_url)
+    old_links = tree.xpath("//div[@id='react-root']//article//a")  # Contains complete <a> Tags
+    old_links_list = []  # Only holds hrefs
+    for link in old_links:
+        old_links_list.append(link.attrib["href"])
+    print("old links: ")
+    old_links_list[0] = "test"  # Erkennungstest, danach zu löschen TODO
+    print(old_links_list)
+
+    # Links in neue Datei rausholen
+    new_tree = html.parse(new_html_url)
+    new_links = new_tree.xpath("//div[@id='react-root']//article//a")  # Contains complete <a> Tags
+    new_links_list = []  # Only holds hrefs
+    for link in new_links:
+        new_links_list.append(link.attrib["href"])
+    print("new links: ")
+    print(new_links_list)
+
+    # Links vergleichen
+    for index in range(len(new_links_list)):
+        if new_links_list[index] not in old_links_list:
+            parent = new_links[index].getparent()
+            parent.attrib["style"] = "border = 5px solid green"
+            print(etree.tostring(parent))
+            print("New link: " + new_links_list[index])
+
+    open("aaa.html", "wb").write(etree.tostring(tree))
+
+
+compare_posts()
+
+
+
