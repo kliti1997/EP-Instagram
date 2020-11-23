@@ -1,4 +1,4 @@
-from selenium import webdriver
+from seleniumwire import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver import ActionChains
@@ -9,7 +9,6 @@ from time import sleep
 import os
 import logging
 import re
-from pathlib import Path
 
 # Pfade
 config_folder = os.path.dirname(os.path.abspath(__file__))
