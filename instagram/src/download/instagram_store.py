@@ -19,4 +19,5 @@ class InstagramStore:
             random_sleep(10)
             html_tagged(url)
             """
+            random_sleep(3)
             driver.quit()
