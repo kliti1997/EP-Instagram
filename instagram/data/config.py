@@ -5,7 +5,7 @@ access to these objects.
 
 Examples:
     Instagram Login credentials.
-    Essential import statements which are used by multiple sub packages.
+    Essential import statements which are used by multiple subpackages.
 """
 from seleniumwire import webdriver
 from selenium.webdriver.firefox.options import Options
