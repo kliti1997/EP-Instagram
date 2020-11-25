@@ -1,3 +1,12 @@
+"""
+The module is used to define objects which will be used by almost every other module.
+Nearly every other module will import this subpackage, respectively module, to gain
+access to these objects.
+
+Examples:
+    Instagram Login credentials.
+    Essential import statements which are used by multiple sub packages.
+"""
 from seleniumwire import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
@@ -10,31 +19,40 @@ import logging
 import re
 from pathlib import Path
 
-# Pfade
 config_folder = os.path.dirname(os.path.abspath(__file__))
 monitoring_folder = os.path.join(config_folder, "files")
 profile_folder = os.path.join(config_folder, "profile")
 geckodriver = os.path.join(config_folder, "geckodriver")
+"""
+Different path variables.
+"""
 
-# Selenium Einsetllungen
 Path(profile_folder).mkdir(parents=True, exist_ok=True)
 driver_profile = webdriver.FirefoxProfile(profile_folder)
 driver = webdriver.Firefox(firefox_profile=driver_profile, executable_path = geckodriver)
+"""
+Seleniumwire driver and it's options.
+"""
 
-# Logger um error und info messages zu speichern
 logger = logging.getLogger("myLogger")
 f_handler = logging.FileHandler(os.path.join(os.getcwd(), "exception.log"))
 f_format = logging.Formatter('%(asctime)s - %(message)s')
 f_handler.setFormatter(f_format)
 logger.addHandler(f_handler)
+"""
+Error logging, including options to represent the output and an output file.
+"""
 
-# Instagram Daten
 base_url = "https://www.instagram.com/"
 login_url = "https://www.instagram.com/accounts/login/?next=%2Fexplore%2F&source=desktop_nav"  # TODO: Randomize 'next' page
 ig_credentials = {"user": "swp_ep_ig_1_test",
                   "pass": "Test123!"}
+"""
+Instagram credentials and other login information.
+"""
 
 # URL's zum testen
+#TODO Bei Abgabe entfernen
 monitoring_map = defaultdict(list)
 url1 = {"id":"polizei.hannover",
     "href":"https://www.instagram.com/polizei.hannover/",
