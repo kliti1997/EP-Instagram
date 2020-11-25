@@ -151,16 +151,16 @@ def latest_story_id() -> bool:
                 else:
                     print("Keine Query ID")
 
-    if query_id:
+    try:
         story_request = '''var xhr = new XMLHttpRequest();
             xhr.open('GET', 'https://www.instagram.com/graphql/query/?query_hash=''' + query_id + '''&variables=%7B%22reel_ids%22%3A%5B%22''' + reel_id + '''%22%5D%2C%22tag_names%22%3A%5B%5D%2C%22location_ids%22%3A%5B%5D%2C%22highlight_reel_ids%22%3A%5B%5D%2C%22precomposed_overlay%22%3Afalse%2C%22show_story_viewer_list%22%3Atrue%2C%22story_viewer_fetch_count%22%3A50%2C%22story_viewer_cursor%22%3A%22%22%2C%22stories_video_dash_manifest%22%3Afalse%7D', false);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.send('login=test&password=test');'''
         reply = driver.execute_script(story_request)
         print(reply)
-    else:
-        raise RuntimeError  # TODO: Verbessern
-
+    except Exception as e:
+        logger.error("running the js-script in the latest_story_id function.")
+        logger.error("Exception message: " + str(e) + "\n")
 
 
 
