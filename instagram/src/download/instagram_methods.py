@@ -10,7 +10,7 @@ from html import unescape
 
 
 MIN_TIME = 3
-SUMMAND = 10
+INCR_UPPER_BOUND = 10
 """
 Module level constants
 """
@@ -167,7 +167,7 @@ def random_sleep(max_time):
         max_time (int): Determines how long the program sequence is paused at most.
     """
     if max_time < MIN_TIME:
-        max_time = MIN_TIME + SUMMAND
+        max_time = MIN_TIME + INCR_UPPER_BOUND
     random_time = randint(MIN_TIME, max_time)
     sleep(random_time)
 
