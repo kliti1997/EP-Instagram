@@ -1,3 +1,11 @@
+"""
+This module is used to provide functionalities to perform the storing phase of the package.
+
+The core functionalities in this module are the login process at instagram and the 
+downloading and saving of html files.
+
+#TODO Make the login process unnecessary.
+"""
 import re
 import json
 from instagram.data.config import *
