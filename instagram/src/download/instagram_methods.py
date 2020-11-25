@@ -17,7 +17,7 @@ import json
 MIN_TIME = 3
 INCR_UPPER_BOUND = 10
 """
-Module level constants
+Constants to calculate the sleep timer.
 """
 
 
