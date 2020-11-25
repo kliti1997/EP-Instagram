@@ -82,4 +82,6 @@ pip-selfcheck.json
 ehthumbs.db
 Thumbs.db
 
-geckodriver.log
+*.geckodriver.log
+
+instagram/data/profile/*
