@@ -6,16 +6,13 @@ downloading and saving of html files.
 
 #TODO Make the login process unnecessary.
 """
-import re
-import json
 from instagram.data.config import *
 from random import randint
-from selenium.common.exceptions import NoSuchElementException
 from pprint import pprint
 from lxml import etree
 from pathlib import Path
 from html import unescape
-
+import json
 
 MIN_TIME = 3
 INCR_UPPER_BOUND = 10
@@ -121,14 +118,11 @@ def save_html(url):
 
 def latest_story_id() -> bool:
     """
-    Checks for active story then creates a XHR to get the latest story ID
+    Checks for active story then creates a XHR to get the latest story ID.
 
     Returns:
-        0 if no story exists
-        int: ID of the most recent story
+        int: 0 if no story exists, else the ID of the most recent story.
     """
-
-
     query_id = ''
     reel_id = 0
     regex = re.compile(r'Object.defineProperty\(\w+,\'__esModule\',{value:!0}\);const \w+=\d+,\w+="([a-z0-9]{32})"')
@@ -159,11 +153,7 @@ def latest_story_id() -> bool:
         reply = driver.execute_script(story_request)
         print(reply)
     except Exception as e:
-        logger.error("running the js-script in the latest_story_id function.")
-        logger.error("Exception message: " + str(e) + "\n")
-
-
-
+        logger.error("running the js-script in the latest_story_id function.\nException message: " + str(e))
 
 
 def random_sleep(max_time):
