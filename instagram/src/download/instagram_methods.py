@@ -118,44 +118,20 @@ def save_html(url):
         f.write(content)
 
 
-def latest_story_id() -> bool:
+def latest_story_timestamp() -> int:
     """
-    Checks for active story then creates a XHR to get the latest story ID.
+    Checks if an active story exists.
 
     Returns:
-        int: 0 if no story exists, else the ID of the most recent story.
+        int: timestamp of last story, 0 if none exists
     """
-    query_id = ''
-    reel_id = 0
-    regex = re.compile(r'Object.defineProperty\(\w+,\'__esModule\',{value:!0}\);const \w+=\d+,\w+="([a-z0-9]{32})"')
-
     for request in driver.requests:
         if request.response:
             if 'graphql' in request.url:
                 reply_content = request.response.body.decode('utf-8')
                 if 'latest_reel_media' in reply_content:
                     reply_json = json.loads(reply_content)
-                    reel_id = reply_json['data']['user']['reel']['id']
-                    if reel_id == "0":
-                        return 0
-
-            if '.js/' in request.url and request.response.body:
-                reply_content = request.response.body.decode('utf-8')
-                query_find = re.findall(regex, reply_content)
-                if query_find:
-                    query_id = query_find[0]
-                else:
-                    print("Keine Query ID")
-
-    try:
-        story_request = '''var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'https://www.instagram.com/graphql/query/?query_hash=''' + query_id + '''&variables=%7B%22reel_ids%22%3A%5B%22''' + reel_id + '''%22%5D%2C%22tag_names%22%3A%5B%5D%2C%22location_ids%22%3A%5B%5D%2C%22highlight_reel_ids%22%3A%5B%5D%2C%22precomposed_overlay%22%3Afalse%2C%22show_story_viewer_list%22%3Atrue%2C%22story_viewer_fetch_count%22%3A50%2C%22story_viewer_cursor%22%3A%22%22%2C%22stories_video_dash_manifest%22%3Afalse%7D', false);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.send('login=test&password=test');'''
-        reply = driver.execute_script(story_request)
-        print(reply)
-    except Exception as e:
-        logger.error("running the js-script in the latest_story_id function.\nException message: " + str(e))
+                    return reply_json['data']['user']['reel']['latest_reel_media']
 
 
 def random_sleep(max_time):
