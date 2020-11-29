@@ -206,7 +206,7 @@ def compare_posts():
             print(etree.tostring(parent))
             print("New link: " + new_links_list[index])
 
-    open("aaa.html", "wb").write(etree.tostring(tree))
+    open("aaa.html", "wb").write(etree.tostring(new_tree))
 
 
 
@@ -305,3 +305,5 @@ def compare_igtv():
             new_igtv_a_list[index].attrib["style"] = "border = 5px solid green"
             print("New link: " )
             print(etree.tostring(new_igtv_a_list[index]))
+
+    open("igtv.html", "wb").write(etree.tostring(new_tree))
