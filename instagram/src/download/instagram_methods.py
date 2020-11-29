@@ -209,7 +209,6 @@ def compare_posts():
     open("aaa.html", "wb").write(etree.tostring(tree))
 
 
-compare_posts()
 
 def compare_followers_following(oldHtml, newHtml):
     #Wir brauchen einheitliche Namen fuer die .html Dateien
@@ -259,4 +258,50 @@ def compare_followers_following(oldHtml, newHtml):
     return 0
 
 
+def compare_igtv():
+    old_html_url = "instagram/data/files/polizei.hannover/igtv/igtv_old.html"
+    new_html_url = "instagram/data/files/polizei.hannover/igtv/igtv.html"
+    # TODO Zur richtige Verzeichnis wechseln, muss noch geaendert werden
+    os.chdir("..")
+    os.chdir("..")
+    os.chdir("..")
 
+    # Getting all links in old igtv html file
+    tree = html.parse(old_html_url)
+    old_links = tree.xpath("//div[@id='react-root']//main//div//a")  # Contains complete <a> Tags
+
+    old_igtv_a_list = []
+    old_igtv_href_list = []
+    # Saving only elements with tv/ links
+    for link in old_links:
+        if link.attrib["href"].startswith("https://www.instagram.com/tv/"):
+            old_igtv_a_list.append(link)
+
+    # Only saving href attribute for comparison
+    for href in old_igtv_a_list:
+        old_igtv_href_list.append(href.attrib["href"])
+
+    # Getting all links in new igtv html file
+    new_tree = html.parse(new_html_url)
+    new_links = new_tree.xpath("//div[@id='react-root']//main//div//a")  # Contains complete <a> Tags
+    # print(etree.tostring(new_divs[1]))
+
+    new_igtv_a_list = []
+    new_igtv_href_list = []
+
+    # Saving only elements with tv/ links
+    for link in new_links:
+        if link.attrib["href"].startswith("https://www.instagram.com/tv/"):
+            new_igtv_a_list.append(link)
+
+    # Only saving href attribute for comparison
+    for href in new_igtv_a_list:
+        new_igtv_href_list.append(href.attrib["href"])
+
+    old_igtv_href_list[0] = "test"  # should be remove afterwards
+
+    for index in range(len(new_igtv_href_list)):
+        if new_igtv_href_list[index] not in old_igtv_href_list:
+            new_igtv_a_list[index].attrib["style"] = "border = 5px solid green"
+            print("New link: " )
+            print(etree.tostring(new_igtv_a_list[index]))
