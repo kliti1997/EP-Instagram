@@ -107,7 +107,7 @@ def save_html(url):
 
     driver.get(link)
     random_sleep(10)
-    latest_story_id()
+    latest_story_timestamp()
 
     content = unescape(convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);")))
     parser = etree.XMLParser(remove_blank_text=True)

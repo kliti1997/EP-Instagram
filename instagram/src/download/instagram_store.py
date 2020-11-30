@@ -10,6 +10,9 @@ class InstagramStore:
             print("OR in " + url["monitoring_folder"] + "new.html")
             print("--------------------------------------------\n")
             
-            save_html(url)
+            try:
+                save_html(url)
+            except Exception as e:
+                logger.error("downloading the html files.\nException message: " + str(e))
 
         driver.quit()
