@@ -2,3 +2,7 @@
 Exception message: KeyError: 'reel'
 2020-11-30 09:25:03,969 - comparing the html files.
 Exception message: IndexError: list index out of range
+2020-11-30 14:43:43,168 - downloading the html files.
+Exception message: KeyError: 'reel'
+2020-11-30 14:45:30,384 - downloading the html files.
+Exception message: KeyError: 'reel'
