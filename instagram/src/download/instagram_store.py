@@ -12,6 +12,4 @@ class InstagramStore:
             
             save_html(url)
 
-
-
         driver.quit()

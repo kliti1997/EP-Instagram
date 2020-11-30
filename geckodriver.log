@@ -969,3 +969,82 @@ IPDL protocol error: Handler returned error code!
 1605984270467	Marionette	INFO	Listening on port 34169
 1605984270577	Marionette	WARN	TLS certificate errors will be ignored for this session
 1605984311926	Marionette	INFO	Stopped listening on port 34169
+1606720232356	geckodriver	INFO	Listening on 127.0.0.1:51495
+1606720234236	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofiledPMzlx"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+2020-11-30 08:10:51.191 firefox-bin[29540:2274283] Warning: Expected min height of view: (<NSButton: 0x124bcb400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:10:51.191 firefox-bin[29540:2274283] Warning: Expected min height of view: (<NSButton: 0x12e6efc00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:10:51.192 firefox-bin[29540:2274283] Warning: Expected min height of view: (<NSButton: 0x12e6edc00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:10:51.192 firefox-bin[29540:2274283] Warning: Expected min height of view: (<NSButton: 0x12e6ee000>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:10:51.193 firefox-bin[29540:2274283] Warning: Expected min height of view: (<NSButton: 0x12e6ee400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:10:51.193 firefox-bin[29540:2274283] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x12e6f1800>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:10:51.194 firefox-bin[29540:2274283] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x12f918800>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+1606720262388	geckodriver	INFO	Listening on 127.0.0.1:51702
+1606720263538	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofilePUeNBB"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+2020-11-30 08:11:13.423 firefox-bin[29573:2275232] Warning: Expected min height of view: (<NSButton: 0x1207d2800>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:13.424 firefox-bin[29573:2275232] Warning: Expected min height of view: (<NSButton: 0x12ccc7c00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:13.424 firefox-bin[29573:2275232] Warning: Expected min height of view: (<NSButton: 0x12ccc5800>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:13.425 firefox-bin[29573:2275232] Warning: Expected min height of view: (<NSButton: 0x12ccc3800>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:13.425 firefox-bin[29573:2275232] Warning: Expected min height of view: (<NSButton: 0x12ccc3c00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:13.426 firefox-bin[29573:2275232] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x12ccc5c00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:13.426 firefox-bin[29573:2275232] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x12d3b4c00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+1606720289672	geckodriver	INFO	Listening on 127.0.0.1:51838
+1606720291817	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofileV2I6nS"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1606720297354	geckodriver	INFO	Listening on 127.0.0.1:51887
+1606720298560	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofilehNPBiS"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+2020-11-30 08:11:41.671 firefox-bin[29587:2276223] Warning: Expected min height of view: (<NSButton: 0x1315f7400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:41.672 firefox-bin[29587:2276223] Warning: Expected min height of view: (<NSButton: 0x1326b7400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:41.672 firefox-bin[29587:2276223] Warning: Expected min height of view: (<NSButton: 0x1326c0400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:41.673 firefox-bin[29587:2276223] Warning: Expected min height of view: (<NSButton: 0x1326bd000>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:41.673 firefox-bin[29587:2276223] Warning: Expected min height of view: (<NSButton: 0x132ba1800>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:41.674 firefox-bin[29587:2276223] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x132ba0800>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:11:41.675 firefox-bin[29587:2276223] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x132ba2c00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+1606720374072	geckodriver	INFO	Listening on 127.0.0.1:51973
+1606720376232	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofileMhqq2H"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+2020-11-30 08:13:13.984 firefox-bin[29620:2277912] Warning: Expected min height of view: (<NSButton: 0x12d5f3000>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:13:13.985 firefox-bin[29620:2277912] Warning: Expected min height of view: (<NSButton: 0x12d5fd400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:13:13.985 firefox-bin[29620:2277912] Warning: Expected min height of view: (<NSButton: 0x12d5fbc00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:13:13.986 firefox-bin[29620:2277912] Warning: Expected min height of view: (<NSButton: 0x12d5f9000>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:13:13.986 firefox-bin[29620:2277912] Warning: Expected min height of view: (<NSButton: 0x12d5fc000>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:13:13.987 firefox-bin[29620:2277912] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x12dd35c00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-11-30 08:13:13.987 firefox-bin[29620:2277912] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x12e815800>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+1606720468858	geckodriver	INFO	Listening on 127.0.0.1:52199
+1606720471016	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofile4LscvP"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
