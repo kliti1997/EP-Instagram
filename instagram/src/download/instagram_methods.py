@@ -118,44 +118,20 @@ def save_html(url):
         f.write(content)
 
 
-def latest_story_id() -> bool:
+def latest_story_timestamp() -> int:
     """
-    Checks for active story then creates a XHR to get the latest story ID.
+    Checks if an active story exists.
 
     Returns:
-        int: 0 if no story exists, else the ID of the most recent story.
+        int: timestamp of last story, 0 if none exists
     """
-    query_id = ''
-    reel_id = 0
-    regex = re.compile(r'Object.defineProperty\(\w+,\'__esModule\',{value:!0}\);const \w+=\d+,\w+="([a-z0-9]{32})"')
-
     for request in driver.requests:
         if request.response:
             if 'graphql' in request.url:
                 reply_content = request.response.body.decode('utf-8')
                 if 'latest_reel_media' in reply_content:
                     reply_json = json.loads(reply_content)
-                    reel_id = reply_json['data']['user']['reel']['id']
-                    if reel_id == "0":
-                        return 0
-
-            if '.js/' in request.url and request.response.body:
-                reply_content = request.response.body.decode('utf-8')
-                query_find = re.findall(regex, reply_content)
-                if query_find:
-                    query_id = query_find[0]
-                else:
-                    print("Keine Query ID")
-
-    try:
-        story_request = '''var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'https://www.instagram.com/graphql/query/?query_hash=''' + query_id + '''&variables=%7B%22reel_ids%22%3A%5B%22''' + reel_id + '''%22%5D%2C%22tag_names%22%3A%5B%5D%2C%22location_ids%22%3A%5B%5D%2C%22highlight_reel_ids%22%3A%5B%5D%2C%22precomposed_overlay%22%3Afalse%2C%22show_story_viewer_list%22%3Atrue%2C%22story_viewer_fetch_count%22%3A50%2C%22story_viewer_cursor%22%3A%22%22%2C%22stories_video_dash_manifest%22%3Afalse%7D', false);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.send('login=test&password=test');'''
-        reply = driver.execute_script(story_request)
-        print(reply)
-    except Exception as e:
-        logger.error("running the js-script in the latest_story_id function.\nException message: " + str(e))
+                    return reply_json['data']['user']['reel']['latest_reel_media']
 
 
 def random_sleep(max_time):
@@ -230,10 +206,104 @@ def compare_posts():
             print(etree.tostring(parent))
             print("New link: " + new_links_list[index])
 
-    open("aaa.html", "wb").write(etree.tostring(tree))
-
-
-compare_posts()
+    open("aaa.html", "wb").write(etree.tostring(new_tree))
 
 
 
+def compare_followers_following(oldHtml, newHtml):
+    #Wir brauchen einheitliche Namen fuer die .html Dateien
+    #Ich war der Meinung er meinte wir sollen "old.html" und "new.html" verwenden
+    oldDoc = etree.HTML(oldHtml)
+    newDoc = etree.HTML(newHtml)
+                
+    #Followers bzw. Abonneten
+    oldElements = list(oldDoc.iter("a"))
+    oldFollowersElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/followers/"][0]
+    oldSubElement = list(oldFollowersElement.iter())
+    oldFollowersCnt = [element.attrib['title'] for element in oldSubElement if element.tag == "span"][0]
+
+    newElements = list(newDoc.iter("a"))
+    newFollowersElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/followers/"][0]
+    newSubElement = list(newFollowersElement.iter())
+    newFollowersCnt = [element.attrib['title'] for element in newSubElement if element.tag == "span"][0]
+                
+    print(oldFollowersCnt)
+    print(newFollowersCnt)
+                
+    if oldFollowersCnt != newFollowersCnt:
+        newFollowersElement.attrib['style'] = "border: 5px solid green;"
+                
+    #Following bzw. Abonnierte
+    #Komischerweise hat der Container kein 'title' Wert wie er bei den Abonnenten existiert
+    #Wir muessen deshalb aus dem 'text' direkt lesen
+    oldElements = list(oldDoc.iter("a"))
+    oldFollowingElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/following/"][0]
+    oldSubElement = list(oldFollowingElement.iter())
+    oldFollowingCnt = [element.text for element in oldSubElement if element.tag == "span"][0]
+
+    newElements = list(newDoc.iter("a"))
+    newFollowingElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/following/"][0]
+    newSubElement = list(newFollowingElement.iter())
+    newFollowingCnt = [element.text for element in newSubElement if element.tag == "span"][0]
+
+    print(oldFollowingCnt)
+    print(newFollowingCnt)
+                
+    if oldFollowersCnt != newFollowersCnt:
+        newFollowingElement.attrib['style'] = "border: 1px solid green;"
+    
+    #Im Regelbetrieb dann in new.html schreiben "bbb.html" ist nur zum testen          
+    open("bbb.html", "wb").write(etree.tostring(newDoc))
+
+    return 0
+
+
+def compare_igtv():
+    old_html_url = "instagram/data/files/polizei.hannover/igtv/igtv_old.html"
+    new_html_url = "instagram/data/files/polizei.hannover/igtv/igtv.html"
+    # TODO Zur richtige Verzeichnis wechseln, muss noch geaendert werden
+    os.chdir("..")
+    os.chdir("..")
+    os.chdir("..")
+
+    # Getting all links in old igtv html file
+    tree = html.parse(old_html_url)
+    old_links = tree.xpath("//div[@id='react-root']//main//div//a")  # Contains complete <a> Tags
+
+    old_igtv_a_list = []
+    old_igtv_href_list = []
+    # Saving only elements with tv/ links
+    for link in old_links:
+        if link.attrib["href"].startswith("https://www.instagram.com/tv/"):
+            old_igtv_a_list.append(link)
+
+    # Only saving href attribute for comparison
+    for href in old_igtv_a_list:
+        old_igtv_href_list.append(href.attrib["href"])
+
+    # Getting all links in new igtv html file
+    new_tree = html.parse(new_html_url)
+    new_links = new_tree.xpath("//div[@id='react-root']//main//div//a")  # Contains complete <a> Tags
+    # print(etree.tostring(new_divs[1]))
+
+    new_igtv_a_list = []
+    new_igtv_href_list = []
+
+    # Saving only elements with tv/ links
+    for link in new_links:
+        if link.attrib["href"].startswith("https://www.instagram.com/tv/"):
+            new_igtv_a_list.append(link)
+
+    # Only saving href attribute for comparison
+    for href in new_igtv_a_list:
+        new_igtv_href_list.append(href.attrib["href"])
+
+    old_igtv_href_list[0] = "test"  # should be remove afterwards
+
+    for index in range(len(new_igtv_href_list)):
+        if new_igtv_href_list[index] not in old_igtv_href_list:
+            new_igtv_a_list[index].attrib["style"] = "border = 5px solid green"
+            print("New link: " )
+            print(etree.tostring(new_igtv_a_list[index]))
+
+    open("igtv.html", "wb").write(etree.tostring(new_tree))
