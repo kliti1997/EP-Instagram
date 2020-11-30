@@ -1,4 +1,3 @@
-from instagram.data.config import *
-from instagram.src.instagram import Instagram
+from instagram.src.instagram import *
 
 ig = Instagram(monitoring_map)

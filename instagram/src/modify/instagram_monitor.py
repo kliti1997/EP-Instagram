@@ -1,5 +1,5 @@
 from instagram.data.config import *
-from instagram.src.instagram import Instagram
+#from instagram.src.instagram import Instagram
 
 class InstagramMonitor:
     def __init__(self, monitoring_map):
@@ -30,7 +30,8 @@ class InstagramMonitor:
             compare_followers_following(oldHtml, newHtml)
 
             
-
+""" Circular import
 if __name__ == "__main__":
     Instagram(monitoring_map)
     print("\n\n")
+"""

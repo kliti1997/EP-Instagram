@@ -30,7 +30,8 @@ Different path variables.
 
 Path(profile_folder).mkdir(parents=True, exist_ok=True)
 driver_profile = webdriver.FirefoxProfile(profile_folder)
-driver = webdriver.Firefox(firefox_profile=driver_profile, executable_path = geckodriver)
+#driver = webdriver.Firefox(firefox_profile=driver_profile, executable_path = geckodriver)
+driver = webdriver.Firefox(executable_path = geckodriver)
 """
 Seleniumwire driver and it's options.
 """
