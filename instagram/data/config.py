@@ -37,7 +37,7 @@ Seleniumwire driver and it's options.
 """
 
 logger = logging.getLogger("myLogger")
-f_handler = logging.FileHandler(os.path.join(os.getcwd(), "exception.log"))
+f_handler = logging.FileHandler(os.path.join(config_folder, "exception.log"))
 f_format = logging.Formatter('%(asctime)s - %(message)s')
 f_handler.setFormatter(f_format)
 logger.addHandler(f_handler)

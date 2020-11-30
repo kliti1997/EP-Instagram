@@ -1,4 +1,5 @@
 from instagram.data.config import *
+from instagram.src.download.instagram_methods import compare_followers_following
 #from instagram.src.instagram import Instagram
 
 class InstagramMonitor:
@@ -6,7 +7,7 @@ class InstagramMonitor:
         print("\n\n\t********MONITORING PHASE********")
         for url in monitoring_map["instagram"]:
             dirname = "instagram/data/files/"+url["id"]
-            #TODO name error fixen
+            #TODO name error fixen (subdirectory -> subdirectories)
             """
             subdirectories = [x[0] for x in os.walk(dirname) if x[0] != dirname]
 
@@ -19,7 +20,7 @@ class InstagramMonitor:
                 return 1
 
             print("compare ("+url["monitoring_folder"]+"old.html)"+" with ("+url["monitoring_folder"]+"new.html)")
-
+            
             oldHtml = open(subdirectory+"/old.html", "r").read()
             oldHtml = html.unescape(oldHtml)
 
@@ -28,10 +29,16 @@ class InstagramMonitor:
             
             #Verstehe nicht so recht warum die Post-Vergleichfunktion nicht hier aufgerufen wird
             #Warum wird sie direkt in der Definitionsdatei aufgerufen?
-            """
-            compare_followers_following(oldHtml, newHtml)
-
             
+            compare_followers_following(oldHtml, newHtml)
+            """
+
+            #TODO entfernen, nachdem name errors oben gefixt worden sind
+            try:
+                compare_followers_following("/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/data/files/polizei.hannover/posts/posts_old.html", "/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/data/files/polizei.hannover/posts/posts.html")
+                compare_followers_following("/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/data/files/polizei.hannover/igtv/igtv_old.html", "/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/data/files/polizei.hannover/igtv/igtv.html")
+            except Exception as e:
+                logger.error("comparing the html files.\nException message: " + str(e))
 """ Circular import
 if __name__ == "__main__":
     Instagram(monitoring_map)
