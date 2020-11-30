@@ -114,7 +114,7 @@ def save_html(url):
     tree = etree.fromstring(content, etree.HTMLParser())
 
     pre_download(url)
-    with open(os.path.join(monitoring_folder, url["monitoring_folder"], type + ".html"), "w") as f:
+    with open(os.path.join(monitoring_folder, url["monitoring_folder"], "new.html"), "w") as f:
         f.write(content)
 
 
@@ -160,9 +160,8 @@ def pre_download(url):
                     "posts", "tagged", or "IGTV" to determine the file name.
     """
     folder = os.path.join(monitoring_folder, url["monitoring_folder"])
-    type = str(url["type"])
-    filepath = os.path.join(monitoring_folder, url["monitoring_folder"], type + ".html")
-    oldFilepath = os.path.join(monitoring_folder, url["monitoring_folder"], type + "_old.html")
+    filepath = os.path.join(monitoring_folder, url["monitoring_folder"], "new.html")
+    oldFilepath = os.path.join(monitoring_folder, url["monitoring_folder"], "old.html")
 
     Path(folder).mkdir(parents=True, exist_ok=True)
         
