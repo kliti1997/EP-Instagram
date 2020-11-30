@@ -35,7 +35,7 @@ def login(username, password):
     """
     driver.get(base_url)
     random_sleep(5)
-    if driver.find_elements_by_xpath("//*[text()='Cookies']"):
+    if driver.find_elements_by_xpath("//*[contains(., 'Cookies')]"):
         cookie_consent()
         random_sleep(5)
 
