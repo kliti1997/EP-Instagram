@@ -38,7 +38,8 @@ class InstagramMonitor:
                 compare_followers_following("/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/data/files/polizei.hannover/posts/posts_old.html", "/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/data/files/polizei.hannover/posts/posts.html")
                 compare_followers_following("/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/data/files/polizei.hannover/igtv/igtv_old.html", "/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/data/files/polizei.hannover/igtv/igtv.html")
             except Exception as e:
-                logger.error("comparing the html files.\nException message: " + str(e))
+                eType = e.__class__.__name__
+                logger.error("comparing the html files.\nException message: " + eType + ": " + str(e))
 """ Circular import
 if __name__ == "__main__":
     Instagram(monitoring_map)

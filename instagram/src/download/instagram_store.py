@@ -13,6 +13,7 @@ class InstagramStore:
             try:
                 save_html(url)
             except Exception as e:
-                logger.error("downloading the html files.\nException message: " + str(e))
+                eType = e.__class__.__name__
+                logger.error("downloading the html files.\nException message: "  + eType + ": "+ str(e))
 
         driver.quit()

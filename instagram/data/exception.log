@@ -1,4 +1,4 @@
-2020-11-30 09:17:13,033 - downloading the html files.
-Exception message: 'reel'
-2020-11-30 09:17:14,126 - comparing the html files.
-Exception message: list index out of range
+2020-11-30 09:25:02,944 - downloading the html files.
+Exception message: KeyError: 'reel'
+2020-11-30 09:25:03,969 - comparing the html files.
+Exception message: IndexError: list index out of range
