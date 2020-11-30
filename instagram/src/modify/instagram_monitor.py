@@ -6,6 +6,8 @@ class InstagramMonitor:
         print("\n\n\t********MONITORING PHASE********")
         for url in monitoring_map["instagram"]:
             dirname = "instagram/data/files/"+url["id"]
+            #TODO name error fixen
+            """
             subdirectories = [x[0] for x in os.walk(dirname) if x[0] != dirname]
 
             oldExist = os.path.isfile(subdirectory+"/old.html")
@@ -26,7 +28,7 @@ class InstagramMonitor:
             
             #Verstehe nicht so recht warum die Post-Vergleichfunktion nicht hier aufgerufen wird
             #Warum wird sie direkt in der Definitionsdatei aufgerufen?
-
+            """
             compare_followers_following(oldHtml, newHtml)
 
             
