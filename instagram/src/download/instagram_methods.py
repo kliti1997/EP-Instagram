@@ -108,6 +108,7 @@ def save_html(url):
     driver.get(link)
     random_sleep(10)
     latest_story_timestamp()
+    print("nach timestamp")
 
     content = unescape(convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);")))
     parser = etree.XMLParser(remove_blank_text=True)
@@ -129,9 +130,13 @@ def latest_story_timestamp() -> int:
         if request.response:
             if 'graphql' in request.url:
                 reply_content = request.response.body.decode('utf-8')
-                if 'latest_reel_media' in reply_content:
+                if 'latest_reel_media' in reply_content and 'edge_suggested_users' not in reply_content:  # Identifying correct request
+                    print(request.url)
                     reply_json = json.loads(reply_content)
                     return reply_json['data']['user']['reel']['latest_reel_media']
+                else:
+                    print("Falsche Datei")
+    return 0
 
 
 def random_sleep(max_time):
