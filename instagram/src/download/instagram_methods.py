@@ -120,7 +120,7 @@ def save_html(url):
     random_sleep(10)
     latest_story_timestamp()
 
-    content = unescape(convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);")))
+    content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
     parser = etree.XMLParser(remove_blank_text=True)
     tree = etree.fromstring(content, etree.HTMLParser())
 

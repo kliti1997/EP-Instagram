@@ -12,8 +12,14 @@ url2 = {"id": "polizei.hannover",
         "href": "https://www.instagram.com/polizei.hannover/channel/",
         "type": "igtv", "mode": "1", "monitoring_folder": "polizei.hannover/igtv/",
         "change": "", "notify": "", "err": ""}
+        
+url3 = {"id": "polizei.hannover",
+        "href": "https://www.instagram.com/polizei.hannover/tagged/",
+        "type": "tagged", "mode": "1", "monitoring_folder": "polizei.hannover/tagged/",
+        "change": "", "notify": "", "err": ""}
 
 monitoring_map["instagram"].append(url1)
 monitoring_map["instagram"].append(url2)
+monitoring_map["instagram"].append(url3)
 
 InstagramStore(monitoring_map)
