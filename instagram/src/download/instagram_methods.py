@@ -12,6 +12,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium import webdriver
 from pprint import pprint
 from lxml import etree, html
+from lxml.html.clean import Cleaner
 from pathlib import Path
 from html import unescape
 import json
@@ -69,9 +70,8 @@ def cookie_consent():
     elif driver.find_elements_by_xpath("//*[text()='Accept']"):
         driver.find_element_by_xpath("//*[text()='Accept']").click()
 
-
+"""
 def convert_links(source):
-    """
     Converts relative to absolute links in a given string by appending a base-url, which is specified
     in the config-file.
     Only links which are the content of the html attributes href, src, or srcset, or of a dictionary
@@ -87,9 +87,20 @@ def convert_links(source):
 
     Returns:
         str: The same string as source, but with converted links.
-    """
-    return re.sub(r'(href="|src="|srcset="|:")/', r'\1' + base_url, source)
 
+    return re.sub(r'(href="|src="|srcset="|:")/', r'\1' + base_url, source)
+"""
+
+def convert_links(source):
+    # remove javascript inline script parts
+    source = re.sub(r'(?is)<script[^>]*>(.*?)</script>', '', source)
+
+    # remove javascript import links
+    source = re.sub(r'<link.*?type="text/javascript".*?/>', '', source)
+
+    # converts relative to absolute links
+    source = re.sub(r'(href="|src="|srcset="|:")/', r'\1' + base_url, source)
+    return source
 
 def save_html(url):
     """
