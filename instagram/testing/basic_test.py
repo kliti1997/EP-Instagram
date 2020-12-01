@@ -1,5 +1,6 @@
 from collections import defaultdict
 from instagram.src.download.instagram_store import InstagramStore
+from instagram.src.modify.instagram_monitor import InstagramMonitor
 
 monitoring_map = defaultdict(list)
 url1 = {"id": "polizei.hannover",
@@ -23,3 +24,4 @@ monitoring_map["instagram"].append(url2)
 monitoring_map["instagram"].append(url3)
 
 InstagramStore(monitoring_map)
+InstagramMonitor(monitoring_map)

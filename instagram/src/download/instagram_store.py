@@ -1,5 +1,5 @@
 from instagram.data.config import *
-from instagram.src.download.instagram_methods import login, random_sleep, pre_download, save_html, compare_posts
+from instagram.src.download.download_methods import login, random_sleep, pre_download, save_html
 
 class InstagramStore:
     def __init__(self, monitoring_map):
