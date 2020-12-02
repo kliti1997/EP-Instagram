@@ -1,6 +1,8 @@
 from instagram.data.config import *
 from lxml import etree, html
-#from instagram.src.instagram import Instagram
+
+
+# from instagram.src.instagram import Instagram
 
 
 def compare_posts():
@@ -41,50 +43,57 @@ def compare_posts():
     open("aaa.html", "wb").write(etree.tostring(new_tree))
 
 
-
 def compare_followers_following(oldHtml, newHtml):
-    #Wir brauchen einheitliche Namen fuer die .html Dateien
-    #Ich war der Meinung er meinte wir sollen "old.html" und "new.html" verwenden
+    # Wir brauchen einheitliche Namen fuer die .html Dateien
+    # Ich war der Meinung er meinte wir sollen "old.html" und "new.html" verwenden
     oldDoc = etree.HTML(oldHtml)
     newDoc = etree.HTML(newHtml)
-                
-    #Followers bzw. Abonneten
+
+    # Followers bzw. Abonneten
     oldElements = list(oldDoc.iter("a"))
-    oldFollowersElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/followers/"][0]
+    oldFollowersElement = \
+    [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/followers/"][
+        0]
     oldSubElement = list(oldFollowersElement.iter())
     oldFollowersCnt = [element.attrib['title'] for element in oldSubElement if element.tag == "span"][0]
 
     newElements = list(newDoc.iter("a"))
-    newFollowersElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/followers/"][0]
+    newFollowersElement = \
+    [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/followers/"][
+        0]
     newSubElement = list(newFollowersElement.iter())
     newFollowersCnt = [element.attrib['title'] for element in newSubElement if element.tag == "span"][0]
-                
+
     print(oldFollowersCnt)
     print(newFollowersCnt)
-                
+
     if oldFollowersCnt != newFollowersCnt:
         newFollowersElement.attrib['style'] = "border: 5px solid green;"
-                
-    #Following bzw. Abonnierte
-    #Komischerweise hat der Container kein 'title' Wert wie er bei den Abonnenten existiert
-    #Wir muessen deshalb aus dem 'text' direkt lesen
+
+    # Following bzw. Abonnierte
+    # Komischerweise hat der Container kein 'title' Wert wie er bei den Abonnenten existiert
+    # Wir muessen deshalb aus dem 'text' direkt lesen
     oldElements = list(oldDoc.iter("a"))
-    oldFollowingElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/following/"][0]
+    oldFollowingElement = \
+    [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/following/"][
+        0]
     oldSubElement = list(oldFollowingElement.iter())
     oldFollowingCnt = [element.text for element in oldSubElement if element.tag == "span"][0]
 
     newElements = list(newDoc.iter("a"))
-    newFollowingElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/following/"][0]
+    newFollowingElement = \
+    [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/following/"][
+        0]
     newSubElement = list(newFollowingElement.iter())
     newFollowingCnt = [element.text for element in newSubElement if element.tag == "span"][0]
 
     print(oldFollowingCnt)
     print(newFollowingCnt)
-                
+
     if oldFollowersCnt != newFollowersCnt:
         newFollowingElement.attrib['style'] = "border: 1px solid green;"
-    
-    #Im Regelbetrieb dann in new.html schreiben "bbb.html" ist nur zum testen          
+
+    # Im Regelbetrieb dann in new.html schreiben "bbb.html" ist nur zum testen
     open("bbb.html", "wb").write(etree.tostring(newDoc))
 
     return 0
@@ -135,7 +144,7 @@ def compare_igtv():
     for index in range(len(new_igtv_href_list)):
         if new_igtv_href_list[index] not in old_igtv_href_list:
             new_igtv_a_list[index].attrib["style"] = "border = 5px solid green"
-            print("New link: " )
+            print("New link: ")
             print(etree.tostring(new_igtv_a_list[index]))
 
     open("igtv.html", "wb").write(etree.tostring(new_tree))

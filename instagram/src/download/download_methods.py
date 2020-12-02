@@ -21,7 +21,6 @@ MIN_TIME = 3
 INCR_UPPER_BOUND = 10
 
 
-
 def login(username, password):
     """
     The function is used to perform the login process at instagram.com.
@@ -46,7 +45,6 @@ def login(username, password):
         else:
             driver.find_element_by_xpath("//*[text()='Anmelden']").click()
         random_sleep(10)
-
 
     if "onetap" in driver.current_url:  # "Save your Login?"-Page
         if driver.find_elements_by_xpath("//*[text()='Save Info']"):
@@ -165,14 +163,12 @@ def pre_download(url):
     newFilepath = os.path.join(monitoring_folder, url["monitoring_folder"], "new.html")
     oldFilepath = os.path.join(monitoring_folder, url["monitoring_folder"], "old.html")
     try:
-        Path(folder).mkdir(parents=True, exist_ok=True)            
-        if os.path.exists(oldFilepath):        
+        Path(folder).mkdir(parents=True, exist_ok=True)
+        if os.path.exists(oldFilepath):
             os.remove(oldFilepath)
-        if os.path.exists(newFilepath):        
-            os.rename(newFilepath, oldFilepath) 
+        if os.path.exists(newFilepath):
+            os.rename(newFilepath, oldFilepath)
 
     except Exception as e:
         eType = e.__class__.__name__
-        logger.error("error in pre-download phase.\nException message: "  + eType + ": "+ str(e))
-
-
+        logger.error("error in pre-download phase.\nException message: " + eType + ": " + str(e))
