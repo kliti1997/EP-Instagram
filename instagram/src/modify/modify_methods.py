@@ -6,8 +6,8 @@ from lxml import etree, html
 
 
 def compare_posts():
-    old_html_url = "instagram/data/files/polizei.hannover/posts/posts_old.html"
-    new_html_url = "instagram/data/files/polizei.hannover/posts/posts.html"
+    old_html_url = "instagram/data/files/polizei.hannover/posts/old.html"
+    new_html_url = "instagram/data/files/polizei.hannover/posts/new.html"
     # TODO Zur richtige Verzeichnis wechseln, muss noch geaendert werden
     os.chdir("..")
     os.chdir("..")
@@ -36,11 +36,11 @@ def compare_posts():
     for index in range(len(new_links_list)):
         if new_links_list[index] not in old_links_list:
             parent = new_links[index].getparent()
-            parent.attrib["style"] = "border = 5px solid green"
+            parent.attrib["style"] = "border: 5px solid green;"
             print(etree.tostring(parent))
             print("New link: " + new_links_list[index])
 
-    open("aaa.html", "wb").write(etree.tostring(new_tree))
+    open("aaa.html", "wb").write(etree.tostring(new_tree, method="html"))
 
 
 def compare_followers_following(oldHtml, newHtml):
@@ -92,8 +92,8 @@ def compare_followers_following(oldHtml, newHtml):
 
 
 def compare_igtv():
-    old_html_url = "instagram/data/files/polizei.hannover/igtv/igtv_old.html"
-    new_html_url = "instagram/data/files/polizei.hannover/igtv/igtv.html"
+    old_html_url = "instagram/data/files/polizei.hannover/igtv/old.html"
+    new_html_url = "instagram/data/files/polizei.hannover/igtv/new.html"
     # TODO Zur richtige Verzeichnis wechseln, muss noch geaendert werden
     os.chdir("..")
     os.chdir("..")
@@ -135,8 +135,8 @@ def compare_igtv():
 
     for index in range(len(new_igtv_href_list)):
         if new_igtv_href_list[index] not in old_igtv_href_list:
-            new_igtv_a_list[index].attrib["style"] = "border = 5px solid green"
+            new_igtv_a_list[index].attrib["style"] = "border: 5px solid green;"
             print("New link: ")
             print(etree.tostring(new_igtv_a_list[index]))
 
-    open("igtv.html", "wb").write(etree.tostring(new_tree))
+    open("igtv.html", "wb").write(etree.tostring(new_tree, method="html"))
