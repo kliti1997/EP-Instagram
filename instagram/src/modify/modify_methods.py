@@ -178,17 +178,11 @@ def compare_hover_items(new_file, old_file):
         for old_post in old_posts:
             if new_post.attrib["href"] == old_post.attrib["href"]: #and new_post.attrib["href"] == "https://www.instagram.com/p/CIAw8Z2KgBt/":
                 if new_post.xpath(".//span[@aria-label='Video']"): # Falls es ein Video ist, vergleiche view-count.
-                    if new_post.attrib["data-view-count"] != old_post.attrib["data-view-count"]:
-                        #TODO css für den hover effekt hinzufügen
+                    if new_post.attrib["data-view-count"] != old_post.attrib["data-view-count"] or new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
                         new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-view-count"], comments = new_post.attrib["data-comment"])))
                 else: # Sonst werden die Likes verglichen
-                    if new_post.attrib["data-liked-by"] != old_post.attrib["data-liked-by"]:
-                        #TODO css für den hover effekt hinzufügen
-                        print("todo2")
-
-                if new_post.attrib["data-comment"] != old_post.attrib["data-comment"]: # comments werden immer verglichen
-                    #TODO css für den hover effekt hinzufügen
-                    print("todo3")
+                    if new_post.attrib["data-liked-by"] != old_post.attrib["data-liked-by"] or new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
+                        new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-liked-by"], comments = new_post.attrib["data-comment"])))
                 
                 print(etree.tostring(new_post, pretty_print=True))
 
