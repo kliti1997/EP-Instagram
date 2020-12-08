@@ -160,13 +160,20 @@ def compare_hover_items(new_file, old_file):
     new_posts = new_tree.xpath("//div[@id='react-root']//article//a")
     old_posts = old_tree.xpath("//div[@id='react-root']//article//a")
 
-    hover = """<div class="qn-0x" style="background-color: rgb(0, 255, 75, 0.5);">
+    css = """ <style>
+                  .qn-0x{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;bottom:0;left:0;position:absolute;right:0;top:0}
+                  .Ln-UN{-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;color:#fff;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:16px;font-weight:600;height:100%;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;width:100%}
+                  .-V_eO{display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-orient:horizontal;-webkit-box-direction:reverse;-webkit-flex-direction:row-reverse;-ms-flex-direction:row-reverse;flex-direction:row-reverse;margin-right:30px}
+                  .-V_eO:last-child{margin-right:0}
+              </style>"""
+
+    hover = """ <div class="qn-0x" style="background-color: rgb(0, 255, 75, 0.5);">
                     <ul class="Ln-UN">
-                        <li class="-V_e0">
+                        <li class="-V_eO">
                             <span>{likes_views}</span>
                             <span class="_1P1TY coreSpriteHeartSmall"></span>
                         </li>
-                        <li class="-V_e0">
+                        <li class="-V_eO">
                             <span>{comments}</span>
                             <span class="_1P1TY coreSpriteSpeechBubbleSmall"></span>
                         </li>
@@ -176,7 +183,7 @@ def compare_hover_items(new_file, old_file):
     # Posts miteinander vergleichen
     for new_post in new_posts:
         for old_post in old_posts:
-            if new_post.attrib["href"] == old_post.attrib["href"]: #and new_post.attrib["href"] == "https://www.instagram.com/p/CIAw8Z2KgBt/":
+            if new_post.attrib["href"] == old_post.attrib["href"] and new_post.attrib["href"] == "https://www.instagram.com/p/CIAw8Z2KgBt/":
                 if new_post.xpath(".//span[@aria-label='Video']"): # Falls es ein Video ist, vergleiche view-count.
                     if new_post.attrib["data-view-count"] != old_post.attrib["data-view-count"] or new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
                         new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-view-count"], comments = new_post.attrib["data-comment"])))
@@ -186,30 +193,8 @@ def compare_hover_items(new_file, old_file):
                 
                 print(etree.tostring(new_post, pretty_print=True))
 
+    #TODO css im header einfügen
+    new_posts.append(etree.fromstring(css))
     open("hover_test.html", "wb").write(etree.tostring(new_tree, method="html"))
-
-    """
-    print("new posts:")
-    print(new_posts)
-    print()
-    print("old posts:")
-    print(old_posts)
-
-    print("data-id")
-    print(new_posts[1].attrib["data-id"])
-    print(old_posts[0].attrib["data-id"])
-
-    print("data-view-count")
-    print(new_posts[1].attrib["data-view-count"])
-    print(old_posts[0].attrib["data-view-count"])
-
-    print("data-view-count")
-    print(new_posts[1].attrib["data-view-count"])
-    print(old_posts[0].attrib["data-view-count"])
-
-    print("data-comment")
-    print(new_posts[1].attrib["data-comment"])
-    print(old_posts[0].attrib["data-comment"])
-    """
 
 compare_hover_items("/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/testing/hover/posts_new.html", "/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/testing/hover/posts_old.html")
