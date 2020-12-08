@@ -12,6 +12,7 @@ from selenium import webdriver
 from pprint import pprint
 from lxml import etree, html
 from pathlib import Path
+from .profile_data import ProfileData
 import json
 
 """
@@ -40,17 +41,13 @@ def login(username, password):
     if driver.find_elements_by_xpath("//*[text()='Log In']") or driver.find_elements_by_xpath("//*[text()='Anmelden']"):
         driver.find_element_by_name("username").send_keys(username)
         driver.find_element_by_name("password").send_keys(password)
-        if driver.find_elements_by_xpath("//*[text()='Log In']"):
-            driver.find_element_by_xpath("//*[text()='Log In']").click()
-        else:
-            driver.find_element_by_xpath("//*[text()='Anmelden']").click()
+        if driver.find_elements_by_xpath("//*[text()='Log In' or text()='Anmelden']"):
+            driver.find_element_by_xpath("//*[text()='Log In' or text()='Anmelden']").click()
         random_sleep(10)
 
     if "onetap" in driver.current_url:  # "Save your Login?"-Page
-        if driver.find_elements_by_xpath("//*[text()='Save Info']"):
-            driver.find_element_by_xpath("//*[text()='Save Info']").click()
-        else:
-            driver.find_element_by_xpath("//*[text()='Informationen speichern']").click()
+        if driver.find_elements_by_xpath("//*[text()='Save Info' or text()='Informationen speichern']"):
+            driver.find_element_by_xpath("//*[text()='Save Info' or text()='Informationen speichern']").click()
 
     random_sleep(10)
 
@@ -98,41 +95,27 @@ def convert_links(source):
 def save_html(url):
     """
     Saves the html content of a website and saves it in a file.
-    Depending on the input, the function will either save the content of the "posts" intsagram subdirectory,
+    Depending on the input, the function will either save the content of the "posts" Instagram subdirectory,
     the "tagged" subdirectory, or the "IGTV" subdirectory.
 
     Args:
-        url (dict): Containts the url to the website that has to be saved, as well as the type in terms of
+        url (dict): Contains the url to the website that has to be saved, as well as the type in terms of
                     "posts", "tagged", or "IGTV". It also contains a path where the generated files are going
                     to be saved.
     """
 
     driver.get(str(url["href"]))
     random_sleep(10)
-    latest_story_timestamp()
 
     content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
+    initial = driver.execute_script("return window._sharedData;")
+    print(initial.keys())
+    profile = ProfileData(initial_data=initial, requests=driver.requests)
     pre_download(url)
-
+    print(profile)
     with open(os.path.join(monitoring_folder, url["monitoring_folder"], "new.html"), "w") as f:
         f.write(content)
 
-
-def latest_story_timestamp() -> int:
-    """
-    Checks if an active story exists.
-
-    Returns:
-        int: timestamp of last story, 0 if none exists
-    """
-    for request in driver.requests:
-        if request.response:
-            if 'graphql' in request.url:
-                reply_content = request.response.body.decode('utf-8')
-                if 'latest_reel_media' in reply_content and 'edge_suggested_users' not in reply_content:  # Identifying correct request
-                    reply_json = json.loads(reply_content)
-                    return reply_json['data']['user']['reel']['latest_reel_media']
-    return 0
 
 
 def random_sleep(max_time):
@@ -156,7 +139,7 @@ def pre_download(url):
     If there is already an old file, it will be deleted.
 
     Args:
-        url (dict): Containts the path of the monitoring folder and one of the types
+        url (dict): Contains the path of the monitoring folder and one of the types
                     "posts", "tagged", or "IGTV" to determine the file path.
     """
     folder = os.path.join(monitoring_folder, url["monitoring_folder"])
