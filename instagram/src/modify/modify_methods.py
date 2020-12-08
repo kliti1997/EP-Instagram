@@ -173,7 +173,7 @@ def compare_hover_items(new_file, old_file):
                     <ul class="Ln-UN">
                         <li class="-V_eO" style="border: 5px solid green;">
                             <span>{likes_views}</span>
-                            <span class="_1P1TY coreSpriteHeartSmall"></span>
+                            <span class="_1P1TY {icon_likes_views}"></span>
                         </li>
                         <li class="-V_eO" style="border: 5px solid green;">
                             <span>{comments}</span>
@@ -188,10 +188,10 @@ def compare_hover_items(new_file, old_file):
             if new_post.attrib["href"] == old_post.attrib["href"] and new_post.attrib["href"] == "https://www.instagram.com/p/CIAw8Z2KgBt/":
                 if new_post.xpath(".//span[@aria-label='Video']"): # Falls es ein Video ist, vergleiche view-count.
                     if new_post.attrib["data-view-count"] != old_post.attrib["data-view-count"] or new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
-                        new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-view-count"], comments = new_post.attrib["data-comment"])))
+                        new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-view-count"], icon_likes_views="coreSpritePlayIconSmall", comments = new_post.attrib["data-comment"])))
                 else: # Sonst werden die Likes verglichen
                     if new_post.attrib["data-liked-by"] != old_post.attrib["data-liked-by"] or new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
-                        new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-liked-by"], comments = new_post.attrib["data-comment"])))
+                        new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-liked-by"], icon_likes_views="coreSpriteHeartSmall", comments = new_post.attrib["data-comment"])))
                 
 
 
