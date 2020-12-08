@@ -167,13 +167,15 @@ def compare_hover_items(new_file, old_file):
                   .-V_eO:last-child{margin-right:0}
               </style>"""
 
-    hover = """ <div class="qn-0x" style="background-color: rgb(0, 255, 75, 0.5);">
+    #TODO Im style-tag ein Format einfügen, so dass der Rahmen beim jeweligen Element 
+    #nur dann hinzugefügt wird, wenn etwas verändert wurde.
+    hover = """ <div class="qn-0x">
                     <ul class="Ln-UN">
-                        <li class="-V_eO">
+                        <li class="-V_eO" style="border: 5px solid green;">
                             <span>{likes_views}</span>
                             <span class="_1P1TY coreSpriteHeartSmall"></span>
                         </li>
-                        <li class="-V_eO">
+                        <li class="-V_eO" style="border: 5px solid green;">
                             <span>{comments}</span>
                             <span class="_1P1TY coreSpriteSpeechBubbleSmall"></span>
                         </li>
@@ -183,7 +185,7 @@ def compare_hover_items(new_file, old_file):
     # Posts miteinander vergleichen
     for new_post in new_posts:
         for old_post in old_posts:
-            if new_post.attrib["href"] == old_post.attrib["href"]:# and new_post.attrib["href"] == "https://www.instagram.com/p/CIAw8Z2KgBt/":
+            if new_post.attrib["href"] == old_post.attrib["href"] and new_post.attrib["href"] == "https://www.instagram.com/p/CIAw8Z2KgBt/":
                 if new_post.xpath(".//span[@aria-label='Video']"): # Falls es ein Video ist, vergleiche view-count.
                     if new_post.attrib["data-view-count"] != old_post.attrib["data-view-count"] or new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
                         new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-view-count"], comments = new_post.attrib["data-comment"])))
@@ -191,7 +193,7 @@ def compare_hover_items(new_file, old_file):
                     if new_post.attrib["data-liked-by"] != old_post.attrib["data-liked-by"] or new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
                         new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-liked-by"], comments = new_post.attrib["data-comment"])))
                 
-                print(etree.tostring(new_post, pretty_print=True))
+
 
     #TODO css im header einfügen
     new_posts.append(etree.fromstring(css))
