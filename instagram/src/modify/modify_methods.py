@@ -140,3 +140,82 @@ def compare_igtv():
             print(etree.tostring(new_igtv_a_list[index]))
 
     open("igtv.html", "wb").write(etree.tostring(new_tree, method="html"))
+
+
+def compare_hover_items(new_file, old_file):
+    """
+    Benötigte html-Attribute:
+    - data-typename (GraphSidecar, GraphImage, GraphVideo)
+                                            => bereits vorhanden: aria-label="Video" == GraphVideo
+                                                                  aria-label="Carousel" == GraphSidecar
+                                                                  no aria-label == GraphImage
+    - data-id (unnötig, einfach href verwenden)
+    In Abhängigkeit vom typename:
+    - data-liked-by (GraphSidecar, GraphImage)
+    - data-view-count (GraphVideo)
+    - data-comment (GraphSidecar, GraphImage, GraphVideo)
+    """
+    old_tree = html.parse(old_file)
+    new_tree = html.parse(new_file)
+    new_posts = new_tree.xpath("//div[@id='react-root']//article//a")
+    old_posts = old_tree.xpath("//div[@id='react-root']//article//a")
+
+    hover = """<div class="qn-0x" style="background-color: rgb(0, 255, 75, 0.5);">
+                    <ul class="Ln-UN">
+                        <li class="-V_e0">
+                            <span>{likes_views}</span>
+                            <span class="_1P1TY coreSpriteHeartSmall"></span>
+                        </li>
+                        <li class="-V_e0">
+                            <span>{comments}</span>
+                            <span class="_1P1TY coreSpriteSpeechBubbleSmall"></span>
+                        </li>
+                    </ul>
+                </div>"""
+
+    # Posts miteinander vergleichen
+    for new_post in new_posts:
+        for old_post in old_posts:
+            if new_post.attrib["href"] == old_post.attrib["href"]: #and new_post.attrib["href"] == "https://www.instagram.com/p/CIAw8Z2KgBt/":
+                if new_post.xpath(".//span[@aria-label='Video']"): # Falls es ein Video ist, vergleiche view-count.
+                    if new_post.attrib["data-view-count"] != old_post.attrib["data-view-count"]:
+                        #TODO css für den hover effekt hinzufügen
+                        new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-view-count"], comments = new_post.attrib["data-comment"])))
+                else: # Sonst werden die Likes verglichen
+                    if new_post.attrib["data-liked-by"] != old_post.attrib["data-liked-by"]:
+                        #TODO css für den hover effekt hinzufügen
+                        print("todo2")
+
+                if new_post.attrib["data-comment"] != old_post.attrib["data-comment"]: # comments werden immer verglichen
+                    #TODO css für den hover effekt hinzufügen
+                    print("todo3")
+                
+                print(etree.tostring(new_post, pretty_print=True))
+
+    open("hover_test.html", "wb").write(etree.tostring(new_tree, method="html"))
+
+    """
+    print("new posts:")
+    print(new_posts)
+    print()
+    print("old posts:")
+    print(old_posts)
+
+    print("data-id")
+    print(new_posts[1].attrib["data-id"])
+    print(old_posts[0].attrib["data-id"])
+
+    print("data-view-count")
+    print(new_posts[1].attrib["data-view-count"])
+    print(old_posts[0].attrib["data-view-count"])
+
+    print("data-view-count")
+    print(new_posts[1].attrib["data-view-count"])
+    print(old_posts[0].attrib["data-view-count"])
+
+    print("data-comment")
+    print(new_posts[1].attrib["data-comment"])
+    print(old_posts[0].attrib["data-comment"])
+    """
+
+compare_hover_items("/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/testing/hover/posts_new.html", "/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/testing/hover/posts_old.html")
