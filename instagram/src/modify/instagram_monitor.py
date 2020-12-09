@@ -1,5 +1,6 @@
 from instagram.data.config import *
-from instagram.src.modify.modify_methods import compare_posts, compare_followers_following, compare_igtv
+from instagram.src.helper import *
+from instagram.src.modify.modify_methods import pre_modify, compare_posts, compare_followers_following, compare_igtv, compare_hover_items
 #from instagram.src.instagram import Instagram
 
 class InstagramMonitor:
@@ -10,23 +11,28 @@ class InstagramMonitor:
         #Sonst kommt es zu mehrfachen Vergleichen, weil fuer jeden einzelne url('type=posts', 'type=igtv', 'type=tagged')
         #jedes mal alles durchgegangen wird(3*3=9 mal)
         for url in monitoring_map["instagram"]:
-            dirname = "./instagram/data/files/"+url["id"]+"/"+url["type"]
-                
-            oldExist = os.path.isfile(dirname+"/old.html")
-            newExist = os.path.isfile(dirname+"/new.html")
- 
-            #Falls wir keine 2 Dateien haben muessen wir uns noch etwas ueberlegen
-            #Z.B. wenn wir ein neuen User laden und erst nur einmal sein Profil gecheckt haben
-            if not oldExist or not newExist:
-                return
+           
+            html_type = get_type(url)
+            old_html_path = get_old_html_path(url)
+            new_html_path = get_new_html_path(url)
 
-            print("compare ("+url["monitoring_folder"]+"old.html)"+" with ("+url["monitoring_folder"]+"new.html)")
+            print("compare ("+old_html_path+") with ("+new_html_path+")") 
             
-            oldHtml = open(dirname+"/old.html", "r").read()
-            newHtml = open(dirname+"/new.html", "r").read()
+            if not pre_modify(url):
+                print("error while compare: "+old_html_path+" or "+new_html_path+"is missing")
+                return
             
-            outputHtml = compare_followers_following(oldHtml, newHtml)
-            open(dirname+"/new.html", "wb").write(outputHtml)
+            compare_followers_following(url)
+
+            if html_type == "posts":
+                compare_posts(url)
+            elif html_type == "igtv":
+                compare_igtv(url)
+            
+
+            hoverdir = "./instagram/testing/hover/"
+
+            compare_hover_items(hoverdir+"posts_new.html", hoverdir+"posts_old.html")
 
 """ Circular import
 if __name__ == "__main__":

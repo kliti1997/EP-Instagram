@@ -52,17 +52,3 @@ ig_credentials = {"user": "swp_ep_ig_1_test",
 """
 Instagram credentials and other login information.
 """
-
-# URL's zum testen
-#TODO Bei Abgabe entfernen
-monitoring_map = defaultdict(list)
-url1 = {"id":"polizei.hannover",
-    "href":"https://www.instagram.com/polizei.hannover/",
-    "type":"posts","mode":"1","monitoring_folder": monitoring_folder,
-    "change":"","notify":"","err":""}
-#url2 = {"id":"polizei.hannover",
-#    "href":"https://www.instagram.com/polizei.hannover/channel",
-#    "type":"IGTV","mode":"1","monitoring_folder":"./polizei.hannover/IGTV/",
-#    "change":"","notify":"","err":""}
-monitoring_map["instagram"].append(url1)
-#monitoring_map["instagram"].append(url2)

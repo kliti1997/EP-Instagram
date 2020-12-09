@@ -6,6 +6,7 @@ downloading and saving of html files.
 
 """
 from instagram.data.config import *
+from instagram.src.helper import *
 from random import randint
 from selenium.common.exceptions import NoSuchElementException
 from selenium import webdriver
@@ -37,19 +38,18 @@ def login(username, password):
         random_sleep(5)
 
     # Log into account only if not already logged in.
-    if driver.find_elements_by_xpath("//*[text()='Log In']") or driver.find_elements_by_xpath("//*[text()='Anmelden']"):
+    if driver.find_elements_by_xpath("//*[contains(., 'Log In') or contains(., 'Anmelden')]"):
         driver.find_element_by_name("username").send_keys(username)
         driver.find_element_by_name("password").send_keys(password)
         if driver.find_elements_by_xpath("//*[text()='Log In']"):
             driver.find_element_by_xpath("//*[text()='Log In']").click()
-        else:
+        elif driver.find_elements_by_xpath("//*[text()='Anmelden']"):
             driver.find_element_by_xpath("//*[text()='Anmelden']").click()
         random_sleep(10)
 
-    if "onetap" in driver.current_url:  # "Save your Login?"-Page
         if driver.find_elements_by_xpath("//*[text()='Save Info']"):
             driver.find_element_by_xpath("//*[text()='Save Info']").click()
-        else:
+        elif driver.find_elements_by_xpath("//*[text()='Informationen speichern']"):
             driver.find_element_by_xpath("//*[text()='Informationen speichern']").click()
 
     random_sleep(10)
@@ -107,14 +107,14 @@ def save_html(url):
                     to be saved.
     """
 
-    driver.get(str(url["href"]))
+    driver.get(get_href(url))
     random_sleep(10)
     latest_story_timestamp()
 
-    content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
     pre_download(url)
 
-    with open(os.path.join(monitoring_folder, url["monitoring_folder"], "new.html"), "w") as f:
+    content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
+    with open(get_new_html_path(url), "w") as f:
         f.write(content)
 
 
@@ -159,15 +159,15 @@ def pre_download(url):
         url (dict): Containts the path of the monitoring folder and one of the types
                     "posts", "tagged", or "IGTV" to determine the file path.
     """
-    folder = os.path.join(monitoring_folder, url["monitoring_folder"])
-    newFilepath = os.path.join(monitoring_folder, url["monitoring_folder"], "new.html")
-    oldFilepath = os.path.join(monitoring_folder, url["monitoring_folder"], "old.html")
+    folder_path = get_folder_path(url)
+    old_html_path = get_old_html_path(url)
+    new_html_path = get_new_html_path(url)
     try:
-        Path(folder).mkdir(parents=True, exist_ok=True)
-        if os.path.exists(oldFilepath):
-            os.remove(oldFilepath)
-        if os.path.exists(newFilepath):
-            os.rename(newFilepath, oldFilepath)
+        Path(folder_path).mkdir(parents=True, exist_ok=True)
+        if os.path.exists(old_html_path):
+            os.remove(old_html_path)
+        if os.path.exists(new_html_path):
+            os.rename(new_html_path, old_html_path)
 
     except Exception as e:
         eType = e.__class__.__name__

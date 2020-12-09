@@ -1,20 +1,20 @@
 from instagram.data.config import *
+from instagram.src.helper import *
 from lxml import etree, html
 
 
 # from instagram.src.instagram import Instagram
 
+def pre_modify(url):
+    return os.path.isfile(get_old_html_path(url)) and os.path.isfile(get_new_html_path(url))
 
-def compare_posts():
-    old_html_url = "instagram/data/files/polizei.hannover/posts/old.html"
-    new_html_url = "instagram/data/files/polizei.hannover/posts/new.html"
-    # TODO Zur richtige Verzeichnis wechseln, muss noch geaendert werden
-    os.chdir("..")
-    os.chdir("..")
-    os.chdir("..")
+
+def compare_posts(url):
+    old_html_path = get_old_html_path(url)
+    new_html_path = get_new_html_path(url)
 
     # Links in alte Datei rausholen
-    tree = html.parse(old_html_url)
+    tree = html.parse(old_html_path)
     old_links = tree.xpath("//div[@id='react-root']//article//a")  # Contains complete <a> Tags
     old_links_list = []  # Only holds hrefs
     for link in old_links:
@@ -24,7 +24,7 @@ def compare_posts():
     print(old_links_list)
 
     # Links in neue Datei rausholen
-    new_tree = html.parse(new_html_url)
+    new_tree = html.parse(new_html_path)
     new_links = new_tree.xpath("//div[@id='react-root']//article//a")  # Contains complete <a> Tags
     new_links_list = []  # Only holds hrefs
     for link in new_links:
@@ -40,22 +40,21 @@ def compare_posts():
             print(etree.tostring(parent))
             print("New link: " + new_links_list[index])
 
-    open("aaa.html", "wb").write(etree.tostring(new_tree, method="html"))
+    open(new_html_path, "wb").write(etree.tostring(new_tree, method="html"))
 
 
-def compare_followers_following(oldHtml, newHtml):
-    #Wir brauchen einheitliche Namen fuer die .html Dateien
-    #Ich war der Meinung er meinte wir sollen "old.html" und "new.html" verwenden
-    oldDoc = etree.HTML(oldHtml)
-    newDoc = etree.HTML(newHtml)
+def compare_followers_following(url):
+
+    old_html = etree.HTML(open(get_old_html_path(url), "r").read())
+    new_html = etree.HTML(open(get_new_html_path(url), "r").read())
                 
     #Followers bzw. Abonneten
-    oldElements = list(oldDoc.iter("a"))
+    oldElements = list(old_html.iter("a"))
     oldFollowersElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/followers/"][0]
     oldSubElement = list(oldFollowersElement.iter())
     oldFollowersCnt = [element.attrib['title'] for element in oldSubElement if element.tag == "span"][0]
 
-    newElements = list(newDoc.iter("a"))
+    newElements = list(new_html.iter("a"))
     newFollowersElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/followers/"][0]
     newSubElement = list(newFollowersElement.iter())
     newFollowersCnt = [element.attrib['title'] for element in newSubElement if element.tag == "span"][0]
@@ -73,12 +72,12 @@ def compare_followers_following(oldHtml, newHtml):
     #Following bzw. Abonnierte
     #Komischerweise hat der Container kein 'title' Wert wie er bei den Abonnenten existiert
     #Wir muessen deshalb aus dem 'text' direkt lesen
-    oldElements = list(oldDoc.iter("a"))
+    oldElements = list(old_html.iter("a"))
     oldFollowingElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/following/"][0]
     oldSubElement = list(oldFollowingElement.iter())
     oldFollowingCnt = [element.text for element in oldSubElement if element.tag == "span"][0]
 
-    newElements = list(newDoc.iter("a"))
+    newElements = list(new_html.iter("a"))
     newFollowingElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/following/"][0]
     newSubElement = list(newFollowingElement.iter())
     newFollowingCnt = [element.text for element in newSubElement if element.tag == "span"][0]
@@ -86,21 +85,15 @@ def compare_followers_following(oldHtml, newHtml):
     if oldFollowingCnt != newFollowingCnt:
         newFollowingElement.attrib['style'] = "border: 4px solid green;"
     
-    outputHtml = etree.tostring(newDoc, method="html")
-
-    return outputHtml
+    open(get_new_html_path(url), "wb").write(etree.tostring(new_html, method="html"))
 
 
-def compare_igtv():
-    old_html_url = "instagram/data/files/polizei.hannover/igtv/old.html"
-    new_html_url = "instagram/data/files/polizei.hannover/igtv/new.html"
-    # TODO Zur richtige Verzeichnis wechseln, muss noch geaendert werden
-    os.chdir("..")
-    os.chdir("..")
-    os.chdir("..")
+def compare_igtv(url):
+    old_html_path = get_old_html_path(url)
+    new_html_path = get_new_html_path(url)
 
     # Getting all links in old igtv html file
-    tree = html.parse(old_html_url)
+    tree = html.parse(old_html_path)
     old_links = tree.xpath("//div[@id='react-root']//main//div//a")  # Contains complete <a> Tags
 
     old_igtv_a_list = []
@@ -115,7 +108,7 @@ def compare_igtv():
         old_igtv_href_list.append(href.attrib["href"])
 
     # Getting all links in new igtv html file
-    new_tree = html.parse(new_html_url)
+    new_tree = html.parse(new_html_path)
     new_links = new_tree.xpath("//div[@id='react-root']//main//div//a")  # Contains complete <a> Tags
     # print(etree.tostring(new_divs[1]))
 
@@ -139,7 +132,7 @@ def compare_igtv():
             print("New link: ")
             print(etree.tostring(new_igtv_a_list[index]))
 
-    open("igtv.html", "wb").write(etree.tostring(new_tree, method="html"))
+    open(new_html_path, "wb").write(etree.tostring(new_tree, method="html"))
 
 
 def compare_hover_items(new_file, old_file):
@@ -199,4 +192,3 @@ def compare_hover_items(new_file, old_file):
     new_posts.append(etree.fromstring(css))
     open("hover_test.html", "wb").write(etree.tostring(new_tree, method="html"))
 
-compare_hover_items("/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/testing/hover/posts_new.html", "/Users/timo/Documents/Uni/SP/EP-Instagramm-1/instagram/testing/hover/posts_old.html")
