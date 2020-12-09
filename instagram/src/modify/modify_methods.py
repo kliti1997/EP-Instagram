@@ -185,7 +185,7 @@ def compare_hover_items(new_file, old_file):
     # Posts miteinander vergleichen
     for new_post in new_posts:
         for old_post in old_posts:
-            if new_post.attrib["href"] == old_post.attrib["href"] and new_post.attrib["href"] == "https://www.instagram.com/p/CIAw8Z2KgBt/":
+            if new_post.attrib["href"] == old_post.attrib["href"] and new_post.attrib["href"] == "https://www.instagram.com/p/CIAw8Z2KgBt/": #TODO and entfernen
                 if new_post.xpath(".//span[@aria-label='Video']"): # Falls es ein Video ist, vergleiche view-count.
                     if new_post.attrib["data-view-count"] != old_post.attrib["data-view-count"] or new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
                         new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-view-count"], icon_likes_views="coreSpritePlayIconSmall", comments = new_post.attrib["data-comment"])))
