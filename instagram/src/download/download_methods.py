@@ -95,11 +95,11 @@ def convert_links(source):
 def save_html(url):
     """
     Saves the html content of a website and saves it in a file.
-    Depending on the input, the function will either save the content of the "posts" Instagram subdirectory,
+    Depending on the input, the function will either save the content of the "posts" intsagram subdirectory,
     the "tagged" subdirectory, or the "IGTV" subdirectory.
 
     Args:
-        url (dict): Contains the url to the website that has to be saved, as well as the type in terms of
+        url (dict): Containts the url to the website that has to be saved, as well as the type in terms of
                     "posts", "tagged", or "IGTV". It also contains a path where the generated files are going
                     to be saved.
     """
@@ -109,13 +109,11 @@ def save_html(url):
 
     content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
     initial = driver.execute_script("return window._sharedData;")
-    print(initial.keys())
     profile = ProfileData(initial_data=initial, requests=driver.requests)
     pre_download(url)
-    print(profile)
+
     with open(os.path.join(monitoring_folder, url["monitoring_folder"], "new.html"), "w") as f:
         f.write(content)
-
 
 
 def random_sleep(max_time):
@@ -139,7 +137,7 @@ def pre_download(url):
     If there is already an old file, it will be deleted.
 
     Args:
-        url (dict): Contains the path of the monitoring folder and one of the types
+        url (dict): Containts the path of the monitoring folder and one of the types
                     "posts", "tagged", or "IGTV" to determine the file path.
     """
     folder = os.path.join(monitoring_folder, url["monitoring_folder"])

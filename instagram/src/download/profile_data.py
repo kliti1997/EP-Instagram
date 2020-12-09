@@ -5,17 +5,19 @@ class ProfileData:
     #TODO: Exceptions fangen, aufhübschen
     """
     Class to wrap all profile data.
-    Nodes contain:
+    """
+    num_followers = -1
+    num_following = -1
+    story_timestamp = -1
+    nodes = []  # Beinhaltet Posts, IGTV's, Markiert
+    """
+    Node structure:
       type (str): 'image' or 'video'
       id (str): alphabetical URL id
       comments (int): number of comments
       likes (int): number of likes
       view_count (int): number of views (for videos only)
     """
-    num_followers = -1
-    num_following = -1
-    story_timestamp = -1
-    nodes = []  # Beinhaltet Posts, IGTV's, Markiert
 
     def __init__(self, initial_data, requests):
         self._initial = initial_data
@@ -46,6 +48,7 @@ class ProfileData:
                     'id': edge["node"]["shortcode"],
                     'comments': edge["node"]["edge_liked_by"]["count"],
                     'likes': edge["node"]["edge_liked_by"]["count"]}
+
             if edge["node"]["is_video"]:
                 node.update({'view_count': edge["node"]["video_view_count"]})
             self.nodes.append(node)
