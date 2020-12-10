@@ -13,6 +13,7 @@ from selenium import webdriver
 from pprint import pprint
 from lxml import etree, html
 from pathlib import Path
+from .profile_data import ProfileData
 import json
 
 """
@@ -41,16 +42,13 @@ def login(username, password):
     if driver.find_elements_by_xpath("//*[contains(., 'Log In') or contains(., 'Anmelden')]"):
         driver.find_element_by_name("username").send_keys(username)
         driver.find_element_by_name("password").send_keys(password)
-        if driver.find_elements_by_xpath("//*[text()='Log In']"):
-            driver.find_element_by_xpath("//*[text()='Log In']").click()
-        elif driver.find_elements_by_xpath("//*[text()='Anmelden']"):
-            driver.find_element_by_xpath("//*[text()='Anmelden']").click()
+        if driver.find_elements_by_xpath("//*[text()='Log In' or text()='Anmelden']"):
+            driver.find_element_by_xpath("//*[text()='Log In' or text()='Anmelden']").click()
         random_sleep(10)
 
-        if driver.find_elements_by_xpath("//*[text()='Save Info']"):
-            driver.find_element_by_xpath("//*[text()='Save Info']").click()
-        elif driver.find_elements_by_xpath("//*[text()='Informationen speichern']"):
-            driver.find_element_by_xpath("//*[text()='Informationen speichern']").click()
+    if "onetap" in driver.current_url:  # "Save your Login?"-Page
+        if driver.find_elements_by_xpath("//*[text()='Save Info' or text()='Informationen speichern']"):
+            driver.find_element_by_xpath("//*[text()='Save Info' or text()='Informationen speichern']").click()
 
     random_sleep(10)
 
@@ -109,30 +107,15 @@ def save_html(url):
 
     driver.get(get_href(url))
     random_sleep(10)
-    latest_story_timestamp()
 
+    content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
+    initial = driver.execute_script("return window._sharedData;")
+    profile = ProfileData(initial_data=initial, requests=driver.requests)
     pre_download(url)
 
     content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
     with open(get_new_html_path(url), "w") as f:
         f.write(content)
-
-
-def latest_story_timestamp() -> int:
-    """
-    Checks if an active story exists.
-
-    Returns:
-        int: timestamp of last story, 0 if none exists
-    """
-    for request in driver.requests:
-        if request.response:
-            if 'graphql' in request.url:
-                reply_content = request.response.body.decode('utf-8')
-                if 'latest_reel_media' in reply_content and 'edge_suggested_users' not in reply_content:  # Identifying correct request
-                    reply_json = json.loads(reply_content)
-                    return reply_json['data']['user']['reel']['latest_reel_media']
-    return 0
 
 
 def random_sleep(max_time):

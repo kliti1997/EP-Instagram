@@ -85,3 +85,4 @@ Thumbs.db
 *.geckodriver.log
 
 instagram/data/profile/*
+instagram/data/files/*
