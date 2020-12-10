@@ -19,9 +19,6 @@ def compare_posts(url):
     old_links_list = []  # Only holds hrefs
     for link in old_links:
         old_links_list.append(link.attrib["href"])
-    print("old links: ")
-    old_links_list[0] = "test"  # Erkennungstest, danach zu löschen TODO
-    print(old_links_list)
 
     # Links in neue Datei rausholen
     new_tree = html.parse(new_html_path)
@@ -29,16 +26,13 @@ def compare_posts(url):
     new_links_list = []  # Only holds hrefs
     for link in new_links:
         new_links_list.append(link.attrib["href"])
-    print("new links: ")
-    print(new_links_list)
+
 
     # Links vergleichen
     for index in range(len(new_links_list)):
         if new_links_list[index] not in old_links_list:
             parent = new_links[index].getparent()
             parent.attrib["style"] = "border: 5px solid green;"
-            print(etree.tostring(parent))
-            print("New link: " + new_links_list[index])
 
     open(new_html_path, "wb").write(etree.tostring(new_tree, method="html"))
 
@@ -50,12 +44,13 @@ def compare_followers_following(url):
     #Followers bzw. Abonneten
     oldElements = list(old_html.iter("a"))
 
-    oldFollowersElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/followers/"][0]
+    oldFollowersElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/" + url["id"] + "/followers/"][0]
     oldSubElement = list(oldFollowersElement.iter())
     oldFollowersCnt = [element.attrib['title'] for element in oldSubElement if element.tag == "span"][0]
 
+
     newElements = list(new_html.iter("a"))
-    newFollowersElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/followers/"][0]
+    newFollowersElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/" + url["id"] +  "/followers/"][0]
     newSubElement = list(newFollowersElement.iter())
     newFollowersCnt = [element.attrib['title'] for element in newSubElement if element.tag == "span"][0]
             
@@ -73,12 +68,12 @@ def compare_followers_following(url):
     #Komischerweise hat der Container kein 'title' Wert wie er bei den Abonnenten existiert
     #Wir muessen deshalb aus dem 'text' direkt lesen
     oldElements = list(old_html.iter("a"))
-    oldFollowingElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/following/"][0]
+    oldFollowingElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/" + url["id"] + "/following/"][0]
     oldSubElement = list(oldFollowingElement.iter())
     oldFollowingCnt = [element.text for element in oldSubElement if element.tag == "span"][0]
 
     newElements = list(new_html.iter("a"))
-    newFollowingElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/following/"][0]
+    newFollowingElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/" + url["id"] + "/following/"][0]
     newSubElement = list(newFollowingElement.iter())
     newFollowingCnt = [element.text for element in newSubElement if element.tag == "span"][0]
                 
@@ -129,8 +124,7 @@ def compare_igtv(url):
     for index in range(len(new_igtv_href_list)):
         if new_igtv_href_list[index] not in old_igtv_href_list:
             new_igtv_a_list[index].attrib["style"] = "border: 5px solid green;"
-            print("New link: ")
-            print(etree.tostring(new_igtv_a_list[index]))
+
 
     open(new_html_path, "wb").write(etree.tostring(new_tree, method="html"))
 
@@ -150,9 +144,11 @@ def compare_hover_items(url):
     """
     old_tree = html.parse(get_old_html_path(url))
     new_tree = html.parse(get_new_html_path(url))
+
     new_posts = new_tree.xpath("//div[@id='react-root']//article//a")
     old_posts = old_tree.xpath("//div[@id='react-root']//article//a")
     head = new_tree.xpath("//head")
+
     css = """ <style>
                   .qn-0x{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;bottom:0;left:0;position:absolute;right:0;top:0}
                   .Ln-UN{-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;color:#fff;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:16px;font-weight:600;height:100%;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;width:100%}
@@ -179,6 +175,7 @@ def compare_hover_items(url):
     for new_post in new_posts:
         for old_post in old_posts:
             if new_post.attrib["href"] == old_post.attrib["href"]:
+
                 if new_post.xpath(".//span[@aria-label='Video']") or url["type"] == "igtv": # Falls es ein Video ist, vergleiche view-count.
                     to_cmp = "data-view-count"
                 else:
