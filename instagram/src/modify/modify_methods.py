@@ -197,7 +197,7 @@ def compare_hover_items(url):
                         )
                     )
                 elif new_post.attrib[to_cmp] != old_post.attrib[to_cmp]:
-                    new_post.append( # Nur die views haben sich verändert.
+                    new_post.append( # Nur die views, oder likes, haben sich verändert.
                         etree.fromstring(
                             hover.format(likes_views = new_post.attrib[to_cmp],
                             icon_likes_views="coreSpritePlayIconSmall",
@@ -206,7 +206,7 @@ def compare_hover_items(url):
                             style_comments = "")
                         )
                     )    
-                elif new_post.attrib[to_cmp] != old_post.attrib[to_cmp]:
+                elif new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
                     new_post.append( # Nur die comments haben sich verändert.
                         etree.fromstring(
                             hover.format(likes_views = new_post.attrib[to_cmp],
