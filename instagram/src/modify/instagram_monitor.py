@@ -30,9 +30,7 @@ class InstagramMonitor:
                 compare_igtv(url)
             
 
-            hoverdir = "./instagram/testing/hover/"
-
-            compare_hover_items(hoverdir+"posts_new.html", hoverdir+"posts_old.html")
+            #compare_hover_items(url)
 
 """ Circular import
 if __name__ == "__main__":

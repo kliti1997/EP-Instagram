@@ -44,12 +44,12 @@ def compare_posts(url):
 
 
 def compare_followers_following(url):
+    old_html = html.parse(get_old_html_path(url))
+    new_html = html.parse(get_new_html_path(url))
 
-    old_html = etree.HTML(open(get_old_html_path(url), "r").read())
-    new_html = etree.HTML(open(get_new_html_path(url), "r").read())
-                
     #Followers bzw. Abonneten
     oldElements = list(old_html.iter("a"))
+
     oldFollowersElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/polizei.hannover/followers/"][0]
     oldSubElement = list(oldFollowersElement.iter())
     oldFollowersCnt = [element.attrib['title'] for element in oldSubElement if element.tag == "span"][0]
