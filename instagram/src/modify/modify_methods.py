@@ -160,8 +160,6 @@ def compare_hover_items(url):
                   .-V_eO:last-child{margin-right:0}
               </style>"""
 
-    #TODO Im style-tag ein Format einfügen, so dass der Rahmen beim jeweligen Element 
-    #nur dann hinzugefügt wird, wenn etwas verändert wurde.
     hover = """ <div class="qn-0x" style="background-color: rgba(0, 0, 0, 0.3);">
                     <ul class="Ln-UN">
                         <li class="-V_eO" {style_likes_views}>
@@ -181,7 +179,7 @@ def compare_hover_items(url):
     for new_post in new_posts:
         for old_post in old_posts:
             if new_post.attrib["href"] == old_post.attrib["href"]:
-                if new_post.xpath(".//span[@aria-label='Video']"): # Falls es ein Video ist, vergleiche view-count.
+                if new_post.xpath(".//span[@aria-label='Video']") or url["type"] == "igtv": # Falls es ein Video ist, vergleiche view-count.
                     to_cmp = "data-view-count"
                 else:
                     to_cmp = "data-liked-by"
