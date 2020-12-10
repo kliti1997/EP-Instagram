@@ -162,7 +162,7 @@ def compare_hover_items(url):
 
     #TODO Im style-tag ein Format einfügen, so dass der Rahmen beim jeweligen Element 
     #nur dann hinzugefügt wird, wenn etwas verändert wurde.
-    hover = """ <div class="qn-0x" background-color: rgba(0, 0, 0, 0.3);>
+    hover = """ <div class="qn-0x" style="background-color: rgba(0, 0, 0, 0.3);">
                     <ul class="Ln-UN">
                         <li class="-V_eO" {style_likes_views}>
                             <span>{likes_views}</span>
