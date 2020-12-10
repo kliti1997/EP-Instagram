@@ -162,30 +162,60 @@ def compare_hover_items(url):
 
     #TODO Im style-tag ein Format einfügen, so dass der Rahmen beim jeweligen Element 
     #nur dann hinzugefügt wird, wenn etwas verändert wurde.
-    hover = """ <div class="qn-0x">
+    hover = """ <div class="qn-0x" background-color: rgba(0, 0, 0, 0.3);>
                     <ul class="Ln-UN">
-                        <li class="-V_eO" style="border: 5px solid green;">
+                        <li class="-V_eO" {style_likes_views}>
                             <span>{likes_views}</span>
                             <span class="_1P1TY {icon_likes_views}"></span>
                         </li>
-                        <li class="-V_eO" style="border: 5px solid green;">
+                        <li class="-V_eO" {style_comments}>
                             <span>{comments}</span>
                             <span class="_1P1TY coreSpriteSpeechBubbleSmall"></span>
                         </li>
                     </ul>
                 </div>"""
 
+    add_border = "style='border: 5px solid green;'"
+
     # Posts miteinander vergleichen
     for new_post in new_posts:
         for old_post in old_posts:
             if new_post.attrib["href"] == old_post.attrib["href"] and new_post.attrib["href"] == "https://www.instagram.com/p/CIAw8Z2KgBt/": #TODO and entfernen
                 if new_post.xpath(".//span[@aria-label='Video']"): # Falls es ein Video ist, vergleiche view-count.
-                    if new_post.attrib["data-view-count"] != old_post.attrib["data-view-count"] or new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
-                        new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-view-count"], icon_likes_views="coreSpritePlayIconSmall", comments = new_post.attrib["data-comment"])))
-                else: # Sonst werden die Likes verglichen
-                    if new_post.attrib["data-liked-by"] != old_post.attrib["data-liked-by"] or new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
-                        new_post.append(etree.fromstring(hover.format(likes_views = new_post.attrib["data-liked-by"], icon_likes_views="coreSpriteHeartSmall", comments = new_post.attrib["data-comment"])))
-                
+                    to_cmp = "data-view-count"
+                else:
+                    to_cmp = "data-liked-by"
+
+                if new_post.attrib[to_cmp] != old_post.attrib[to_cmp] and new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
+                    new_post.append( # Views und comments haben sich verändert.
+                        etree.fromstring(
+                            hover.format(likes_views = new_post.attrib[to_cmp],
+                            icon_likes_views="coreSpritePlayIconSmall",
+                            comments = new_post.attrib["data-comment"],
+                            style_likes_views = add_border,
+                            style_comments = add_border)
+                        )
+                    )
+                elif new_post.attrib[to_cmp] != old_post.attrib[to_cmp]:
+                    new_post.append( # Nur die views haben sich verändert.
+                        etree.fromstring(
+                            hover.format(likes_views = new_post.attrib[to_cmp],
+                            icon_likes_views="coreSpritePlayIconSmall",
+                            comments = new_post.attrib["data-comment"],
+                            style_likes_views = add_border,
+                            style_comments = "")
+                        )
+                    )    
+                elif new_post.attrib[to_cmp] != old_post.attrib[to_cmp]:
+                    new_post.append( # Nur die comments haben sich verändert.
+                        etree.fromstring(
+                            hover.format(likes_views = new_post.attrib[to_cmp],
+                            icon_likes_views="coreSpritePlayIconSmall",
+                            comments = new_post.attrib["data-comment"],
+                            style_likes_views = "",
+                            style_comments = add_border)
+                        )
+                    )
 
 
     #TODO css im header einfügen
