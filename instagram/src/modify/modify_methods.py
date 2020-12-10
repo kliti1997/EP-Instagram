@@ -135,7 +135,7 @@ def compare_igtv(url):
     open(new_html_path, "wb").write(etree.tostring(new_tree, method="html"))
 
 
-def compare_hover_items(new_file, old_file):
+def compare_hover_items(url):
     """
     Benötigte html-Attribute:
     - data-typename (GraphSidecar, GraphImage, GraphVideo)
@@ -148,8 +148,8 @@ def compare_hover_items(new_file, old_file):
     - data-view-count (GraphVideo)
     - data-comment (GraphSidecar, GraphImage, GraphVideo)
     """
-    old_tree = html.parse(old_file)
-    new_tree = html.parse(new_file)
+    old_tree = html.parse(get_old_html_path(url))
+    new_tree = html.parse(get_new_html_path(url))
     new_posts = new_tree.xpath("//div[@id='react-root']//article//a")
     old_posts = old_tree.xpath("//div[@id='react-root']//article//a")
 
