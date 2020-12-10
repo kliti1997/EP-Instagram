@@ -41,19 +41,19 @@ def compare_followers_following(url):
     old_html = html.parse(get_old_html_path(url))
     new_html = html.parse(get_new_html_path(url))
 
-    #Followers bzw. Abonneten
-    oldElements = list(old_html.iter("a"))
+    oldFollowersElement = list(old_html.xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/followers/']")[0].iter())
+    #oldSubElement = list(oldFollowersElement.iter())
+    oldFollowersCnt = [element.attrib['title'] for element in oldFollowersElement if element.tag == "span"][0]
 
-    oldFollowersElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/" + url["id"] + "/followers/"][0]
-    oldSubElement = list(oldFollowersElement.iter())
-    oldFollowersCnt = [element.attrib['title'] for element in oldSubElement if element.tag == "span"][0]
+    print("Debug")
+    print(oldFollowersElement)
+    #print(oldSubElement)
 
-
-    newElements = list(new_html.iter("a"))
-    newFollowersElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/" + url["id"] +  "/followers/"][0]
+    newFollowersElement = new_html.xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/followers/']")[0]
     newSubElement = list(newFollowersElement.iter())
     newFollowersCnt = [element.attrib['title'] for element in newSubElement if element.tag == "span"][0]
-            
+
+
     #Ungefaehre Follower Anzahl mit genauer Anzahl ersetzen
     #Geht bestimmt schoener, allerdings weiss ich leider aktuell nicht wie    
     for element in newSubElement:

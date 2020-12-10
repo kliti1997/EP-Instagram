@@ -8,8 +8,8 @@ OLD = 1
 class InstagramObjects:
     def __init__(self, url):
             self.set_trees(self, url)
-            self.set_followers(self)
-            self.set_following(self)
+            self.set_followers(self, url)
+            self.set_following(self, url)
             self.set_posts(self)
             self.set_igtvs(self)
             self.set_tags(self)
@@ -37,13 +37,17 @@ class InstagramObjects:
         old_tree = html.parse(get_old_html_path(url))
         self.trees = (new_tree, old_tree)
 
-    def set_followers(self):
-        #TODO
-        self.followers = (0, 0)
+    def set_followers(self, url):
+        newFollowersElement = list(self.trees[NEW].xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/followers/']")[0].iter())
+        oldFollowersElement = list(self.trees[OLD].xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/followers/']")[0].iter())
 
-    def set_following(self):
-        #TODO
-        self.following = (0, 0)
+        self.followers = (newFollowersElement, oldFollowersElement)
+
+    def set_following(self, url):
+        newFollowingElement = list(self.trees[NEW].xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/following/']")[0].iter())
+        oldFollowingElement = list(self.trees[OLD].xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/followers/']")[0].iter())
+
+        self.following = (newFollowingElement, oldFollowingElement)
 
     def set_posts(self):
         new_posts = self.trees[NEW].xpath("//div[@id='react-root']//article//a")
