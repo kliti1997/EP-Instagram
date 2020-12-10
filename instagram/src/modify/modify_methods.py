@@ -152,7 +152,7 @@ def compare_hover_items(url):
     new_tree = html.parse(get_new_html_path(url))
     new_posts = new_tree.xpath("//div[@id='react-root']//article//a")
     old_posts = old_tree.xpath("//div[@id='react-root']//article//a")
-
+    head = new_tree.xpath("//head")
     css = """ <style>
                   .qn-0x{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;bottom:0;left:0;position:absolute;right:0;top:0}
                   .Ln-UN{-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;color:#fff;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:16px;font-weight:600;height:100%;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;width:100%}
@@ -217,8 +217,5 @@ def compare_hover_items(url):
                         )
                     )
 
-
-    #TODO css im header einfügen
-    new_posts.append(etree.fromstring(css))
+    head[0].append(etree.fromstring(css))
     open("hover_test.html", "wb").write(etree.tostring(new_tree, method="html"))
-
