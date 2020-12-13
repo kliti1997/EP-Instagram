@@ -12,6 +12,8 @@ class InstagramStore:
             print("--------------------------------------------\n")
 
             try:
+                pre_download(url)
+                random_sleep(5)
                 save_html(url)
             except Exception as e:
                 eType = e.__class__.__name__

@@ -23,5 +23,5 @@ monitoring_map["instagram"].append(url1)
 monitoring_map["instagram"].append(url2)
 monitoring_map["instagram"].append(url3)
 
-#InstagramStore(monitoring_map)
+InstagramStore(monitoring_map)
 InstagramMonitor(monitoring_map)

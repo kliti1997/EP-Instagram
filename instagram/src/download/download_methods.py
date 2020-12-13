@@ -34,34 +34,27 @@ def login(username, password):
     """
     driver.get(base_url)
     random_sleep(5)
-    if driver.find_elements_by_xpath("//*[contains(., 'Cookies') or contains(., 'cookies')]"):
-        cookie_consent()
+    #Accepts the cookie banner, if it exists.
+    if driver.find_elements_by_xpath("//*[text()='Akzeptieren']"):
+        driver.find_element_by_xpath("//*[text()='Akzeptieren']").click()
         random_sleep(5)
 
     # Log into account only if not already logged in.
-    if driver.find_elements_by_xpath("//*[contains(., 'Log In') or contains(., 'Anmelden')]"):
+    if driver.find_elements_by_xpath("//*[text()='Anmelden']"):
         driver.find_element_by_name("username").send_keys(username)
         driver.find_element_by_name("password").send_keys(password)
-        if driver.find_elements_by_xpath("//*[text()='Log In' or text()='Anmelden']"):
-            driver.find_element_by_xpath("//*[text()='Log In' or text()='Anmelden']").click()
+        driver.find_element_by_xpath("//*[text()='Anmelden']").click()
         random_sleep(10)
 
-    if "onetap" in driver.current_url:  # "Save your Login?"-Page
-        if driver.find_elements_by_xpath("//*[text()='Save Info' or text()='Informationen speichern']"):
-            driver.find_element_by_xpath("//*[text()='Save Info' or text()='Informationen speichern']").click()
-
-    random_sleep(10)
-
-
-def cookie_consent():
-    """
-    Accepts the cookie banner, if it exists. Otherwise the downloaded html-files
-    are obfuscated by the banner.
-    """
-    if driver.find_elements_by_xpath("//*[text()='Akzeptieren']"):
-        driver.find_element_by_xpath("//*[text()='Akzeptieren']").click()
-    elif driver.find_elements_by_xpath("//*[text()='Accept']"):
-        driver.find_element_by_xpath("//*[text()='Accept']").click()
+    #Accepts the stay logged in banner, if it exists.
+    if driver.find_elements_by_xpath("//*[text()='Informationen speichern']"):
+        driver.find_element_by_xpath("//*[text()='Informationen speichern']").click()
+        random_sleep(10)
+    
+    #Accepts the cookie banner, if it exists.
+    if driver.find_elements_by_xpath("//*[text()='Jetzt nicht']"):
+        driver.find_element_by_xpath("//*[text()='Jetzt nicht']").click()
+        random_sleep(10)
 
 
 def convert_links(source):
@@ -109,11 +102,9 @@ def save_html(url):
     random_sleep(10)
 
     content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
-    initial = driver.execute_script("return window._sharedData;")
-    profile = ProfileData(initial_data=initial, requests=driver.requests)
-    pre_download(url)
+    #initial = driver.execute_script("return window._sharedData;")
+    #profile = ProfileData(initial_data=initial, requests=driver.requests)
 
-    content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
     with open(get_new_html_path(url), "w") as f:
         f.write(content)
 

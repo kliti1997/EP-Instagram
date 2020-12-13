@@ -19,8 +19,8 @@ class InstagramMonitor:
             print("compare ("+old_html_path+") with ("+new_html_path+")") 
             
             if not pre_modify(url):
-                print("error while compare: "+old_html_path+" or "+new_html_path+"is missing")
-                return
+                print("error while compare: "+old_html_path+" or "+new_html_path+" is missing")
+                continue
             
             compare_followers_following(url)
 
