@@ -33,10 +33,9 @@ print("\n\t************TEST PHASE************")
 for url in monitoring_map["instagram"]:
     folder_path = get_folder_path(url)
     old_html_path = get_old_html_path(url)
-    new_html_path = get_new_html_path(url)
-    old_html_time = os.stat(old_html_path).st_mtime
-    new_html_time = os.stat(new_html_path).st_mtime
+    new_html_path = get_new_html_path(url) 
     now = time.time()
+    file_missing = False
 
 
     print("\nCurrently checking profile: " + url["id"])
@@ -44,35 +43,42 @@ for url in monitoring_map["instagram"]:
 
     if os.path.exists(old_html_path):
         print("✔   old.html exists")
+        old_html_time = os.stat(old_html_path).st_mtime
         tests += 1
         succeed += 1
     else:
         print("❌   old.html doesn't exists")
+        file_missing = True
         tests += 1
 
     if os.path.exists(new_html_path):
         print("✔   new.html exists")
+        new_html_time = os.stat(new_html_path).st_mtime
         tests += 1
         succeed += 1
     else:
         print("❌   new.html doesn't exists")
+        file_missing = True
         tests += 1
 
-    if old_html_time < new_html_time:
-        print("✔   new.html is newer than old.html")
-        tests += 1
-        succeed += 1
-    else:
-        print("❌   new.html is older than old.html")
-        tests += 1
+    if not file_missing:
+        if old_html_time < new_html_time:
+            print("✔   new.html is newer than old.html")
+            tests += 1
+            succeed += 1
+        else:
+            print("❌   new.html is older than old.html")
+            tests += 1
 
-    if new_html_time > time.time() - 5 * 60:
-        print("✔   new.html is not older than 5 minutes")
-        tests += 1
-        succeed += 1
+        if new_html_time > time.time() - 5 * 60:
+            print("✔   new.html is not older than 5 minutes")
+            tests += 1
+            succeed += 1
+        else:
+            print("❌   new.html is older than 5 minutes")
+            tests += 1
     else:
-        print("❌   new.html is older than 5 minutes")
-        tests += 1
+        print("❌   some tests were skipped, because new.html or old.html is missing.")
 
 print("\nTest finished. Score: " + str(succeed) + "/" + str(tests))
 if succeed == tests:
