@@ -82,7 +82,7 @@ for url in monitoring_map["instagram"]:
 
 print("\nTest finished. Score: " + str(succeed) + "/" + str(tests))
 if succeed == tests:
-    print("✅   All tests succeed\n")
+    print("✅   All tests succeed. Please manually check html too.\n")
 else:
     print("❌   Some tests not succeed\n")
 

@@ -32,7 +32,7 @@ def compare_posts(url):
     for index in range(len(new_links_list)):
         if new_links_list[index] not in old_links_list:
             parent = new_links[index].getparent()
-            parent.attrib["style"] = "border: 5px solid green;"
+            parent.attrib["style"] = "border: 4px solid green;"
 
     open(new_html_path, "wb").write(etree.tostring(new_tree, method="html"))
 
@@ -123,7 +123,7 @@ def compare_igtv(url):
 
     for index in range(len(new_igtv_href_list)):
         if new_igtv_href_list[index] not in old_igtv_href_list:
-            new_igtv_a_list[index].attrib["style"] = "border: 5px solid green;"
+            new_igtv_a_list[index].attrib["style"] = "border: 4px solid green;"
 
 
     open(new_html_path, "wb").write(etree.tostring(new_tree, method="html"))
@@ -169,7 +169,7 @@ def compare_hover_items(url):
                     </ul>
                 </div>"""
 
-    add_border = "style='border: 5px solid green;'"
+    add_border = "style='border: 4px solid green;'"
 
     # Posts miteinander vergleichen
     for new_post in new_posts:
