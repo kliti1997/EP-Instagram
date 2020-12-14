@@ -31,9 +31,7 @@ def login(username, password):
     Args:
         username (str): The username which is used to log in.
         password (str): The password which is used to log in.
-    """
-    driver.get(base_url)
-    random_sleep(5)
+    """    
     #Accepts the cookie banner, if it exists.
     if driver.find_elements_by_xpath("//*[text()='Akzeptieren']"):
         driver.find_element_by_xpath("//*[text()='Akzeptieren']").click()
