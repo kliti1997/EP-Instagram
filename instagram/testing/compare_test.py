@@ -5,6 +5,8 @@ from instagram.src.modify.instagram_monitor import InstagramMonitor
 from instagram.data.config import *
 from instagram.src.helper import *
 
+driver.quit()
+
 monitoring_map = defaultdict(list)
 url1 = {"id": "polizei.hannover",
         "href": "https://www.instagram.com/polizei.hannover/",
