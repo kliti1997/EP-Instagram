@@ -214,3 +214,29 @@ def compare_hover_items(url):
 
     head[0].append(etree.fromstring(css))
     open(get_new_html_path(url), "wb").write(etree.tostring(new_tree, method="html"))
+
+def compare_tagged(url):
+    old_html_path = get_old_html_path(url)
+    new_html_path = get_new_html_path(url)
+
+    # Links in alte Datei rausholen
+    tree = html.parse(old_html_path)
+    old_links = tree.xpath("//div[@id='react-root']//article//a")  # Contains complete <a> Tags
+    old_links_list = []  # Only holds hrefs
+    for link in old_links:
+        old_links_list.append(link.attrib["href"])
+
+     # Links in neue Datei rausholen
+    new_tree = html.parse(new_html_path)
+    new_links = new_tree.xpath("//div[@id='react-root']//article//a")  # Contains complete <a> Tags
+    new_links_list = []  # Only holds hrefs
+    for link in new_links:
+        new_links_list.append(link.attrib["href"])
+
+    # Links vergleichen
+    for index in range(len(new_links_list)):
+        if new_links_list[index] not in old_links_list:
+            parent = new_links[index].getparent()
+            parent.attrib["style"] = "border: 4px solid green;"
+
+    open(new_html_path, "wb").write(etree.tostring(new_tree, method="html"))
