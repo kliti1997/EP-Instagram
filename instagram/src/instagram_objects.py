@@ -5,14 +5,22 @@ from lxml import etree, html
 NEW = 0
 OLD = 1
 
-class InstagramObjects:
+
+class InstagramObject:
+    trees = ()
+    followers = ()
+    following = ()
+    posts = ()
+    igtvs = ()
+    tags = ()
+
     def __init__(self, url):
-            self.set_trees(self, url)
-            self.set_followers(self, url)
-            self.set_following(self, url)
-            self.set_posts(self)
-            self.set_igtvs(self)
-            self.set_tags(self)
+        self.set_trees(self, url)
+        self.set_followers(self, url)
+        self.set_following(self, url)
+        self.set_posts(self)
+        self.set_igtvs(self)
+        self.set_tags(self)
 
     def get_trees(self):
         return self.trees
@@ -38,14 +46,18 @@ class InstagramObjects:
         self.trees = (new_tree, old_tree)
 
     def set_followers(self, url):
-        new_followers = list(self.trees[NEW].xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/followers/']")[0].iter())
-        old_followers = list(self.trees[OLD].xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/followers/']")[0].iter())
+        new_followers = list(
+            self.trees[NEW].xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/followers/']")[0].iter())
+        old_followers = list(
+            self.trees[OLD].xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/followers/']")[0].iter())
 
         self.followers = (new_followers, old_followers)
 
     def set_following(self, url):
-        new_following = list(self.trees[NEW].xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/following/']")[0].iter())
-        old_following = list(self.trees[OLD].xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/followers/']")[0].iter())
+        new_following = list(
+            self.trees[NEW].xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/following/']")[0].iter())
+        old_following = list(
+            self.trees[OLD].xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/followers/']")[0].iter())
 
         self.following = (new_following, old_following)
 
@@ -60,5 +72,5 @@ class InstagramObjects:
         self.igtvs = (new_igtvs, old_igtvs)
 
     def set_tags(self):
-        #TODO
+        # TODO
         self.tags = (0, 0)
