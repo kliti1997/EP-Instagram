@@ -2916,3 +2916,5 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 1607643528803	Marionette	WARN	TLS certificate errors will be ignored for this session
 1607643528807	Marionette	INFO	Proxy settings initialised: {"proxyType":"manual","httpProxy":"127.0.0.1:60812","noProxy":[],"sslProxy":"127.0.0.1:60812"}
 1607643529945	Marionette	INFO	Stopped listening on port 60819
+1607644108070	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: error
+1607644177090	Marionette	INFO	Stopped listening on port 60621

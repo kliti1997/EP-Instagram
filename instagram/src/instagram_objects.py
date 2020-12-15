@@ -7,13 +7,6 @@ OLD = 1
 
 
 class InstagramObject:
-    trees = ()
-    followers = ()
-    following = ()
-    posts = ()
-    igtvs = ()
-    tags = ()
-
     def __init__(self, url):
         self.set_trees(self, url)
         self.set_followers(self, url)
