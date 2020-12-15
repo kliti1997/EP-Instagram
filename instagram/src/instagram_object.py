@@ -55,17 +55,17 @@ class InstagramObject:
 
     def __set_followers(self, url):
         self.followers = list(
-            self.trees[self.get_type()].xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/followers/']")[0].iter())
+            self.get_tree().xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/followers/']")[0].iter())
 
     def __set_following(self, url):
         self.following = list(
-            self.trees[self.get_type()].xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/following/']")[0].iter())
+            self.get_tree().xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/following/']")[0].iter())
 
     def __set_posts(self):
-        self.posts = self.trees[self.get_type()].xpath("//div[@id='react-root']//article//a")
+        self.posts = self.get_tree().xpath("//div[@id='react-root']//article//a")
 
     def __set_igtvs(self):
-        self.igtvs = self.trees[self.get_type()].xpath("//div[@id='react-root']//main//div//a")
+        self.igtvs = self.get_tree().xpath("//div[@id='react-root']//main//div//a")
 
     def __set_tags(self):
         # TODO
