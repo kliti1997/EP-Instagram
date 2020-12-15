@@ -6,7 +6,7 @@ NEW = 0
 OLD = 1
 
 
-class InstagramObject:
+class InstagramObjects:
     def __init__(self, url):
         self.set_trees(self, url)
         self.set_followers(self, url)
