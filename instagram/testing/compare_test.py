@@ -70,13 +70,13 @@ for url in monitoring_map["instagram"]:
     borders = border_counter(new_html_path)
     expected_borders = border_counter(expected_new_html)
 
-    print("    Found borders " + str(borders) + " borders after compare.")
-    print("    Expected borders " + str(expected_borders) + ".")
+    print("\t     Found " + str(borders) + " borders after compare.")
+    print("\t     Expected " + str(expected_borders) + " borders.")
 
     if borders == expected_borders:
-        print("[SUCCESS]   Compare test succeed.\n")
+        print("[SUCCESS]    Compare test succeed.\n")
     else:
-        print("[FAILURE]   Compare test not succeed in file: " + new_html_path + "\n")
+        print("[FAILURE]    Compare test not succeed in file: " + new_html_path + "\n")
         tests_passed = False
 
 if tests_passed:

@@ -42,47 +42,47 @@ for url in monitoring_map["instagram"]:
     print("Currently checking type: " + url["type"])
 
     if os.path.exists(old_html_path):
-        print("✔   old.html exists")
+        print("[SUCCESS]   old.html exists")
         old_html_time = os.stat(old_html_path).st_mtime
         tests += 1
         succeed += 1
     else:
-        print("❌   old.html doesn't exists")
+        print("[FAILURE]   old.html doesn't exists")
         file_missing = True
         tests += 1
 
     if os.path.exists(new_html_path):
-        print("✔   new.html exists")
+        print("[SUCCESS]   new.html exists")
         new_html_time = os.stat(new_html_path).st_mtime
         tests += 1
         succeed += 1
     else:
-        print("❌   new.html doesn't exists")
+        print("[FAILURE]   new.html doesn't exists")
         file_missing = True
         tests += 1
 
     if not file_missing:
         if old_html_time < new_html_time:
-            print("✔   new.html is newer than old.html")
+            print("[SUCCESS]   new.html is newer than old.html")
             tests += 1
             succeed += 1
         else:
-            print("❌   new.html is older than old.html")
+            print("[FAILURE]   new.html is older than old.html")
             tests += 1
 
         if new_html_time > time.time() - 5 * 60:
-            print("✔   new.html is not older than 5 minutes")
+            print("[SUCCESS]   new.html is not older than 5 minutes")
             tests += 1
             succeed += 1
         else:
-            print("❌   new.html is older than 5 minutes")
+            print("[FAILURE]   new.html is older than 5 minutes")
             tests += 1
     else:
-        print("❌   some tests were skipped, because new.html or old.html is missing.")
+        print("[FAILURE]   some tests were skipped, because new.html or old.html is missing.")
 
 print("\nTest finished. Score: " + str(succeed) + "/" + str(tests))
 if succeed == tests:
-    print("✅   All tests succeed. Please manually check html too.\n")
+    print("[SUCCESS]   All tests succeed. Please manually check html too.\n")
 else:
-    print("❌   Some tests not succeed\n")
+    print("[FAILURE]   Some tests not succeed\n")
 
