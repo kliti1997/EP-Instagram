@@ -93,6 +93,7 @@ def compare_igtv(url):
 
     old_igtv_a_list = []
     old_igtv_href_list = []
+
     # Saving only elements with tv/ links
     for link in old_links:
         if link.attrib["href"].startswith("https://www.instagram.com/tv/"):
@@ -105,7 +106,6 @@ def compare_igtv(url):
     # Getting all links in new igtv html file
     new_tree = html.parse(new_html_path)
     new_links = new_tree.xpath("//div[@id='react-root']//main//div//a")  # Contains complete <a> Tags
-    # print(etree.tostring(new_divs[1]))
 
     new_igtv_a_list = []
     new_igtv_href_list = []
@@ -118,8 +118,6 @@ def compare_igtv(url):
     # Only saving href attribute for comparison
     for href in new_igtv_a_list:
         new_igtv_href_list.append(href.attrib["href"])
-
-    old_igtv_href_list[0] = "test"  # should be remove afterwards
 
     for index in range(len(new_igtv_href_list)):
         if new_igtv_href_list[index] not in old_igtv_href_list:
