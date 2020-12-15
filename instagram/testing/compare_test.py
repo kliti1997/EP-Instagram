@@ -74,12 +74,12 @@ for url in monitoring_map["instagram"]:
     print("    Expected borders " + str(expected_borders) + ".")
 
     if borders == expected_borders:
-        print("✔   Compare test succeed.\n")
+        print("[SUCCESS]   Compare test succeed.\n")
     else:
-        print("❌   Compare test not succeed in File: " + new_html_path + "\n")
+        print("[FAILURE]   Compare test not succeed in file: " + new_html_path + "\n")
         tests_passed = False
 
 if tests_passed:
-    print("✅   All tests succeed. Please manually check html too.\n")
+    print("[SUCCESS]   All tests succeeded. Please manually check html too.\n")
 else:
-    print("❌   Some tests not succeed\n")
+    print("[FAILURE]   Some tests did not succeed\n")
