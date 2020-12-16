@@ -92,6 +92,12 @@ def add_html_tags(type, ig_obj, prof_data=None) -> None:
             ele.attrib["data-liked-by"] = "0"
             ele.attrib["data-comment"] = "0"
 
+    if type == "tagged":
+        for ele in ig_obj.get_tags():
+            #TODO Dummy Werte ersetzten
+            ele.attrib["data-liked-by"] = "0"
+            ele.attrib["data-comment"] = "0"
+
     elif type == "igtv":
         for igtv in ig_obj.get_igtvs():
             #TODO Dummy Werte ersetzten
