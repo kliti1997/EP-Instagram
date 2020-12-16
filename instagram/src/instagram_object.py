@@ -1,5 +1,5 @@
 from instagram.data.config import *
-from instagram.src.helper import *
+from instagram.src.helper import get_new_html_path
 from lxml import etree, html
 
 NEW = 0
@@ -19,16 +19,12 @@ class InstagramObject:
         self.igtvs = None
         self.tags = None
 
-        self.__set_tree(self, url)
-        self.__set_followers(self, url)
-        self.__set_following(self, url)
-        self.__set_posts(self)
-        self.__set_igtvs(self)
-        self.__set_tags(self)
-
-    def __str__(self) -> str:
-
-        return super().__str__()
+        self.__set_tree(url)
+        self.__set_followers(url)
+        self.__set_following(url)
+        self.__set_posts()
+        self.__set_igtvs()
+        self.__set_tags()
 
     def get_flag(self) -> int:
         """
@@ -47,7 +43,7 @@ class InstagramObject:
         Returns:
             etree: The dom tree of the whole html file.
         """
-        return self.trees
+        return self.tree
 
     def get_followers(self) -> etree:
         """
@@ -120,18 +116,43 @@ class InstagramObject:
 
     def __set_followers(self, url) -> None:
         self.followers = list(
-            self.get_tree().xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/followers/']")[0].iter())
+            self.get_tree().xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/followers/']")[0].iter())[0]
 
     def __set_following(self, url) -> None:
         self.following = list(
-            self.get_tree().xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/following/']")[0].iter())
+            self.get_tree().xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/following/']")[0].iter())[0]
 
     def __set_posts(self) -> None:
         self.posts = self.get_tree().xpath("//div[@id='react-root']//article//a")
 
     def __set_igtvs(self) -> None:
-        self.igtvs = self.get_tree().xpath("//div[@id='react-root']//main//div//a")
+        all_links = self.get_tree().xpath("//div[@id='react-root']//main//div//a")
+        self.igtvs = [igtv_ele for igtv_ele in all_links if igtv_ele.attrib["href"].startswith("https://www.instagram.com/tv/")]
 
     def __set_tags(self) -> None:
         # TODO
         self.tags = (0, 0)
+        
+    """
+    Gibt den Tree, flag, posts, etc. zurück.
+    """
+    def __tostr__(self, attr):
+        ret = b""
+        if attr == "flag":
+            return self.get_flag()
+        elif attr == "tree":
+            return etree.tostring(self.get_tree(), pretty_print=True)
+        elif attr == "followers":
+            return etree.tostring(self.get_followers(), pretty_print=True)
+        elif attr == "following":
+            return etree.tostring(self.get_following(), pretty_print=True)
+        elif attr == "posts":
+            for post in self.get_posts():
+                ret += etree.tostring(post, pretty_print=True)
+        elif attr == "igtvs":
+            for igtv in self.get_igtvs():
+                ret += etree.tostring(igtv, pretty_print=True)
+        elif attr == "tags":
+            for tag in self.get_tags():
+                ret += etree.tostring(tag, pretty_print=True)
+        return ret

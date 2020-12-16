@@ -4,6 +4,7 @@ import re
 from instagram.src.modify.instagram_monitor import InstagramMonitor
 from instagram.data.config import *
 from instagram.src.helper import *
+from instagram.src.instagram_object import InstagramObject
 
 monitoring_map = defaultdict(list)
 url1 = {"id": "polizei.hannover",
@@ -26,7 +27,10 @@ monitoring_map["instagram"].append(url1)
 monitoring_map["instagram"].append(url2)
 monitoring_map["instagram"].append(url3)
 
+test = InstagramObject(url1, "new")
+print(test.__tostr__("posts"))
 
+"""
 print("\n\t************PRE-TEST PHASE************")
 for url in monitoring_map["instagram"]:
     folder_path = get_folder_path(url)
@@ -84,6 +88,5 @@ if tests_passed:
     print("[SUCCESS]   All tests succeeded. Please manually check html too.\n")
 else:
     print("[FAILURE]   Some tests did not succeed\n")
-
+"""
 driver.quit()
-

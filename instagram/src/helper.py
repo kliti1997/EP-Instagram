@@ -1,9 +1,4 @@
 from instagram.data.config import *
-from instagram.src.instagram_object import InstagramObject
-
-# Wird später entfernt. Wird mit den Objekten von Instagram in
-# der download Phase initialisiert.
-ig_objs = None
 
 def get_folder_path(url):
     return os.path.join(monitoring_folder, url["monitoring_folder"])
