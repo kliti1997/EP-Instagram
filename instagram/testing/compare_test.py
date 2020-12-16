@@ -5,8 +5,6 @@ from instagram.src.modify.instagram_monitor import InstagramMonitor
 from instagram.data.config import *
 from instagram.src.helper import *
 
-driver.quit()
-
 monitoring_map = defaultdict(list)
 url1 = {"id": "polizei.hannover",
         "href": "https://www.instagram.com/polizei.hannover/",
@@ -78,8 +76,14 @@ for url in monitoring_map["instagram"]:
     else:
         print("[FAILURE]    Compare test not succeed in file: " + new_html_path + "\n")
         tests_passed = False
+    
+    driver.get('file://' + new_html_path)
+    input("Press Enter to continue...")
 
 if tests_passed:
     print("[SUCCESS]   All tests succeeded. Please manually check html too.\n")
 else:
     print("[FAILURE]   Some tests did not succeed\n")
+
+driver.quit()
+
