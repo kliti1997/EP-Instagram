@@ -26,7 +26,11 @@ class InstagramObject:
         self.__set_igtvs(self)
         self.__set_tags(self)
 
-    def get_flag(self):
+    def __str__(self) -> str:
+
+        return super().__str__()
+
+    def get_flag(self) -> int:
         """
         The flag specifies if dom objects of a new, or old html
         file are stored in the current isntance.
@@ -36,7 +40,7 @@ class InstagramObject:
         """
         return self.flag
 
-    def get_tree(self):
+    def get_tree(self) -> etree:
         """
         The dom representation of the html file to inspect.
 
@@ -45,7 +49,7 @@ class InstagramObject:
         """
         return self.trees
 
-    def get_followers(self):
+    def get_followers(self) -> etree:
         """
         The method returns the parent node, which is an a-tag, of the followers count.
         The followers count is the text attribute of the first and only child element, 
@@ -62,7 +66,7 @@ class InstagramObject:
         """
         return self.followers
 
-    def get_following(self):
+    def get_following(self) -> etree:
         """
         The method returns the parent node, which is an a-tag, of the followers count.
         The followers count is the text attribute of the first and only child element, 
@@ -79,7 +83,7 @@ class InstagramObject:
         """
         return self.following
 
-    def get_posts(self):
+    def get_posts(self) -> list:
         """
         The method returns a list which contains all of the 24 posts, whihc are included
         in the dom tree. 
@@ -102,32 +106,32 @@ class InstagramObject:
         """
         return self.posts
 
-    def get_igtvs(self):
+    def get_igtvs(self) -> list:
         return self.igtvs
 
-    def get_tags(self):
+    def get_tags(self) -> list:
         return self.tags
 
-    def __set_tree(self, url):
+    def __set_tree(self, url) -> None:
         if self.flag == NEW:
             self.tree = html.parse(get_new_html_path(url))
         else:
             self.tree = html.parse(get_old_html_path(url))
 
-    def __set_followers(self, url):
+    def __set_followers(self, url) -> None:
         self.followers = list(
             self.get_tree().xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/followers/']")[0].iter())
 
-    def __set_following(self, url):
+    def __set_following(self, url) -> None:
         self.following = list(
             self.get_tree().xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/following/']")[0].iter())
 
-    def __set_posts(self):
+    def __set_posts(self) -> None:
         self.posts = self.get_tree().xpath("//div[@id='react-root']//article//a")
 
-    def __set_igtvs(self):
+    def __set_igtvs(self) -> None:
         self.igtvs = self.get_tree().xpath("//div[@id='react-root']//main//div//a")
 
-    def __set_tags(self):
+    def __set_tags(self) -> None:
         # TODO
         self.tags = (0, 0)
