@@ -25,7 +25,7 @@ class InstagramStore:
 
             ig = InstagramObject(url, "new")
             data = ProfileData()
-            add_html_tags(ig, data, url["type"])
-            save_html(url)
+            add_html_tags(url["type"], ig, data)
+            ig.write(url)
 
         driver.quit()

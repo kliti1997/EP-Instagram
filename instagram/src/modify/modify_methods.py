@@ -169,7 +169,7 @@ def compare_hover_items(url):
 
     add_border = "style='border: 4px solid green;'"
 
-    # Posts miteinander vergleichen
+    # Posts miteinander vergleichen #TODO Für igtv, tagged anpassen
     for new_post in new_posts:
         for old_post in old_posts:
             if new_post.attrib["href"] == old_post.attrib["href"]:

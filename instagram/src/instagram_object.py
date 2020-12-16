@@ -1,5 +1,5 @@
 from instagram.data.config import *
-from instagram.src.helper import get_new_html_path
+from instagram.src.helper import get_new_html_path, get_old_html_path
 from lxml import etree, html
 
 NEW = 0
@@ -132,7 +132,7 @@ class InstagramObject:
     def __set_tags(self) -> None:
         # TODO
         self.tags = (0, 0)
-        
+
     """
     Gibt den Tree, flag, posts, etc. zurück.
     """
@@ -156,3 +156,13 @@ class InstagramObject:
             for tag in self.get_tags():
                 ret += etree.tostring(tag, pretty_print=True)
         return ret
+
+    """
+    Speichert den etree in einem hthml file ab, nachdem Änderungen vorgenommen worden sind.
+    Wichtig für die download Phase, nachdem html tags wie data-liked-by hinzugefügt. worden sind.
+    """
+    def write(self, url):
+        if self.get_flag() == NEW:
+            open(get_new_html_path(url), "wb").write(etree.tostring(self.get_tree(), method="html"))
+        else:
+            open(get_old_html_path(url), "wb").write(etree.tostring(self.get_tree(), method="html"))

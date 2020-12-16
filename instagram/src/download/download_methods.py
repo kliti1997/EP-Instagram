@@ -85,18 +85,24 @@ def convert_links(source):
     return source
 
 
-def add_html_tags(ig_obj, prof_data, type) -> None:
+def add_html_tags(type, ig_obj, prof_data=None) -> None:
     if type == "posts":
         for post in ig_obj.get_posts():
-            post = None #TODO
+            #TODO Dummy Werte ersetzten
+            post.attrib["data-liked-by"] = "0"
+            post.attrib["data-comment"] = "0"
 
     elif type == "igtv":
         for igtv in ig_obj.get_igtvs():
-            igtv = None #TODO
+            #TODO Dummy Werte ersetzten
+            igtv.attrib["data-view-count"] = "0"
+            igtv.attrib["data-comment"] = "0"
 
     elif type == "tagged":
         for tag in ig_obj.get_tags():
-            tag = None #TODO
+            #TODO Dummy Werte ersetzten
+            tag.attrib["data-liked-by"] = "0"
+            tag.attrib["data-comment"] = "0"
 
 def save_html(url):
     """
