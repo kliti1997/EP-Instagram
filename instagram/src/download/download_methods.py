@@ -7,6 +7,7 @@ downloading and saving of html files.
 """
 from instagram.data.config import *
 from instagram.src.helper import *
+from instagram.src.instagram_object import InstagramObject
 from random import randint
 from selenium.common.exceptions import NoSuchElementException
 from selenium import webdriver
@@ -83,6 +84,19 @@ def convert_links(source):
     source = re.sub(r'(href="|src="|srcset="|:")/', r'\1' + base_url, source)
     return source
 
+
+def add_html_tags(ig_obj, prof_data, type) -> None:
+    if type == "posts":
+        for post in ig_obj.get_posts():
+            post = None #TODO
+
+    elif type == "igtv":
+        for igtv in ig_obj.get_igtvs():
+            igtv = None #TODO
+
+    elif type == "tagged":
+        for tag in ig_obj.get_tags():
+            tag = None #TODO
 
 def save_html(url):
     """

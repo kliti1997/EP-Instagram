@@ -1,6 +1,7 @@
 from instagram.data.config import *
-from instagram.src.download.download_methods import login, random_sleep, pre_download, save_html
-
+from instagram.src.download.download_methods import login, random_sleep, pre_download, save_html, add_html_tags
+from instagram.src.instagram_object import InstagramObject
+from instagram.src.download.profile_data import ProfileData
 
 class InstagramStore:
     def __init__(self, monitoring_map):
@@ -21,5 +22,10 @@ class InstagramStore:
             except Exception as e:
                 eType = e.__class__.__name__
                 logger.error("downloading the html files.\nException message: " + eType + ": " + str(e))
+
+            ig = InstagramObject(url, "new")
+            data = ProfileData()
+            add_html_tags(ig, data, url["type"])
+            save_html(url)
 
         driver.quit()
