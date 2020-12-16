@@ -62,7 +62,7 @@ def compare_followers_following(url):
             break
 
     if oldFollowersCnt != newFollowersCnt:
-        newFollowersElement.attrib['style'] = "border: 4px solid green;"
+        newFollowersElement.attrib['style'] = "background-color: green;"
                 
     #Following bzw. Abonnierte
     #Komischerweise hat der Container kein 'title' Wert wie er bei den Abonnenten existiert
@@ -78,7 +78,7 @@ def compare_followers_following(url):
     newFollowingCnt = [element.text for element in newSubElement if element.tag == "span"][0]
                 
     if oldFollowingCnt != newFollowingCnt:
-        newFollowingElement.attrib['style'] = "border: 4px solid green;"
+        newFollowingElement.attrib['style'] = "background-color: green;"
     
     open(get_new_html_path(url), "wb").write(etree.tostring(new_html, method="html"))
 
