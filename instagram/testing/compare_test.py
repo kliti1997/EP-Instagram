@@ -52,10 +52,10 @@ for url in monitoring_map["instagram"]:
 InstagramMonitor(monitoring_map)
 
 
-def border_counter(html_file) -> int:
+def changes_counter(html_file) -> int:
     with open(str(html_file)) as f:
         html = f.read()
-        counter = html.count('border: 4px solid green;')
+        counter = html.count('border: 4px solid green;') + html.count('background-color: green;')
 
     return counter
 
@@ -67,8 +67,8 @@ for url in monitoring_map["instagram"]:
     new_html_path = get_new_html_path(url)
     expected_new_html = os.path.join(folder_path, "compare_expected_new.html")
 
-    borders = border_counter(new_html_path)
-    expected_borders = border_counter(expected_new_html)
+    borders = changes_counter(new_html_path)
+    expected_borders = changes_counter(expected_new_html)
 
     print("\t     Found " + str(borders) + " borders after compare.")
     print("\t     Expected " + str(expected_borders) + " borders.")
