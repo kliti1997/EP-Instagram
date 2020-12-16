@@ -1,5 +1,5 @@
 from instagram.data.config import *
-from instagram.src.instagram_objects import InstagramObjects
+from instagram.src.instagram_object import InstagramObject
 
 # Wird später entfernt. Wird mit den Objekten von Instagram in
 # der download Phase initialisiert.
