@@ -6,11 +6,11 @@ NEW = 0
 OLD = 1
 
 class InstagramObject:
-    def __init__(self, url, type):
-        if type == "new":
-            self.type = NEW
+    def __init__(self, url, flag):
+        if flag == "new":
+            self.flag = NEW
         else:
-            self.type = OLD
+            self.flag = OLD
         # Dummy values
         self.tree = None
         self.followers = None
@@ -26,15 +26,15 @@ class InstagramObject:
         self.__set_igtvs(self)
         self.__set_tags(self)
 
-    def get_type(self):
+    def get_flag(self):
         """
-        The type specifies if dom objects of a new, or old html
+        The flag specifies if dom objects of a new, or old html
         file are stored in the current isntance.
 
         Returns:
             int: 0 if objects of a new file are stored, otherwise 1.
         """
-        return self.type
+        return self.flag
 
     def get_tree(self):
         """
@@ -109,7 +109,7 @@ class InstagramObject:
         return self.tags
 
     def __set_tree(self, url):
-        if self.type == NEW:
+        if self.flag == NEW:
             self.tree = html.parse(get_new_html_path(url))
         else:
             self.tree = html.parse(get_old_html_path(url))
