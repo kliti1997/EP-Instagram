@@ -143,8 +143,8 @@ def compare_hover_items(url):
     old_tree = html.parse(get_old_html_path(url))
     new_tree = html.parse(get_new_html_path(url))
 
-    new_posts = new_tree.xpath("//div[@id='react-root']//article//a")
-    old_posts = old_tree.xpath("//div[@id='react-root']//article//a")
+    new_elements = new_tree.xpath("//div[@id='react-root']//article//a")
+    old_elements = old_tree.xpath("//div[@id='react-root']//article//a")
     head = new_tree.xpath("//head")
 
     css = """ <style>
@@ -170,41 +170,41 @@ def compare_hover_items(url):
     add_border = "style='border: 4px solid green;'"
 
     # Posts miteinander vergleichen #TODO Für igtv, tagged anpassen
-    for new_post in new_posts:
-        for old_post in old_posts:
-            if new_post.attrib["href"] == old_post.attrib["href"]:
+    for new_ele in new_elements:
+        for old_ele in old_elements:
+            if new_ele.attrib["href"] == old_ele.attrib["href"]:
 
-                if new_post.xpath(".//span[@aria-label='Video']") or url["type"] == "igtv": # Falls es ein Video ist, vergleiche view-count.
+                if new_ele.xpath(".//span[@aria-label='Video']") or url["type"] == "igtv": # Falls es ein Video ist, vergleiche view-count.
                     to_cmp = "data-view-count"
                 else:
                     to_cmp = "data-liked-by"
 
-                if new_post.attrib[to_cmp] != old_post.attrib[to_cmp] and new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
-                    new_post.append( # Views und comments haben sich verändert.
+                if new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] and new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
+                    new_ele.append( # Views und comments haben sich verändert.
                         etree.fromstring(
-                            hover.format(likes_views = new_post.attrib[to_cmp],
+                            hover.format(likes_views = new_ele.attrib[to_cmp],
                             icon_likes_views="coreSpritePlayIconSmall",
-                            comments = new_post.attrib["data-comment"],
+                            comments = new_ele.attrib["data-comment"],
                             style_likes_views = add_border,
                             style_comments = add_border)
                         )
                     )
-                elif new_post.attrib[to_cmp] != old_post.attrib[to_cmp]:
-                    new_post.append( # Nur die views, oder likes, haben sich verändert.
+                elif new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp]:
+                    new_ele.append( # Nur die views, oder likes, haben sich verändert.
                         etree.fromstring(
-                            hover.format(likes_views = new_post.attrib[to_cmp],
+                            hover.format(likes_views = new_ele.attrib[to_cmp],
                             icon_likes_views="coreSpritePlayIconSmall",
-                            comments = new_post.attrib["data-comment"],
+                            comments = new_ele.attrib["data-comment"],
                             style_likes_views = add_border,
                             style_comments = "")
                         )
                     )    
-                elif new_post.attrib["data-comment"] != old_post.attrib["data-comment"]:
-                    new_post.append( # Nur die comments haben sich verändert.
+                elif new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
+                    new_ele.append( # Nur die comments haben sich verändert.
                         etree.fromstring(
-                            hover.format(likes_views = new_post.attrib[to_cmp],
+                            hover.format(likes_views = new_ele.attrib[to_cmp],
                             icon_likes_views="coreSpritePlayIconSmall",
-                            comments = new_post.attrib["data-comment"],
+                            comments = new_ele.attrib["data-comment"],
                             style_likes_views = "",
                             style_comments = add_border)
                         )
