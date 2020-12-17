@@ -86,7 +86,7 @@ def convert_links(source):
 
 
 def add_html_tags(type, ig_obj, prof_data=None) -> None:
-    if type == "posts" or type == "tagged":
+    if type == "posts":
         for ele in ig_obj.get_posts():
             #TODO Dummy Werte ersetzten
             ele.attrib["data-liked-by"] = "0"
