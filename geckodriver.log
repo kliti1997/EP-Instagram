@@ -4100,3 +4100,39 @@ Exiting due to channel error.
 [GFX1-]: Receive IPC close with reason=AbnormalShutdown
 Exiting due to channel error.
 Exiting due to channel error.
+1608486879606	geckodriver	INFO	Listening on 127.0.0.1:60293
+1608486880622	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofile0qPp5g"
+2020-12-20 18:54:42.538 firefox-bin[30968:2149563] Warning: Expected min height of view: (<NSButton: 0x122bbac00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:54:42.539 firefox-bin[30968:2149563] Warning: Expected min height of view: (<NSButton: 0x12e2ea400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:54:42.539 firefox-bin[30968:2149563] Warning: Expected min height of view: (<NSButton: 0x12e2ebc00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:54:42.540 firefox-bin[30968:2149563] Warning: Expected min height of view: (<NSButton: 0x12e2ecc00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:54:42.540 firefox-bin[30968:2149563] Warning: Expected min height of view: (<NSButton: 0x12e8cfc00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:54:42.541 firefox-bin[30968:2149563] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x12e8d0400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:54:42.541 firefox-bin[30968:2149563] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x12e903400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1608486883707	Marionette	INFO	Listening on port 60307
+1608486883824	Marionette	WARN	TLS certificate errors will be ignored for this session
+1608486883826	Marionette	INFO	Proxy settings initialised: {"proxyType":"manual","httpProxy":"127.0.0.1:60291","noProxy":[],"sslProxy":"127.0.0.1:60291"}
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+1608487174632	geckodriver	INFO	Listening on 127.0.0.1:60576
+1608487175650	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/72/2y7l8t2n55n7r3x1c4zd4lmm0000gn/T/rust_mozprofileUVj0GE"
+2020-12-20 18:59:37.210 firefox-bin[31114:2153002] Warning: Expected min height of view: (<NSButton: 0x134297c00>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:59:37.211 firefox-bin[31114:2153002] Warning: Expected min height of view: (<NSButton: 0x13514f000>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:59:37.212 firefox-bin[31114:2153002] Warning: Expected min height of view: (<NSButton: 0x13514f400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:59:37.212 firefox-bin[31114:2153002] Warning: Expected min height of view: (<NSButton: 0x135152400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:59:37.213 firefox-bin[31114:2153002] Warning: Expected min height of view: (<NSButton: 0x135151800>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:59:37.213 firefox-bin[31114:2153002] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x135151400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+2020-12-20 18:59:37.214 firefox-bin[31114:2153002] Warning: Expected min height of view: (<NSPopoverTouchBarItemButton: 0x135154400>) to be less than or equal to 30 but got a height of 32.000000. This error will be logged once per view in violation.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1608487178173	Marionette	INFO	Listening on port 60587
+1608487178252	Marionette	WARN	TLS certificate errors will be ignored for this session
+1608487178253	Marionette	INFO	Proxy settings initialised: {"proxyType":"manual","httpProxy":"127.0.0.1:60574","noProxy":[],"sslProxy":"127.0.0.1:60574"}
+Exiting due to channel error.
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+Exiting due to channel error.

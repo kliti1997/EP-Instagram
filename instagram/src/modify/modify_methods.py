@@ -30,8 +30,8 @@ def compare_posts(url, ig):
 
 
 def compare_followers_following(url, ig):
-    oldFollowersCnt = [element.attrib['title'] for element in ig[OLD].get_followers() if element.tag == "span"][0]
-    newFollowersCnt = [element.attrib['title'] for element in ig[NEW].get_followers() if element.tag == "span"][0]
+    oldFollowersCnt = ig[OLD].get_followers()[0].attrib["title"]
+    newFollowersCnt = ig[NEW].get_followers()[0].attrib["title"]
 
     #Ungefaehre Follower Anzahl mit genauer Anzahl ersetzen
     #Geht bestimmt schoener, allerdings weiss ich leider aktuell nicht wie
@@ -43,8 +43,8 @@ def compare_followers_following(url, ig):
     #Following bzw. Abonnierte
     #Komischerweise hat der Container kein 'title' Wert wie er bei den Abonnenten existiert
     #Wir muessen deshalb aus dem 'text' direkt lesen
-    oldFollowingCnt = [element.text for element in ig[OLD].get_following() if element.tag == "span"][0]
-    newFollowingCnt = [element.text for element in ig[NEW].get_following() if element.tag == "span"][0]
+    oldFollowingCnt = ig[OLD].get_following()[0].text
+    newFollowingCnt = ig[NEW].get_following()[0].text
                 
     if oldFollowingCnt != newFollowingCnt:
         ig[NEW].get_following().attrib['style'] = "background-color: green;"
