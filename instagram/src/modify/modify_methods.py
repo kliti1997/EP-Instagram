@@ -30,21 +30,8 @@ def compare_posts(url, ig):
 
 
 def compare_followers_following(url, ig):
-    old_html = html.parse(get_old_html_path(url))
-    new_html = html.parse(get_new_html_path(url))
-
-    oldFollowersElement = list(old_html.xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/followers/']")[0].iter())
-    #oldSubElement = list(oldFollowersElement.iter())
-    oldFollowersCnt = [element.attrib['title'] for element in oldFollowersElement if element.tag == "span"][0]
-
-    print("Debug")
-    print(oldFollowersElement)
-    #print(oldSubElement)
-
-    newFollowersElement = new_html.xpath("//a[@href='https://www.instagram.com/" + url["id"] +  "/followers/']")[0]
-    newSubElement = list(newFollowersElement.iter())
-    newFollowersCnt = [element.attrib['title'] for element in newSubElement if element.tag == "span"][0]
-
+    oldFollowersCnt = [element.attrib['title'] for element in ig[OLD].get_followers() if element.tag == "span"][0]
+    newFollowersCnt = [element.attrib['title'] for element in ig[NEW].get_followers() if element.tag == "span"][0]
 
     #Ungefaehre Follower Anzahl mit genauer Anzahl ersetzen
     #Geht bestimmt schoener, allerdings weiss ich leider aktuell nicht wie    
@@ -54,25 +41,18 @@ def compare_followers_following(url, ig):
             break
 
     if oldFollowersCnt != newFollowersCnt:
-        newFollowersElement.attrib['style'] = "background-color: green;"
+        ig[NEW].get_followers().attrib['style'] = "background-color: green;"
                 
     #Following bzw. Abonnierte
     #Komischerweise hat der Container kein 'title' Wert wie er bei den Abonnenten existiert
     #Wir muessen deshalb aus dem 'text' direkt lesen
-    oldElements = list(old_html.iter("a"))
-    oldFollowingElement = [element for element in oldElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/" + url["id"] + "/following/"][0]
-    oldSubElement = list(oldFollowingElement.iter())
-    oldFollowingCnt = [element.text for element in oldSubElement if element.tag == "span"][0]
-
-    newElements = list(new_html.iter("a"))
-    newFollowingElement = [element for element in newElements if element.tag == "a" and element.attrib['href'] == "https://www.instagram.com/" + url["id"] + "/following/"][0]
-    newSubElement = list(newFollowingElement.iter())
-    newFollowingCnt = [element.text for element in newSubElement if element.tag == "span"][0]
+    oldFollowingCnt = [element.text for element in ig[OLD].get_following() if element.tag == "span"][0]
+    newFollowingCnt = [element.text for element in ig[NEW].get_following() if element.tag == "span"][0]
                 
     if oldFollowingCnt != newFollowingCnt:
-        newFollowingElement.attrib['style'] = "background-color: green;"
+        ig[NEW].get_following().attrib['style'] = "background-color: green;"
     
-    open(get_new_html_path(url), "wb").write(etree.tostring(new_html, method="html"))
+    ig[NEW].write(url)
 
 
 def compare_igtv(url, ig):
