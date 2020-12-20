@@ -2,6 +2,8 @@ from instagram.data.config import *
 from instagram.src.helper import *
 from lxml import etree, html
 
+NEW = 0
+OLD = 1
 
 # from instagram.src.instagram import Instagram
 
@@ -9,35 +11,25 @@ def pre_modify(url):
     return os.path.isfile(get_old_html_path(url)) and os.path.isfile(get_new_html_path(url))
 
 
-def compare_posts(url):
-    old_html_path = get_old_html_path(url)
-    new_html_path = get_new_html_path(url)
-
-    # Links in alte Datei rausholen
-    tree = html.parse(old_html_path)
-    old_links = tree.xpath("//div[@id='react-root']//article//a")  # Contains complete <a> Tags
+def compare_posts(url, ig):
     old_links_list = []  # Only holds hrefs
-    for link in old_links:
+    for link in ig[OLD].get_posts():
         old_links_list.append(link.attrib["href"])
 
-    # Links in neue Datei rausholen
-    new_tree = html.parse(new_html_path)
-    new_links = new_tree.xpath("//div[@id='react-root']//article//a")  # Contains complete <a> Tags
     new_links_list = []  # Only holds hrefs
-    for link in new_links:
+    for link in ig[NEW].get_posts():
         new_links_list.append(link.attrib["href"])
-
 
     # Links vergleichen
     for index in range(len(new_links_list)):
         if new_links_list[index] not in old_links_list:
-            parent = new_links[index].getparent()
+            parent = ig[NEW].get_posts()[index].getparent()
             parent.attrib["style"] = "border: 4px solid green;"
 
-    open(new_html_path, "wb").write(etree.tostring(new_tree, method="html"))
+    ig[NEW].write(url)
 
 
-def compare_followers_following(url):
+def compare_followers_following(url, ig):
     old_html = html.parse(get_old_html_path(url))
     new_html = html.parse(get_new_html_path(url))
 
@@ -83,7 +75,7 @@ def compare_followers_following(url):
     open(get_new_html_path(url), "wb").write(etree.tostring(new_html, method="html"))
 
 
-def compare_igtv(url):
+def compare_igtv(url, ig):
     old_html_path = get_old_html_path(url)
     new_html_path = get_new_html_path(url)
 
@@ -127,7 +119,7 @@ def compare_igtv(url):
     open(new_html_path, "wb").write(etree.tostring(new_tree, method="html"))
 
 
-def compare_hover_items(url):
+def compare_hover_items(url, ig):
     """
     Benötigte html-Attribute:
     - data-typename (GraphSidecar, GraphImage, GraphVideo)
@@ -213,7 +205,7 @@ def compare_hover_items(url):
     head[0].append(etree.fromstring(css))
     open(get_new_html_path(url), "wb").write(etree.tostring(new_tree, method="html"))
 
-def compare_tagged(url):
+def compare_tagged(url, ig):
     old_html_path = get_old_html_path(url)
     new_html_path = get_new_html_path(url)
 

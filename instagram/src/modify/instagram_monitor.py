@@ -1,7 +1,7 @@
 from instagram.data.config import *
 from instagram.src.helper import *
 from instagram.src.modify.modify_methods import pre_modify, compare_posts, compare_followers_following, compare_igtv, compare_hover_items
-#from instagram.src.instagram import Instagram
+from instagram.src.instagram_object import InstagramObject
 
 class InstagramMonitor:
     def __init__(self, monitoring_map):
@@ -21,15 +21,16 @@ class InstagramMonitor:
             if not pre_modify(url):
                 print("error while compare: "+old_html_path+" or "+new_html_path+" is missing")
                 continue
-            
-            compare_followers_following(url)
+
+            ig = (InstagramObject(url, "new"), InstagramObject(url, "old"))
+
+            compare_followers_following(url, ig)
 
             if html_type == "posts":
-                compare_posts(url)
+                compare_posts(url, ig)
             elif html_type == "igtv":
-                compare_igtv(url)
+                compare_igtv(url, ig)
             
-
             #compare_hover_items(url)
 
 """ Circular import
