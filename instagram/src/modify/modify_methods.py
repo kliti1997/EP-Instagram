@@ -34,11 +34,8 @@ def compare_followers_following(url, ig):
     newFollowersCnt = [element.attrib['title'] for element in ig[NEW].get_followers() if element.tag == "span"][0]
 
     #Ungefaehre Follower Anzahl mit genauer Anzahl ersetzen
-    #Geht bestimmt schoener, allerdings weiss ich leider aktuell nicht wie    
-    for element in newSubElement:
-        if element.tag == "span":
-            element.text = newFollowersCnt
-            break
+    #Geht bestimmt schoener, allerdings weiss ich leider aktuell nicht wie
+    ig[NEW].get_followers()[0].text = newFollowersCnt
 
     if oldFollowersCnt != newFollowersCnt:
         ig[NEW].get_followers().attrib['style'] = "background-color: green;"
