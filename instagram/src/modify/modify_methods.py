@@ -40,8 +40,6 @@ def compare_followers_following(url, ig):
         ig[NEW].get_followers().attrib['style'] = "background-color: green;"
                 
     #Following bzw. Abonnierte
-    #Komischerweise hat der Container kein 'title' Wert wie er bei den Abonnenten existiert
-    #Wir muessen deshalb aus dem 'text' direkt lesen
     oldFollowingCnt = ig[OLD].get_following()[0].text
     newFollowingCnt = ig[NEW].get_following()[0].text
                 
@@ -52,36 +50,25 @@ def compare_followers_following(url, ig):
 
 
 def compare_igtv(url, ig):
-    old_html_path = get_old_html_path(url)
-    new_html_path = get_new_html_path(url)
-
     # Getting all links in old igtv html file
-    tree = html.parse(old_html_path)
-    old_links = tree.xpath("//div[@id='react-root']//main//div//a")  # Contains complete <a> Tags
-
     old_igtv_a_list = []
     old_igtv_href_list = []
 
     # Saving only elements with tv/ links
-    for link in old_links:
-        if link.attrib["href"].startswith("https://www.instagram.com/tv/"):
-            old_igtv_a_list.append(link)
+    for link in ig[OLD].get_igtvs():
+        old_igtv_a_list.append(link)
 
     # Only saving href attribute for comparison
     for href in old_igtv_a_list:
         old_igtv_href_list.append(href.attrib["href"])
 
     # Getting all links in new igtv html file
-    new_tree = html.parse(new_html_path)
-    new_links = new_tree.xpath("//div[@id='react-root']//main//div//a")  # Contains complete <a> Tags
-
-    new_igtv_a_list = []
     new_igtv_href_list = []
+    new_igtv_a_list = []
 
     # Saving only elements with tv/ links
-    for link in new_links:
-        if link.attrib["href"].startswith("https://www.instagram.com/tv/"):
-            new_igtv_a_list.append(link)
+    for link in ig[NEW].get_igtvs():
+        new_igtv_a_list.append(link)
 
     # Only saving href attribute for comparison
     for href in new_igtv_a_list:
@@ -92,7 +79,7 @@ def compare_igtv(url, ig):
             new_igtv_a_list[index].attrib["style"] = "border: 4px solid green;"
 
 
-    open(new_html_path, "wb").write(etree.tostring(new_tree, method="html"))
+    ig[NEW].write(url)
 
 
 def compare_hover_items(url, ig):
@@ -108,12 +95,17 @@ def compare_hover_items(url, ig):
     - data-view-count (GraphVideo)
     - data-comment (GraphSidecar, GraphImage, GraphVideo)
     """
-    old_tree = html.parse(get_old_html_path(url))
-    new_tree = html.parse(get_new_html_path(url))
+    if url["type"] == "posts":
+        new_elements = ig[NEW].get_posts()
+        old_elements = ig[OLD].get_posts()
+    elif url["type"] == "igtv":
+        new_elements = ig[NEW].get_igtvs()
+        old_elements = ig[OLD].get_igtvs()
+    else:
+        new_elements = ig[NEW].get_tags()
+        old_elements = ig[OLD].get_tags()
 
-    new_elements = new_tree.xpath("//div[@id='react-root']//article//a")
-    old_elements = old_tree.xpath("//div[@id='react-root']//article//a")
-    head = new_tree.xpath("//head")
+    head = ig[NEW].get_tree().xpath("//head")
 
     css = """ <style>
                   .qn-0x{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;bottom:0;left:0;position:absolute;right:0;top:0}
@@ -179,7 +171,7 @@ def compare_hover_items(url, ig):
                     )
 
     head[0].append(etree.fromstring(css))
-    open(get_new_html_path(url), "wb").write(etree.tostring(new_tree, method="html"))
+    ig[NEW].write(url)
 
 def compare_tagged(url, ig):
     old_html_path = get_old_html_path(url)
