@@ -25,7 +25,8 @@ url3 = {"id": "polizei.hannover",
         "type": "tagged", "mode": "1", "monitoring_folder": "testfiles/polizei.hannover/tagged/",
         "change": "", "notify": "", "err": ""}
 
-ig = InstagramObject(url1, "new")
-add_html_tags(url1["type"], ig)
+ig = InstagramObject(url3, "new")
+print(ig.__tostr__("tags"))
+add_html_tags(url3["type"], ig)
 
-ig.write(url1)
+ig.write(url3)

@@ -1,5 +1,6 @@
 # Ignore macOs trash
 .DS_Store
+config.py
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template

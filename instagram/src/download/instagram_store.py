@@ -24,8 +24,8 @@ class InstagramStore:
                 logger.error("downloading the html files.\nException message: " + eType + ": " + str(e))
 
             ig = InstagramObject(url, "new")
-            data = ProfileData()
-            add_html_tags(url["type"], ig, data)
+            #data = ProfileData()
+            add_html_tags(url["type"], ig)
             ig.write(url)
 
         driver.quit()

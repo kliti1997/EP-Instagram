@@ -22,9 +22,12 @@ class InstagramObject:
         self.__set_tree(url)
         self.__set_followers(url)
         self.__set_following(url)
-        self.__set_posts()
-        self.__set_igtvs()
-        self.__set_tags()
+        if url["type"] == "posts":
+            self.__set_posts()
+        elif url["type"] == "igtv":
+            self.__set_igtvs()
+        elif url["type"] == "tagged":
+            self.__set_tags()
 
     def get_flag(self) -> int:
         """
@@ -130,8 +133,7 @@ class InstagramObject:
         self.igtvs = [igtv_ele for igtv_ele in all_links if igtv_ele.attrib["href"].startswith("https://www.instagram.com/tv/")]
 
     def __set_tags(self) -> None:
-        # TODO
-        self.tags = (0, 0)
+        self.tags = self.get_tree().xpath("//div[@id='react-root']//article//a")
 
     """
     Gibt den Tree, flag, posts, etc. zurück.

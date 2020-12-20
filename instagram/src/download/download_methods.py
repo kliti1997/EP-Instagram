@@ -87,16 +87,22 @@ def convert_links(source):
 
 def add_html_tags(type, ig_obj, prof_data=None) -> None:
     if type == "posts":
-        for ele in ig_obj.get_posts():
+        for post in ig_obj.get_posts():
             #TODO Dummy Werte ersetzten
-            ele.attrib["data-liked-by"] = "0"
-            ele.attrib["data-comment"] = "0"
+            if post.xpath(".//span[@aria-label='Video']"):
+                post.attrib["data-view-count"] = "0"
+            else:
+                post.attrib["data-liked-by"] = "0"
+            post.attrib["data-comment"] = "0"
 
     if type == "tagged":
-        for ele in ig_obj.get_tags():
+        for tag in ig_obj.get_tags():
             #TODO Dummy Werte ersetzten
-            ele.attrib["data-liked-by"] = "0"
-            ele.attrib["data-comment"] = "0"
+            if tag.xpath(".//span[@aria-label='Video']"):
+                tag.attrib["data-view-count"] = "0"
+            else:
+                tag.attrib["data-liked-by"] = "0"
+            tag.attrib["data-comment"] = "0"
 
     elif type == "igtv":
         for igtv in ig_obj.get_igtvs():
