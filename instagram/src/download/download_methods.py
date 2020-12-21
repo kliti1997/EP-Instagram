@@ -23,6 +23,7 @@ Constants to calculate the sleep timer.
 MIN_TIME = 3
 INCR_UPPER_BOUND = 10
 
+logger = logging.getLogger('instagram')
 
 def login(username, password):
     """

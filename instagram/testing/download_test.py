@@ -3,6 +3,8 @@ from instagram.src.download.instagram_store import InstagramStore
 from instagram.src.helper import *
 import time, sys
 
+logger = logging.getLogger('download_test')
+
 monitoring_map = defaultdict(list)
 url1 = {"id": "polizei.hannover",
         "href": "https://www.instagram.com/polizei.hannover/",
@@ -29,7 +31,7 @@ InstagramStore(monitoring_map)
 tests = 0
 succeed = 0
 
-print("\n\t************TEST PHASE************")
+logger.info("\t************TEST PHASE************")
 for url in monitoring_map["instagram"]:
     folder_path = get_folder_path(url)
     old_html_path = get_old_html_path(url)
@@ -38,51 +40,61 @@ for url in monitoring_map["instagram"]:
     file_missing = False
 
 
-    print("\nCurrently checking profile: " + url["id"])
-    print("Currently checking type: " + url["type"])
+    logger.info("")
+    logger.info("\tCurrently checking profile: " + url["id"])
+    logger.info("\tCurrently checking type: " + url["type"])
 
     if os.path.exists(old_html_path):
-        print("[SUCCESS]   old.html exists")
+        logger.debug(old_html_path)
+        logger.info("[SUCCESS]   old.html exists")
         old_html_time = os.stat(old_html_path).st_mtime
         tests += 1
         succeed += 1
     else:
-        print("[FAILURE]   old.html doesn't exists")
+        logger.debug(old_html_path)
+        logger.error("[FAILURE]   old.html doesn't exists")
         file_missing = True
         tests += 1
 
     if os.path.exists(new_html_path):
-        print("[SUCCESS]   new.html exists")
+        logger.debug(new_html_path)
+        logger.info("[SUCCESS]   new.html exists")
         new_html_time = os.stat(new_html_path).st_mtime
         tests += 1
         succeed += 1
     else:
-        print("[FAILURE]   new.html doesn't exists")
+        logger.debug(new_html_path)
+        logger.error("[FAILURE]   new.html doesn't exists")
         file_missing = True
         tests += 1
 
+    logger.debug("File missing: "+str(file_missing))
+
     if not file_missing:
+        logger.debug(str(old_html_time)+" < "+str(new_html_time))
         if old_html_time < new_html_time:
-            print("[SUCCESS]   new.html is newer than old.html")
+            logger.info("[SUCCESS]   new.html is newer than old.html")
             tests += 1
             succeed += 1
         else:
-            print("[FAILURE]   new.html is older than old.html")
+            logger.error("[FAILURE]   new.html is older than old.html")
             tests += 1
 
+        logger.debug(str(new_html_time)+" > "+str(time.time() - 5 * 60))
         if new_html_time > time.time() - 5 * 60:
-            print("[SUCCESS]   new.html is not older than 5 minutes")
+            logger.info("[SUCCESS]   new.html is not older than 5 minutes")
             tests += 1
             succeed += 1
         else:
-            print("[FAILURE]   new.html is older than 5 minutes")
+            logger.error("[FAILURE]   new.html is older than 5 minutes")
             tests += 1
     else:
-        print("[FAILURE]   some tests were skipped, because new.html or old.html is missing.")
+        logger.error("[FAILURE]   some tests were skipped, because new.html or old.html is missing.")
 
-print("\nTest finished. Score: " + str(succeed) + "/" + str(tests))
+logger.info("")
+logger.info("Test finished. Score: " + str(succeed) + "/" + str(tests))
 if succeed == tests:
-    print("[SUCCESS]   All tests succeed. Please manually check html too.\n")
+    logger.info("[SUCCESS]   All tests succeed. Please manually check html too.\n")
 else:
-    print("[FAILURE]   Some tests not succeed\n")
+    logger.error("[FAILURE]   Some tests not succeed\n")
 

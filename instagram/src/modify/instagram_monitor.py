@@ -5,7 +5,9 @@ from instagram.src.instagram_object import InstagramObject
 
 class InstagramMonitor:
     def __init__(self, monitoring_map):
-        print("\n\n\t********MONITORING PHASE********")
+        logger = logging.getLogger('instagram')
+        logger.info("\n\n")
+        logger.info("\t********MONITORING PHASE********")
         #Wir untersuchen nur noch die subdirectories fuer jede einzelne Anfrage:
         #Bspweise vergleichen wir nur die Posts Versionen miteinander, wenn auch der type Posts ist
         #Sonst kommt es zu mehrfachen Vergleichen, weil fuer jeden einzelne url('type=posts', 'type=igtv', 'type=tagged')
@@ -16,10 +18,10 @@ class InstagramMonitor:
             old_html_path = get_old_html_path(url)
             new_html_path = get_new_html_path(url)
 
-            print("compare ("+old_html_path+") with ("+new_html_path+")") 
+            logger.info("compare ("+old_html_path+") with ("+new_html_path+")") 
             
             if not pre_modify(url):
-                print("error while compare: "+old_html_path+" or "+new_html_path+" is missing")
+                logger.info("error while compare: "+old_html_path+" or "+new_html_path+" is missing")
                 continue
 
             ig = (InstagramObject(url, "new"), InstagramObject(url, "old"))

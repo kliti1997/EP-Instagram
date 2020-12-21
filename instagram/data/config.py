@@ -14,16 +14,18 @@ from selenium.webdriver import ActionChains
 from collections import defaultdict
 from urllib.parse import urljoin
 from time import sleep
-import os
-import logging
+import os, sys
+import logging.config
 import re
 from pathlib import Path
 
 config_folder = os.path.dirname(os.path.abspath(__file__))
 monitoring_folder = os.path.join(config_folder, "files")
 profile_folder = os.path.join(config_folder, "profile")
-#geckodriver = os.path.join(config_folder, "geckodriver")
-geckodriver = os.path.join(config_folder, "geckodriver_macOS")
+log_folder = os.path.join(config_folder, "logs")
+geckodriver = os.path.join(config_folder, "geckodriver")
+#geckodriver = os.path.join(config_folder, "geckodriver_macOS")
+geckodriver_log = os.path.join(log_folder, "geckodriver.log")
 """
 Different path variables.
 """
@@ -31,17 +33,76 @@ Different path variables.
 Path(profile_folder).mkdir(parents=True, exist_ok=True)
 driver_profile = webdriver.FirefoxProfile(profile_folder)
 driver_profile.set_preference('intl.accept_languages','de')
-#driver = webdriver.Firefox(firefox_profile=driver_profile, executable_path = geckodriver)
-driver = webdriver.Firefox(executable_path = geckodriver)
+driver = webdriver.Firefox(firefox_profile=driver_profile, executable_path = geckodriver, log_path=geckodriver_log)
+#driver = webdriver.Firefox(executable_path = geckodriver, log_path=geckodriver_log)
 """
 Seleniumwire driver and it's options.
 """
 
-logger = logging.getLogger("myLogger")
-f_handler = logging.FileHandler(os.path.join(config_folder, "exception.log"))
-f_format = logging.Formatter('%(asctime)s - %(message)s')
-f_handler.setFormatter(f_format)
-logger.addHandler(f_handler)
+LOGGING_CONFIG = {
+    'version': 1, # required
+    'disable_existing_loggers': True, # this config overrides all other loggers
+    'formatters': {
+        'simple': {
+            'format': '[%(asctime)s] %(message)s',
+            'datefmt': '%Y.%m.%d %H:%M:%S'
+        },
+        'detailed': {
+            'format': '[%(asctime)s]\t%(levelname)s -- %(processName)s %(filename)s:%(lineno)s -- %(message)s',
+            'datefmt': '%Y.%m.%d %H:%M:%S'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'error': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(log_folder, "error.log"),
+            'formatter': 'detailed'
+        },
+        'instagram': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(log_folder, "instagram.log"),
+            'formatter': 'simple'
+        },
+        'testing': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(log_folder, "testing.log"),
+            'formatter': 'detailed',
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'ERROR',
+            'handlers': ['error', 'console']
+        },
+        'instagram': {
+            'level': 'INFO',
+            'handlers': ['console', 'testing']
+        },
+        'basic_test': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'testing']
+        },
+        'download_test': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'testing']
+        },
+        'compare_test': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'testing']
+        }
+    }
+}
+
+logging.config.dictConfig(LOGGING_CONFIG)
+
 """
 Error logging, including options to represent the output and an output file.
 """
