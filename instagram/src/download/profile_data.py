@@ -68,10 +68,8 @@ class ProfileData:
                                     'id': child["shortcode"],
                                     'comments': child["edge_media_to_comment"]["count"],
                                     'likes': child["edge_media_preview_like"]["count"]}
-                            print(2)
                             if child["is_video"]:
                                 node.update({'view_count': child["video_view_count"]})
-                            print(3)
                             self.nodes.append(node)
                         return
         raise RuntimeError("No request found that contains info about 13th-24th picture")
