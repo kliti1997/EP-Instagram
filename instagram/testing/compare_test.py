@@ -30,7 +30,7 @@ monitoring_map["instagram"].append(url2)
 monitoring_map["instagram"].append(url3)
 
 
-
+logger.info("\t\t{{{COMPARE TEST}}}")
 logger.debug("\n\t************PRE-TEST PHASE************")
 for url in monitoring_map["instagram"]:
     folder_path = get_folder_path(url)

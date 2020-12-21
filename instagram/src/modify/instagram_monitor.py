@@ -21,7 +21,7 @@ class InstagramMonitor:
             logger.info("compare ("+old_html_path+") with ("+new_html_path+")") 
             
             if not pre_modify(url):
-                logger.info("error while compare: "+old_html_path+" or "+new_html_path+" is missing")
+                logger.error("error while compare: "+old_html_path+" or "+new_html_path+" is missing")
                 continue
 
             ig = (InstagramObject(url, "new"), InstagramObject(url, "old"))

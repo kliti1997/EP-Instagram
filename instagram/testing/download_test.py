@@ -31,6 +31,7 @@ InstagramStore(monitoring_map)
 tests = 0
 succeed = 0
 
+logger.info("\t\t{{{DOWNLOAD TEST}}}")
 logger.info("\t************TEST PHASE************")
 for url in monitoring_map["instagram"]:
     folder_path = get_folder_path(url)
@@ -96,5 +97,5 @@ logger.info("Test finished. Score: " + str(succeed) + "/" + str(tests))
 if succeed == tests:
     logger.info("[SUCCESS]   All tests succeed. Please manually check html too.\n")
 else:
-    logger.error("[FAILURE]   Some tests not succeed\n")
+    logger.error("[FAILURE]   Some tests not succeed.\n")
 

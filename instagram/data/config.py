@@ -64,6 +64,11 @@ LOGGING_CONFIG = {
             'filename': os.path.join(log_folder, "error.log"),
             'formatter': 'detailed'
         },
+        'error_console': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
         'instagram': {
             'level': 'WARNING',
             'class': 'logging.FileHandler',
@@ -80,7 +85,7 @@ LOGGING_CONFIG = {
     'loggers': {
         '': {
             'level': 'ERROR',
-            'handlers': ['error', 'console']
+            'handlers': ['error', 'error_console']
         },
         'instagram': {
             'level': 'INFO',
