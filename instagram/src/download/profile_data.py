@@ -48,7 +48,7 @@ class ProfileData:
             child = edge["node"]
             node = {'type': 'video' if child["is_video"] else 'image',
                     'id': child["shortcode"],
-                    'comments': child["edge_liked_by"]["count"],
+                    'comments': child["edge_media_to_comment"]["count"],
                     'likes': child["edge_liked_by"]["count"]}
 
             if child["is_video"]:
