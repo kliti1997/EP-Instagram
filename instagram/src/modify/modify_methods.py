@@ -66,7 +66,7 @@ def compare_igtv(url, ig):
 
     for index in range(len(new_igtv_href_list)):
         if new_igtv_href_list[index] not in old_igtv_href_list:
-            new_igtv_href_list[index].attrib["style"] = "border: 4px solid green;"
+            ig[NEW].get_igtvs()[index].attrib["style"] = "border: 4px solid green;"
 
 
     ig[NEW].write(url)
