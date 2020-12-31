@@ -15,7 +15,7 @@ from collections import defaultdict
 from urllib.parse import urljoin
 from time import sleep
 import os
-import logging
+import logging.config
 import re
 from pathlib import Path
 
