@@ -22,8 +22,8 @@ from pathlib import Path
 config_folder = os.path.dirname(os.path.abspath(__file__))
 monitoring_folder = os.path.join(config_folder, "files")
 profile_folder = os.path.join(config_folder, "profile")
-#geckodriver = os.path.join(config_folder, "geckodriver")
-geckodriver = os.path.join(config_folder, "geckodriver_macOS")
+geckodriver = os.path.join(config_folder, "geckodriver")
+#geckodriver = os.path.join(config_folder, "geckodriver_macOS")
 """
 Different path variables.
 """
