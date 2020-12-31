@@ -63,6 +63,7 @@ class ProfileData:
     def read_initial_nodes(self):
         """
         Extracts the first 12 posts / igtvs from 'window._sharedData'
+        Tagged posts are only loaded via additional requests.
         """
         self.append_edges_to_list(self._user["edge_owner_to_timeline_media"]["edges"], self.posts)
         self.append_edges_to_list(self._user["edge_felix_video_timeline"]["edges"], self.igtvs)
