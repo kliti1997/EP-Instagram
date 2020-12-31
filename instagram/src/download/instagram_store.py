@@ -5,15 +5,17 @@ from instagram.src.download.profile_data import ProfileData
 
 class InstagramStore:
     def __init__(self, monitoring_map):
-        print("\n\n\t************STORING PHASE************")
+        logger = logging.getLogger('instagram')
+        logger.info("\n\n")
+        logger.info("\t************STORING PHASE************\n")
         driver.get(base_url)
         random_sleep(5)
         login(ig_credentials["user"], ig_credentials["pass"])
 
         for url in monitoring_map["instagram"]:
-            print("store the html code of : (" + url["href"] + ") in " + url["monitoring_folder"] + "old.html")
-            print("OR in " + url["monitoring_folder"] + "new.html")
-            print("--------------------------------------------\n")
+            logger.info("store the html code of : (" + url["href"] + ") in " + url["monitoring_folder"] + "old.html")
+            logger.info("OR in " + url["monitoring_folder"] + "new.html")
+            logger.info("--------------------------------------------\n")
 
             try:
                 pre_download(url)

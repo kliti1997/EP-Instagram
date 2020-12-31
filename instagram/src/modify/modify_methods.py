@@ -51,32 +51,22 @@ def compare_followers_following(url, ig):
 
 def compare_igtv(url, ig):
     # Getting all links in old igtv html file
-    old_igtv_a_list = []
     old_igtv_href_list = []
 
     # Saving only elements with tv/ links
     for link in ig[OLD].get_igtvs():
-        old_igtv_a_list.append(link)
-
-    # Only saving href attribute for comparison
-    for href in old_igtv_a_list:
-        old_igtv_href_list.append(href.attrib["href"])
+        old_igtv_href_list.append(link.attrib["href"])
 
     # Getting all links in new igtv html file
     new_igtv_href_list = []
-    new_igtv_a_list = []
 
     # Saving only elements with tv/ links
     for link in ig[NEW].get_igtvs():
-        new_igtv_a_list.append(link)
-
-    # Only saving href attribute for comparison
-    for href in new_igtv_a_list:
-        new_igtv_href_list.append(href.attrib["href"])
+        new_igtv_href_list.append(link.attrib["href"])
 
     for index in range(len(new_igtv_href_list)):
         if new_igtv_href_list[index] not in old_igtv_href_list:
-            new_igtv_a_list[index].attrib["style"] = "border: 4px solid green;"
+            ig[NEW].get_igtvs()[index].attrib["style"] = "border: 4px solid green;"
 
 
     ig[NEW].write(url)

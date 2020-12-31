@@ -6,6 +6,8 @@ from instagram.data.config import *
 from instagram.src.helper import *
 from instagram.src.instagram_object import InstagramObject
 
+logger = logging.getLogger('compare_test')
+
 monitoring_map = defaultdict(list)
 url1 = {"id": "polizei.hannover",
         "href": "https://www.instagram.com/polizei.hannover/",
@@ -28,8 +30,8 @@ monitoring_map["instagram"].append(url2)
 monitoring_map["instagram"].append(url3)
 
 
-
-print("\n\t************PRE-TEST PHASE************")
+logger.info("\t\t{{{COMPARE TEST}}}")
+logger.debug("\n\t************PRE-TEST PHASE************")
 for url in monitoring_map["instagram"]:
     folder_path = get_folder_path(url)
     old_html_path = get_old_html_path(url)
@@ -43,10 +45,10 @@ for url in monitoring_map["instagram"]:
         os.remove(new_html_path)
     if os.path.exists(compare_test_old):
         copyfile(compare_test_old, old_html_path)
-        print(old_html_path + ' overwritten.')
+        logger.debug(old_html_path + ' overwritten.')
     if os.path.exists(compare_test_new):
         copyfile(compare_test_new, new_html_path)
-        print(new_html_path + ' overwritten.')
+        logger.debug(new_html_path + ' overwritten.')
 
 
 InstagramMonitor(monitoring_map)
@@ -60,7 +62,7 @@ def changes_counter(html_file) -> int:
     return counter
 
 
-print("\n\t************TEST PHASE************")
+logger.info("\n\t************TEST PHASE************")
 tests_passed = True
 for url in monitoring_map["instagram"]:
     folder_path = get_folder_path(url)
@@ -70,21 +72,21 @@ for url in monitoring_map["instagram"]:
     borders = changes_counter(new_html_path)
     expected_borders = changes_counter(expected_new_html)
 
-    print("\t     Found " + str(borders) + " borders after compare.")
-    print("\t     Expected " + str(expected_borders) + " borders.")
+    logger.info("\t     Found " + str(borders) + " borders after compare.")
+    logger.info("\t     Expected " + str(expected_borders) + " borders.")
 
     if borders == expected_borders:
-        print("[SUCCESS]    Compare test succeed.\n")
+        logger.info("[SUCCESS]    Compare test succeed.\n")
     else:
-        print("[FAILURE]    Compare test not succeed in file: " + new_html_path + "\n")
+        logger.error("[FAILURE]    Compare test not succeed in file: " + new_html_path + "\n")
         tests_passed = False
     
     driver.get('file://' + new_html_path)
     input("Press Enter to continue...")
 
 if tests_passed:
-    print("[SUCCESS]   All tests succeeded. Please manually check html too.\n")
+    logger.info("[SUCCESS]   All tests succeeded. Please manually check html too.\n")
 else:
-    print("[FAILURE]   Some tests did not succeed\n")
+    logger.error("[FAILURE]   Some tests did not succeed\n")
 
 driver.quit()
