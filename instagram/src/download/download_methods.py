@@ -32,25 +32,25 @@ def login(username, password):
     Args:
         username (str): The username which is used to log in.
         password (str): The password which is used to log in.
-    """    
-    #Accepts the cookie banner, if it exists.
-    if driver.find_elements_by_xpath("//*[text()='Akzeptieren']"):
-        driver.find_element_by_xpath("//*[text()='Akzeptieren']").click()
+    """
+    # Accepts the cookie banner, if it exists.
+    if driver.find_elements_by_xpath("//*[text()='Akzeptieren' or text()='Accept']"):
+        driver.find_element_by_xpath("//*[text()='Akzeptieren'  or text()='Accept']").click()
         random_sleep(5)
 
     # Log into account only if not already logged in.
-    if driver.find_elements_by_xpath("//*[text()='Anmelden']"):
+    if driver.find_elements_by_xpath("//*[text()='Anmelden' or text()='Log In']"):
         driver.find_element_by_name("username").send_keys(username)
         driver.find_element_by_name("password").send_keys(password)
-        driver.find_element_by_xpath("//*[text()='Anmelden']").click()
+        driver.find_element_by_xpath("//*[text()='Anmelden' or text()='Log In']").click()
         random_sleep(10)
 
-    #Accepts the stay logged in banner, if it exists.
-    if driver.find_elements_by_xpath("//*[text()='Informationen speichern']"):
-        driver.find_element_by_xpath("//*[text()='Informationen speichern']").click()
+    # Accepts the stay logged in banner, if it exists.
+    if driver.find_elements_by_xpath("//*[text()='Informationen speichern' or text()='Save Info']"):
+        driver.find_element_by_xpath("//*[text()='Informationen speichern' or text()='Save Info']").click()
         random_sleep(10)
-    
-    #Accepts the cookie banner, if it exists.
+
+    # Accepts the cookie banner, if it exists.
     if driver.find_elements_by_xpath("//*[text()='Jetzt nicht']"):
         driver.find_element_by_xpath("//*[text()='Jetzt nicht']").click()
         random_sleep(10)
@@ -85,30 +85,28 @@ def convert_links(source):
     return source
 
 
-def add_html_tags(type, ig_obj, prof_data=None) -> None:
+def add_html_tags(type: str, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
     if type == "posts":
-        for post in ig_obj.get_posts():
-            #TODO Dummy Werte ersetzten
+        for i, post in enumerate(ig_obj.get_posts()):
             if post.xpath(".//span[@aria-label='Video']"):
-                post.attrib["data-view-count"] = "0"
+                post.attrib["data-view-count"] = str(prof_data.posts[i]["view_count"])
             else:
-                post.attrib["data-liked-by"] = "0"
-            post.attrib["data-comment"] = "0"
+                post.attrib["data-liked-by"] = str(prof_data.posts[i]["likes"])
+            post.attrib["data-comment"] = str(prof_data.posts[i]["comments"])
 
     if type == "tagged":
-        for tag in ig_obj.get_tags():
-            #TODO Dummy Werte ersetzten
+        for i, tag in enumerate(ig_obj.get_tags()):
             if tag.xpath(".//span[@aria-label='Video']"):
-                tag.attrib["data-view-count"] = "0"
+                tag.attrib["data-view-count"] = str(prof_data.tagged[i]["view_count"])
             else:
-                tag.attrib["data-liked-by"] = "0"
-            tag.attrib["data-comment"] = "0"
+                tag.attrib["data-liked-by"] = str(prof_data.tagged[i]["likes"])
+            tag.attrib["data-comment"] = str(prof_data.tagged[i]["comments"])
 
     elif type == "igtv":
-        for igtv in ig_obj.get_igtvs():
-            #TODO Dummy Werte ersetzten
-            igtv.attrib["data-view-count"] = "0"
-            igtv.attrib["data-comment"] = "0"
+        for i, igtv in enumerate(ig_obj.get_igtvs()):
+            igtv.attrib["data-view-count"] = str(prof_data.igtvs[i]["view_count"])
+            igtv.attrib["data-comment"] = str(prof_data.igtvs[i]["likes"])
+
 
 def save_html(url):
     """
@@ -126,8 +124,6 @@ def save_html(url):
     random_sleep(10)
 
     content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
-    #initial = driver.execute_script("return window._sharedData;")
-    #profile = ProfileData(initial_data=initial, requests=driver.requests)
 
     with open(get_new_html_path(url), "w") as f:
         f.write(content)
