@@ -5,19 +5,22 @@ class ProfileData:
     """
     Class to wrap all profile data.
     """
+
     def __init__(self, initial_data, requests):
+        """
+                Node structure:
+                    type (str): 'image' or 'video'
+                    id (str): alphabetical URL id
+                    comments (int): number of comments
+                    likes (int): number of likes
+                    view_count (int): number of views (for videos only)
+                """
         self.num_followers = -1
         self.num_following = -1
         self.story_timestamp = -1
-        self.nodes = []  # Beinhaltet Posts, IGTV's, Markiert
-        """
-        Node structure:
-            type (str): 'image' or 'video'
-            id (str): alphabetical URL id
-            comments (int): number of comments
-            likes (int): number of likes
-            view_count (int): number of views (for videos only)
-        """
+        self.posts = []  # Beinhaltet Posts, IGTV's, Markiert
+        self.igtvs = []
+        self.tagged = []
 
         self._initial = initial_data
         self._user = self._initial["entry_data"]["ProfilePage"][0]["graphql"]["user"]
@@ -30,7 +33,7 @@ class ProfileData:
 
     def __str__(self):
         res = f"followers: {self.num_followers}\nfollowing: {self.num_following}\nstory_timestamp: {str(self.story_timestamp)}\nnodes:\n"
-        for node in self.nodes:
+        for node in self.posts:
             res += str(node) + "\n"
         return res
 
@@ -40,39 +43,53 @@ class ProfileData:
     def read_followers(self):
         self.num_followers = self._user["edge_followed_by"]["count"]
 
-    def read_initial_nodes(self):
-        """
-
-        """
-        for edge in self._user["edge_owner_to_timeline_media"]["edges"]:
+    @staticmethod
+    def append_edges_to_list(parent_edge, target_list) -> None:
+        for edge in parent_edge:
             child = edge["node"]
-            node = {'type': 'video' if child["is_video"] else 'image',
+            item = {'type': 'video' if child["is_video"] else 'image',
                     'id': child["shortcode"],
                     'comments': child["edge_media_to_comment"]["count"],
-                    'likes': child["edge_liked_by"]["count"]}
-
+                    'likes': child["edge_media_preview_like"]["count"]}
             if child["is_video"]:
-                node.update({'view_count': child["video_view_count"]})
-            self.nodes.append(node)
+                item.update({'view_count': child["video_view_count"]})
+            if 'edge_media_preview_like' in child:
+                item.update({'likes': child["edge_media_preview_like"]["count"]})  # item 13-24
+            else:
+                item.update({'likes': child["edge_media_to_comment"]["count"]})  # item 1-12
 
-    def read_additional_nodes(self):
+            target_list.append(item)
+
+    def read_initial_nodes(self):
+        """
+        Extracts the first 12 posts / igtvs from 'window._sharedData'
+        """
+        self.append_edges_to_list(self._user["edge_owner_to_timeline_media"]["edges"], self.posts)
+        self.append_edges_to_list(self._user["edge_felix_video_timeline"]["edges"], self.igtvs)
+
+    def read_additional_nodes(self) -> None:
         for request in self._requests:
             if request.response:
                 if 'graphql' in request.url:
                     reply_content = request.response.body.decode('utf-8')
-                    if 'edge_owner_to_timeline_media' in reply_content and 'edge_suggested_users' not in reply_content:
+
+                    if 'edge_owner_to_timeline_media' in reply_content and 'edge_suggested_users' not in reply_content:  # posts
                         root = json.loads(reply_content)
-                        for edge in list(root["data"]["user"]["edge_owner_to_timeline_media"]["edges"]):
-                            child = edge["node"]
-                            node = {'type': 'video' if child["is_video"] else 'image',
-                                    'id': child["shortcode"],
-                                    'comments': child["edge_media_to_comment"]["count"],
-                                    'likes': child["edge_media_preview_like"]["count"]}
-                            if child["is_video"]:
-                                node.update({'view_count': child["video_view_count"]})
-                            self.nodes.append(node)
-                        return
-        raise RuntimeError("No request found that contains info about 13th-24th picture")
+                        parent_edge = root["data"]["user"]["edge_owner_to_timeline_media"]["edges"]
+                        self.append_edges_to_list(parent_edge, self.posts)
+                        continue
+
+                    if 'edge_felix_video_timeline' in reply_content:  # igtv
+                        root = json.loads(reply_content)
+                        parent_edge = root["data"]["user"]["edge_felix_video_timeline"]["edges"]
+                        self.append_edges_to_list(parent_edge, self.igtvs)
+                        continue
+
+                    if 'edge_user_to_photos_of_you' in reply_content:  # tagged
+                        root = json.loads(reply_content)
+                        parent_edge = root["data"]["user"]["edge_user_to_photos_of_you"]["edges"]
+                        self.append_edges_to_list(parent_edge, self.tagged)
+                        continue
 
     def read_story(self):
         """
