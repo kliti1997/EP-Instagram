@@ -8,10 +8,11 @@ class InstagramMonitor:
         logger = logging.getLogger('instagram')
         logger.info("\n\n")
         logger.info("\t********MONITORING PHASE********")
-        #Wir untersuchen nur noch die subdirectories fuer jede einzelne Anfrage:
-        #Bspweise vergleichen wir nur die Posts Versionen miteinander, wenn auch der type Posts ist
-        #Sonst kommt es zu mehrfachen Vergleichen, weil fuer jeden einzelne url('type=posts', 'type=igtv', 'type=tagged')
-        #jedes mal alles durchgegangen wird(3*3=9 mal)
+        # We check only the subdirectories for every request. For example we check only the posts version
+        # with each other when also the type Posts is. Otherwise there would be more compares
+        # because for every url ('type=posts', 'type=igtv', 'type=tagged') every time everything would be compared.
+        # 3 * 3 = 9 times
+
         for url in monitoring_map["instagram"]:
            
             html_type = get_type(url)
@@ -32,7 +33,7 @@ class InstagramMonitor:
                 compare_posts(url, ig)
             elif html_type == "igtv":
                 compare_igtv(url, ig)
-            
+            #todo tagged too?
             #compare_hover_items(url, ig)
 
 """ Circular import
