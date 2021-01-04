@@ -32,7 +32,7 @@ class InstagramObject:
     def get_flag(self) -> int:
         """
         The flag specifies if dom objects of a new, or old html
-        file are stored in the current isntance.
+        file are stored in the current instance.
 
         Returns:
             int: 0 if objects of a new file are stored, otherwise 1.
@@ -84,7 +84,7 @@ class InstagramObject:
 
     def get_posts(self) -> list:
         """
-        The method returns a list which contains all of the 24 posts, whihc are included
+        The method returns a list which contains all of the 24 posts, which are included
         in the dom tree. 
         We set the first a-tag element as the root element of the post, because it contains
         the most important data like the unique href-attribute, which is referring to the
@@ -136,7 +136,7 @@ class InstagramObject:
         self.tags = self.get_tree().xpath("//div[@id='react-root']//article//a")
 
     """
-    Gibt den Tree, flag, posts, etc. zurück.
+    Returns the Tree,flag, posts etc.
     """
     def __tostr__(self, attr):
         ret = b""
@@ -160,8 +160,8 @@ class InstagramObject:
         return ret
 
     """
-    Speichert den etree in einem hthml file ab, nachdem Änderungen vorgenommen worden sind.
-    Wichtig für die download Phase, nachdem html tags wie data-liked-by hinzugefügt. worden sind.
+    Saves the etree in a HTML file after the changes were executed. It is important for the download
+    phase after inserting the HTML Tags like data-liked-by.
     """
     def write(self, url):
         if self.get_flag() == NEW:
