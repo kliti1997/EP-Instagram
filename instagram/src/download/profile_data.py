@@ -18,7 +18,7 @@ class ProfileData:
         self.num_followers = -1
         self.num_following = -1
         self.story_timestamp = -1
-        self.posts = []  # Beinhaltet Posts, IGTV's, Markiert
+        self.posts = []  # Includes Posts, IGTVs and Tagged
         self.igtvs = []
         self.tagged = []
 
@@ -62,7 +62,7 @@ class ProfileData:
 
     def read_initial_nodes(self):
         """
-        Extracts the first 12 posts / igtvs from 'window._sharedData'
+        Extracts the first 12 posts / IGTVs from 'window._sharedData'
         """
         self.append_edges_to_list(self._user["edge_owner_to_timeline_media"]["edges"], self.posts)
         self.append_edges_to_list(self._user["edge_felix_video_timeline"]["edges"], self.igtvs)
