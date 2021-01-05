@@ -20,7 +20,7 @@ def compare_posts(url, ig):
     for link in ig[NEW].get_posts():
         new_links_list.append(link.attrib["href"])
 
-    # Links vergleichen
+    # Compare links, if a new one is found we mark it with a green border
     for index in range(len(new_links_list)):
         if new_links_list[index] not in old_links_list:
             parent = ig[NEW].get_posts()[index].getparent()
@@ -33,13 +33,13 @@ def compare_followers_following(url, ig):
     oldFollowersCnt = ig[OLD].get_followers()[0].attrib["title"]
     newFollowersCnt = ig[NEW].get_followers()[0].attrib["title"]
 
-    #Ungefaehre Follower Anzahl mit genauer Anzahl ersetzen
+    # Substitute the compact Followers number with the precise one
     ig[NEW].get_followers()[0].text = newFollowersCnt
 
     if oldFollowersCnt != newFollowersCnt:
         ig[NEW].get_followers().attrib['style'] = "background-color: green;"
                 
-    #Following bzw. Abonnierte
+    #Following or Abonnierte
     oldFollowingCnt = ig[OLD].get_following()[0].text
     newFollowingCnt = ig[NEW].get_following()[0].text
                 
@@ -52,22 +52,19 @@ def compare_followers_following(url, ig):
 def compare_igtv(url, ig):
     # Getting all links in old igtv html file
     old_igtv_href_list = []
-
-    # Saving only elements with tv/ links
     for link in ig[OLD].get_igtvs():
         old_igtv_href_list.append(link.attrib["href"])
 
     # Getting all links in new igtv html file
     new_igtv_href_list = []
-
-    # Saving only elements with tv/ links
     for link in ig[NEW].get_igtvs():
         new_igtv_href_list.append(link.attrib["href"])
 
+    # Compare links, if a new one is found we mark it with a green border
+    #todo implementation check, get parent missing
     for index in range(len(new_igtv_href_list)):
         if new_igtv_href_list[index] not in old_igtv_href_list:
             ig[NEW].get_igtvs()[index].attrib["style"] = "border: 4px solid green;"
-
 
     ig[NEW].write(url)
 
@@ -164,17 +161,17 @@ def compare_hover_items(url, ig):
     ig[NEW].write(url)
 
 def compare_tagged(url, ig):
-    # Links in alte Datei rausholen
+    # Take the links in the old file
     old_links_list = []  # Only holds hrefs
     for link in ig[OLD].get_tags():
         old_links_list.append(link.attrib["href"])
 
-    # Links in neue Datei rausholen
+    # Take the links in the new file
     new_links_list = []  # Only holds hrefs
     for link in ig[NEW].get_tags():
         new_links_list.append(link.attrib["href"])
 
-    # Links vergleichen
+    # Compare links, if there are new ones, mark them with a green border
     for index in range(len(new_links_list)):
         if new_links_list[index] not in old_links_list:
             parent = ig[NEW].get_tags()[index].getparent()

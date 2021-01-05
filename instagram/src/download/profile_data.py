@@ -18,7 +18,7 @@ class ProfileData:
         self.num_followers = -1
         self.num_following = -1
         self.story_timestamp = -1
-        self.posts = []  # Beinhaltet Posts, IGTV's, Markiert
+        self.posts = []  # Includes Posts, IGTVs and Tagged
         self.igtvs = []
         self.tagged = []
 

@@ -86,6 +86,7 @@ def convert_links(source):
     return source
 
 
+# Adding the number of views and comments for videos or likes and comments for photos when they have changed
 def add_html_tags(type: str, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
     if type == "posts":
         for i, post in enumerate(ig_obj.get_posts()):
