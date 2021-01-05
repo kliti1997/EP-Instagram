@@ -5,6 +5,7 @@ from lxml import etree, html
 NEW = 0
 OLD = 1
 
+
 class InstagramObject:
     def __init__(self, url, flag):
         if flag == "new":
@@ -110,6 +111,19 @@ class InstagramObject:
 
     def get_tags(self) -> list:
         return self.tags
+
+    def get_profile_pic_download(self, picture_url: str) -> etree:
+        """
+        Returns the etree element of the profile picture in the original DOM.
+        """
+        return self.tree.xpath(f"//img[starts-with(@src,'{picture_url}')]")[0].getparent()
+
+    def get_profile_pic_modify(self):
+        """
+        Returns the etree element of the profile picture in the saved html file.
+        The get_profile_pic_download can't be used because the picture url is not available anymore.
+        """
+        return self.tree.xpath("//span[@data-story-timestamp]")[0]
 
     def __set_tree(self, url) -> None:
         if self.flag == NEW:

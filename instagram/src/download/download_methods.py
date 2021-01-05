@@ -86,8 +86,11 @@ def convert_links(source):
     return source
 
 
-# Adding the number of views and comments for videos or likes and comments for photos when they have changed
 def add_html_tags(type: str, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
+    """
+    Adding the number of views and comments for videos or likes and comments for photos when they have changed.
+    Adding a handle to the profile data for easier identification later.
+    """
     if type == "posts":
         for i, post in enumerate(ig_obj.get_posts()):
             if post.xpath(".//span[@aria-label='Video']"):
@@ -108,6 +111,12 @@ def add_html_tags(type: str, ig_obj: InstagramObject, prof_data: ProfileData) ->
         for i, igtv in enumerate(ig_obj.get_igtvs()):
             igtv.attrib["data-view-count"] = str(prof_data.igtvs[i]["view_count"])
             igtv.attrib["data-comment"] = str(prof_data.igtvs[i]["likes"])
+
+    # Setting a handle to the profile picture
+    ig_obj.get_profile_pic_download(prof_data.profile_pic_url).attrib["data-story-timestamp"] = str(prof_data.story_timestamp)
+
+    # Setting the instagram.com/stories/profile_name url
+    # TODO
 
 
 def save_html(url):

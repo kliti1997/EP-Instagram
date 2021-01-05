@@ -178,3 +178,11 @@ def compare_tagged(url, ig):
             parent.attrib["style"] = "border: 4px solid green;"
 
     ig[NEW].write(url)
+
+
+def compare_stories(ig):
+    old_timestamp = ig[OLD].get_profile_pic_modify().attrib["data-story-timestamp"]
+    new_timestamp = ig[NEW].get_profile_pic_modify().attrib["data-story-timestamp"]
+
+    if new_timestamp > old_timestamp:
+        ig[NEW].get_profile_pic_modify().attrib["style"] = "border: 4px solid green;"

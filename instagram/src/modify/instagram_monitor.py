@@ -1,6 +1,6 @@
 from instagram.data.config import *
 from instagram.src.helper import *
-from instagram.src.modify.modify_methods import pre_modify, compare_posts, compare_followers_following, compare_igtv, compare_hover_items
+from instagram.src.modify.modify_methods import pre_modify, compare_posts, compare_followers_following, compare_igtv, compare_hover_items, compare_stories
 from instagram.src.instagram_object import InstagramObject
 
 class InstagramMonitor:
@@ -28,6 +28,7 @@ class InstagramMonitor:
             ig = (InstagramObject(url, "new"), InstagramObject(url, "old"))
 
             compare_followers_following(url, ig)
+            compare_stories(ig)
 
             if html_type == "posts":
                 compare_posts(url, ig)
