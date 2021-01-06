@@ -14,3 +14,20 @@ def get_href(url):
 
 def get_type(url):
     return str(url["type"])
+
+def get_mode(url)
+    return str(url["mode"])
+    
+def init_return_values(url):
+    url["change"] = False
+    url["notify"] = False
+    url["err"] = False
+
+def set_change(url):
+    url["change"] = True
+
+def set_notify(url):
+    url["notify"] = True
+
+def set_err(url):
+    url["err"] = True

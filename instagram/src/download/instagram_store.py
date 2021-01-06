@@ -24,6 +24,7 @@ class InstagramStore:
             except Exception as e:
                 eType = e.__class__.__name__
                 logger.error("downloading the html files.\nException message: " + eType + ": " + str(e))
+                set_err(url)
 
             ig = InstagramObject(url, "new")
             initial = driver.execute_script("return window._sharedData;")

@@ -25,6 +25,8 @@ def compare_posts(url, ig):
         if new_links_list[index] not in old_links_list:
             parent = ig[NEW].get_posts()[index].getparent()
             parent.attrib["style"] = "border: 4px solid green;"
+            set_change(url)
+            set_notify(url)
 
     ig[NEW].write(url)
 
@@ -38,6 +40,9 @@ def compare_followers_following(url, ig):
 
     if oldFollowersCnt != newFollowersCnt:
         ig[NEW].get_followers().attrib['style'] = "background-color: green;"
+        set_change(url)
+        if get_mode(url) == '1':
+            set_notify(url)
                 
     #Following or Abonnierte
     oldFollowingCnt = ig[OLD].get_following()[0].text
@@ -45,6 +50,9 @@ def compare_followers_following(url, ig):
                 
     if oldFollowingCnt != newFollowingCnt:
         ig[NEW].get_following().attrib['style'] = "background-color: green;"
+        set_change(url)
+        if get_mode(url) == '1':
+            set_notify(url)
     
     ig[NEW].write(url)
 
@@ -65,6 +73,8 @@ def compare_igtv(url, ig):
     for index in range(len(new_igtv_href_list)):
         if new_igtv_href_list[index] not in old_igtv_href_list:
             ig[NEW].get_igtvs()[index].attrib["style"] = "border: 4px solid green;"
+            set_change(url)
+            set_notify(url)
 
     ig[NEW].write(url)
 
@@ -217,6 +227,8 @@ def compare_tagged(url, ig):
         if new_links_list[index] not in old_links_list:
             parent = ig[NEW].get_tags()[index].getparent()
             parent.attrib["style"] = "border: 4px solid green;"
+            set_change(url)
+            set_notify(url)
 
     ig[NEW].write(url)
 
@@ -227,3 +239,5 @@ def compare_stories(ig):
 
     if new_timestamp > old_timestamp:
         ig[NEW].get_profile_pic_modify().attrib["style"] = "border: 4px solid green;"
+        set_change(url)
+        set_notify(url)

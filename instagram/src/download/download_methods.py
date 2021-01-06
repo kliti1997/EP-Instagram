@@ -184,6 +184,7 @@ def pre_download(url):
     except Exception as e:
         eType = e.__class__.__name__
         logger.error("error in pre-download phase.\nException message: " + eType + ": " + str(e))
+        set_err(url)
 
 def replace_video_thumbnail(ig, post_object):
     video_object = post_object
