@@ -1,5 +1,6 @@
 from instagram.data.config import *
 from instagram.src.download.download_methods import login, random_sleep, pre_download, save_html, add_html_tags
+from instagram.src.helper import set_err
 from instagram.src.instagram_object import InstagramObject
 from instagram.src.download.profile_data import ProfileData
 
