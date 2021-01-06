@@ -23,8 +23,9 @@ class InstagramMonitor:
             logger.info("compare ("+old_html_path+") with ("+new_html_path+")") 
             
             if not pre_modify(url):
-                logger.error("error while compare: "+old_html_path+" or "+new_html_path+" is missing")
-                set_err(url)
+                logger.info("error while compare: "+old_html_path+" or "+new_html_path+" is missing")
+                set_change(url)
+                logger.debug(url)
                 continue
 
             ig = (InstagramObject(url, "new"), InstagramObject(url, "old"))
@@ -39,7 +40,7 @@ class InstagramMonitor:
             elif html_type == "tagged":
                 compare_tagged(url, ig)
             compare_hover_items(url, ig)
-            logger.info(url)
+            logger.debug(url)
 
 """ Circular import
 if __name__ == "__main__":

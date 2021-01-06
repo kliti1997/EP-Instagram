@@ -42,7 +42,7 @@ def login(username, password):
 
     # Accepts the cookie banner, if it exists.
     if driver.find_elements_by_xpath("//*[text()='Akzeptieren' or text()='Accept']"):
-        driver.find_element_by_xpath("//*[text()='Akzeptieren'  or text()='Accept']").click()
+        driver.find_element_by_xpath("//*[text()='Akzeptieren' or text()='Accept']").click()
         random_sleep(5)
 
     # Log into account only if not already logged in.
