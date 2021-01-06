@@ -68,7 +68,8 @@ def compare_igtv(url, ig):
 
     ig[NEW].write(url)
 
-
+#TODO bei igtv und vll auch tagged müssen anscheinend andere html klassen fürs hover hinzugefügt werden
+# Ansicht ist komisch
 def compare_hover_items(url, ig):
     """
     Benötigte html-Attribute:
@@ -114,9 +115,9 @@ def compare_hover_items(url, ig):
                     </ul>
                 </div>"""
 
-    add_border = "style='border: 4px solid green;'"
+    add_border = "style='background-color: green;'"
 
-    # Posts miteinander vergleichen #TODO Für igtv, tagged anpassen
+
     for new_ele in new_elements:
         for old_ele in old_elements:
             if new_ele.attrib["href"] == old_ele.attrib["href"]:
@@ -126,36 +127,76 @@ def compare_hover_items(url, ig):
                 else:
                     to_cmp = "data-liked-by"
 
-                if new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] and new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
-                    new_ele.append( # Views und comments haben sich verändert.
-                        etree.fromstring(
-                            hover.format(likes_views = new_ele.attrib[to_cmp],
-                            icon_likes_views="coreSpritePlayIconSmall",
-                            comments = new_ele.attrib["data-comment"],
-                            style_likes_views = add_border,
-                            style_comments = add_border)
+                if url["type"] != "igtv":
+                    if new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] and new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
+                        # Views und comments haben sich verändert.
+                        new_ele.append(
+                            etree.fromstring(
+                                hover.format(likes_views = new_ele.attrib[to_cmp],
+                                icon_likes_views="coreSpritePlayIconSmall",
+                                comments = new_ele.attrib["data-comment"],
+                                style_likes_views = add_border,
+                                style_comments = add_border)
+                            )
                         )
-                    )
-                elif new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp]:
-                    new_ele.append( # Nur die views, oder likes, haben sich verändert.
-                        etree.fromstring(
-                            hover.format(likes_views = new_ele.attrib[to_cmp],
-                            icon_likes_views="coreSpritePlayIconSmall",
-                            comments = new_ele.attrib["data-comment"],
-                            style_likes_views = add_border,
-                            style_comments = "")
+                    elif new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp]:
+                        new_ele.append( # Nur die views, oder likes, haben sich verändert.
+                            etree.fromstring(
+                                hover.format(likes_views = new_ele.attrib[to_cmp],
+                                icon_likes_views="coreSpritePlayIconSmall",
+                                comments = new_ele.attrib["data-comment"],
+                                style_likes_views = add_border,
+                                style_comments = "")
+                            )
+                        )  
+                    elif new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
+                        new_ele.append( # Nur die comments haben sich verändert.
+                            etree.fromstring(
+                                hover.format(likes_views = new_ele.attrib[to_cmp],
+                                icon_likes_views="coreSpritePlayIconSmall",
+                                comments = new_ele.attrib["data-comment"],
+                                style_likes_views = "",
+                                style_comments = add_border)
+                            )
                         )
-                    )    
-                elif new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
-                    new_ele.append( # Nur die comments haben sich verändert.
-                        etree.fromstring(
-                            hover.format(likes_views = new_ele.attrib[to_cmp],
-                            icon_likes_views="coreSpritePlayIconSmall",
-                            comments = new_ele.attrib["data-comment"],
-                            style_likes_views = "",
-                            style_comments = add_border)
+                else:
+                    # Bei IGTV existiert die Klasse qn-0x bereits und muss ersetzt werden für den hover effekt.
+                    if new_ele.xpath(".//div[@class='qn-0x']") and (new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] or new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]):
+                        rmv_list = new_ele.xpath(".//div[@class='qn-0x']")
+                        for to_rmv in rmv_list:
+                            to_rmv.getparent().remove(ele)
+
+                    if new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] and new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
+                        # Views und comments haben sich verändert.
+                        new_ele.getchildren()[0].append(
+                            etree.fromstring(
+                                hover.format(likes_views = new_ele.attrib[to_cmp],
+                                icon_likes_views="coreSpritePlayIconSmall",
+                                comments = new_ele.attrib["data-comment"],
+                                style_likes_views = add_border,
+                                style_comments = add_border)
+                            )
                         )
-                    )
+                    elif new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp]:
+                        new_ele.getchildren()[0].append( # Nur die views, oder likes, haben sich verändert.
+                            etree.fromstring(
+                                hover.format(likes_views = new_ele.attrib[to_cmp],
+                                icon_likes_views="coreSpritePlayIconSmall",
+                                comments = new_ele.attrib["data-comment"],
+                                style_likes_views = add_border,
+                                style_comments = "")
+                            )
+                        )  
+                    elif new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
+                        new_ele.getchildren()[0].append( # Nur die comments haben sich verändert.
+                            etree.fromstring(
+                                hover.format(likes_views = new_ele.attrib[to_cmp],
+                                icon_likes_views="coreSpritePlayIconSmall",
+                                comments = new_ele.attrib["data-comment"],
+                                style_likes_views = "",
+                                style_comments = add_border)
+                            )
+                        )
 
     head[0].append(etree.fromstring(css))
     ig[NEW].write(url)

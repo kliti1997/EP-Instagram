@@ -34,7 +34,7 @@ class InstagramMonitor:
             elif html_type == "igtv":
                 compare_igtv(url, ig)
             #todo tagged too?
-            #compare_hover_items(url, ig)
+            compare_hover_items(url, ig)
 
 """ Circular import
 if __name__ == "__main__":
