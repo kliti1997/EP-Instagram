@@ -174,7 +174,7 @@ def compare_hover_items(url, ig):
                     if new_ele.xpath(".//div[@class='qn-0x']") and (new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] or new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]):
                         rmv_list = new_ele.xpath(".//div[@class='qn-0x']")
                         for to_rmv in rmv_list:
-                            to_rmv.getparent().remove(ele)
+                            to_rmv.getparent().remove(to_rmv)
 
                     if new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] and new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
                         # Views und comments haben sich verändert.
