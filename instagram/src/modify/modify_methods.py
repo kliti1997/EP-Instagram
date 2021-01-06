@@ -149,6 +149,8 @@ def compare_hover_items(url, ig):
                                 style_comments = add_border)
                             )
                         )
+                        set_change(url)
+                        set_notify(url)
                     elif new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp]:
                         new_ele.append( # Nur die views, oder likes, haben sich verändert.
                             etree.fromstring(
@@ -158,7 +160,10 @@ def compare_hover_items(url, ig):
                                 style_likes_views = add_border,
                                 style_comments = "")
                             )
-                        )  
+                        ) 
+                        set_change(url)
+                        if get_mode(url) == '1':
+                            set_notify(url) 
                     elif new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
                         new_ele.append( # Nur die comments haben sich verändert.
                             etree.fromstring(
@@ -169,6 +174,8 @@ def compare_hover_items(url, ig):
                                 style_comments = add_border)
                             )
                         )
+                        set_change(url)
+                        set_notify(url)
                 else:
                     # Bei IGTV existiert die Klasse qn-0x bereits und muss ersetzt werden für den hover effekt.
                     if new_ele.xpath(".//div[@class='qn-0x']") and (new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] or new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]):
@@ -187,6 +194,8 @@ def compare_hover_items(url, ig):
                                 style_comments = add_border)
                             )
                         )
+                        set_change(url)
+                        set_notify(url)
                     elif new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp]:
                         new_ele.getchildren()[0].append( # Nur die views, oder likes, haben sich verändert.
                             etree.fromstring(
@@ -196,7 +205,10 @@ def compare_hover_items(url, ig):
                                 style_likes_views = add_border,
                                 style_comments = "")
                             )
-                        )  
+                        )
+                        set_change(url)
+                        if get_mode(url) == '1':
+                            set_notify(url)   
                     elif new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
                         new_ele.getchildren()[0].append( # Nur die comments haben sich verändert.
                             etree.fromstring(
@@ -207,6 +219,8 @@ def compare_hover_items(url, ig):
                                 style_comments = add_border)
                             )
                         )
+                        set_change(url)
+                        set_notify(url)
 
     head[0].append(etree.fromstring(css))
     ig[NEW].write(url)
