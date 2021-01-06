@@ -15,7 +15,7 @@ def get_href(url):
 def get_type(url):
     return str(url["type"])
 
-def get_mode(url)
+def get_mode(url):
     return str(url["mode"])
     
 def init_return_values(url):

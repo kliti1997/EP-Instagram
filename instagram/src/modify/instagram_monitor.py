@@ -14,7 +14,8 @@ class InstagramMonitor:
         # 3 * 3 = 9 times
 
         for url in monitoring_map["instagram"]:
-           
+
+            init_return_values(url)
             html_type = get_type(url)
             old_html_path = get_old_html_path(url)
             new_html_path = get_new_html_path(url)
@@ -37,6 +38,7 @@ class InstagramMonitor:
                 compare_igtv(url, ig)
             #todo tagged too?
             compare_hover_items(url, ig)
+            logger.info(url)
 
 """ Circular import
 if __name__ == "__main__":
