@@ -5,6 +5,7 @@ from lxml import etree, html
 NEW = 0
 OLD = 1
 
+
 class InstagramObject:
     def __init__(self, url, flag):
         if flag == "new":
@@ -18,6 +19,8 @@ class InstagramObject:
         self.posts = None
         self.igtvs = None
         self.tags = None
+        # Default Video thumbnail path
+        self.video_thumbnail_path = "/home/kali/Desktop/seeeees/EP-Instagramm-1/instagram/data/video_thumbnail.jpeg"
 
         self.__set_tree(url)
         self.__set_followers(url)
@@ -111,6 +114,22 @@ class InstagramObject:
     def get_tags(self) -> list:
         return self.tags
 
+    def get_profile_pic_download(self, picture_url: str) -> etree:
+        """
+        Returns the etree element of the profile picture in the original DOM.
+        """
+        return self.tree.xpath(f"//img[starts-with(@src,'{picture_url}')]")[0].getparent()
+
+    def get_profile_pic_modify(self):
+        """
+        Returns the etree element of the profile picture in the saved html file.
+        The get_profile_pic_download can't be used because the picture url is not available anymore.
+        """
+        return self.tree.xpath("//span[@data-story-timestamp]")[0]
+
+    def get_video_thumbnail_path(self):
+        return self.video_thumbnail_path
+
     def __set_tree(self, url) -> None:
         if self.flag == NEW:
             self.tree = html.parse(get_new_html_path(url))
@@ -119,21 +138,21 @@ class InstagramObject:
 
     def __set_followers(self, url) -> None:
         self.followers = list(
-            self.get_tree().xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/followers/']")[0].iter())[0]
+            self.tree.xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/followers/']")[0].iter())[0]
 
     def __set_following(self, url) -> None:
         self.following = list(
-            self.get_tree().xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/following/']")[0].iter())[0]
+            self.tree.xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/following/']")[0].iter())[0]
 
     def __set_posts(self) -> None:
-        self.posts = self.get_tree().xpath("//div[@id='react-root']//article//a")
+        self.posts = self.tree.xpath("//div[@id='react-root']//article//a")
 
     def __set_igtvs(self) -> None:
-        all_links = self.get_tree().xpath("//div[@id='react-root']//main//div//a")
+        all_links = self.tree.xpath("//div[@id='react-root']//main//div//a")
         self.igtvs = [igtv_ele for igtv_ele in all_links if igtv_ele.attrib["href"].startswith("https://www.instagram.com/tv/")]
 
     def __set_tags(self) -> None:
-        self.tags = self.get_tree().xpath("//div[@id='react-root']//article//a")
+        self.tags = self.tree.xpath("//div[@id='react-root']//article//a")
 
     """
     Returns the Tree,flag, posts etc.
@@ -143,11 +162,11 @@ class InstagramObject:
         if attr == "flag":
             return self.get_flag()
         elif attr == "tree":
-            return etree.tostring(self.get_tree(), pretty_print=True)
+            return etree.tostring(self.tree, pretty_print=True)
         elif attr == "followers":
-            return etree.tostring(self.get_followers(), pretty_print=True)
+            return etree.tostring(self.tree, pretty_print=True)
         elif attr == "following":
-            return etree.tostring(self.get_following(), pretty_print=True)
+            return etree.tostring(self.tree, pretty_print=True)
         elif attr == "posts":
             for post in self.get_posts():
                 ret += etree.tostring(post, pretty_print=True)
@@ -165,6 +184,6 @@ class InstagramObject:
     """
     def write(self, url):
         if self.get_flag() == NEW:
-            open(get_new_html_path(url), "wb").write(etree.tostring(self.get_tree(), method="html"))
+            open(get_new_html_path(url), "wb").write(etree.tostring(self.tree, method="html"))
         else:
-            open(get_old_html_path(url), "wb").write(etree.tostring(self.get_tree(), method="html"))
+            open(get_old_html_path(url), "wb").write(etree.tostring(self.tree, method="html"))

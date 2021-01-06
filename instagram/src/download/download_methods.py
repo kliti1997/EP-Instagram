@@ -86,12 +86,16 @@ def convert_links(source):
     return source
 
 
-# Adding the number of views and comments for videos or likes and comments for photos when they have changed
 def add_html_tags(type: str, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
+    """
+    Adding the number of views and comments for videos or likes and comments for photos when they have changed.
+    Adding a handle to the profile data for easier identification later.
+    """
     if type == "posts":
         for i, post in enumerate(ig_obj.get_posts()):
             if post.xpath(".//span[@aria-label='Video']"):
                 post.attrib["data-view-count"] = str(prof_data.posts[i]["view_count"])
+                replace_video_thumbnail(ig_obj, post)
             else:
                 post.attrib["data-liked-by"] = str(prof_data.posts[i]["likes"])
             post.attrib["data-comment"] = str(prof_data.posts[i]["comments"])
@@ -108,6 +112,12 @@ def add_html_tags(type: str, ig_obj: InstagramObject, prof_data: ProfileData) ->
         for i, igtv in enumerate(ig_obj.get_igtvs()):
             igtv.attrib["data-view-count"] = str(prof_data.igtvs[i]["view_count"])
             igtv.attrib["data-comment"] = str(prof_data.igtvs[i]["likes"])
+
+    # Setting a handle to the profile picture
+    ig_obj.get_profile_pic_download(prof_data.profile_pic_url).attrib["data-story-timestamp"] = str(prof_data.story_timestamp)
+
+    # Setting the instagram.com/stories/profile_name url
+    # TODO
 
 
 def save_html(url):
@@ -168,3 +178,9 @@ def pre_download(url):
     except Exception as e:
         eType = e.__class__.__name__
         logger.error("error in pre-download phase.\nException message: " + eType + ": " + str(e))
+
+def replace_video_thumbnail(ig, post_object):
+    video_object = post_object
+    video_div = video_object.xpath(".//img[@src]")[0]
+    video_div.attrib["src"] = ig.get_video_thumbnail_path()
+    video_div.attrib["srcset"] = ""

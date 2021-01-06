@@ -8,7 +8,7 @@ class ProfileData:
 
     def __init__(self, initial_data, requests):
         """
-                Node structure:
+                posts / igtvs / tagged structure:
                     type (str): 'image' or 'video'
                     id (str): alphabetical URL id
                     comments (int): number of comments
@@ -21,6 +21,7 @@ class ProfileData:
         self.posts = []  # Includes Posts, IGTVs and Tagged
         self.igtvs = []
         self.tagged = []
+        self.profile_pic_url = ''
 
         self._initial = initial_data
         self._user = self._initial["entry_data"]["ProfilePage"][0]["graphql"]["user"]
@@ -30,6 +31,7 @@ class ProfileData:
         self.read_story()
         self.read_initial_nodes()
         self.read_additional_nodes()
+        self.read_profile_pic_url()
 
     def __str__(self):
         res = f"followers: {self.num_followers}\nfollowing: {self.num_following}\nstory_timestamp: {str(self.story_timestamp)}\nnodes:\n"
@@ -42,6 +44,10 @@ class ProfileData:
 
     def read_followers(self):
         self.num_followers = self._user["edge_followed_by"]["count"]
+
+    def read_profile_pic_url(self):
+        url = self._user['profile_pic_url']
+        self.profile_pic_url = url.split('?', 1)[0]  # url of the image, not containing any parameters
 
     @staticmethod
     def append_edges_to_list(parent_edge, target_list) -> None:
@@ -63,11 +69,16 @@ class ProfileData:
     def read_initial_nodes(self):
         """
         Extracts the first 12 posts / IGTVs from 'window._sharedData'
+        Tagged posts are only loaded via additional requests.
         """
         self.append_edges_to_list(self._user["edge_owner_to_timeline_media"]["edges"], self.posts)
         self.append_edges_to_list(self._user["edge_felix_video_timeline"]["edges"], self.igtvs)
 
     def read_additional_nodes(self) -> None:
+        """
+        Identifies responses to requests that contain data about posts / IGTVs / tagged and saves that data to corresponding lists.
+        Responses can be clearly identified by the existence (and abundance) of JSON nodes like 'edge_owner_to_timeline_media' for posts.
+        """
         for request in self._requests:
             if request.response:
                 if 'graphql' in request.url:
