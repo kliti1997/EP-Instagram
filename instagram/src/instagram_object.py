@@ -19,6 +19,8 @@ class InstagramObject:
         self.posts = None
         self.igtvs = None
         self.tags = None
+        # Default Video thumbnail path
+        self.video_thumbnail_path = "/home/kali/Desktop/seeeees/EP-Instagramm-1/instagram/data/video_thumbnail.jpeg"
 
         self.__set_tree(url)
         self.__set_followers(url)
@@ -124,6 +126,9 @@ class InstagramObject:
         The get_profile_pic_download can't be used because the picture url is not available anymore.
         """
         return self.tree.xpath("//span[@data-story-timestamp]")[0]
+
+    def get_video_thumbnail_path(self):
+        return self.video_thumbnail_path
 
     def __set_tree(self, url) -> None:
         if self.flag == NEW:

@@ -95,6 +95,7 @@ def add_html_tags(type: str, ig_obj: InstagramObject, prof_data: ProfileData) ->
         for i, post in enumerate(ig_obj.get_posts()):
             if post.xpath(".//span[@aria-label='Video']"):
                 post.attrib["data-view-count"] = str(prof_data.posts[i]["view_count"])
+                replace_video_thumbnail(ig_obj, post)
             else:
                 post.attrib["data-liked-by"] = str(prof_data.posts[i]["likes"])
             post.attrib["data-comment"] = str(prof_data.posts[i]["comments"])
@@ -177,3 +178,9 @@ def pre_download(url):
     except Exception as e:
         eType = e.__class__.__name__
         logger.error("error in pre-download phase.\nException message: " + eType + ": " + str(e))
+
+def replace_video_thumbnail(ig, post_object):
+    video_object = post_object
+    video_div = video_object.xpath(".//img[@src]")[0]
+    video_div.attrib["src"] = ig.get_video_thumbnail_path()
+    video_div.attrib["srcset"] = ""
