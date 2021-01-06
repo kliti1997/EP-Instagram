@@ -1,6 +1,6 @@
 from instagram.data.config import *
 from instagram.src.helper import *
-from instagram.src.modify.modify_methods import pre_modify, compare_posts, compare_followers_following, compare_igtv, compare_hover_items, compare_stories
+from instagram.src.modify.modify_methods import pre_modify, compare_posts, compare_followers_following, compare_igtv,compare_tagged, compare_hover_items, compare_stories
 from instagram.src.instagram_object import InstagramObject
 
 class InstagramMonitor:
@@ -36,7 +36,8 @@ class InstagramMonitor:
                 compare_posts(url, ig)
             elif html_type == "igtv":
                 compare_igtv(url, ig)
-            #todo tagged too?
+            elif html_type == "tagged":
+                compare_tagged(url, ig)
             compare_hover_items(url, ig)
             logger.info(url)
 
