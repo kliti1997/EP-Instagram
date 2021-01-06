@@ -34,6 +34,12 @@ def login(username, password):
         username (str): The username which is used to log in.
         password (str): The password which is used to log in.
     """
+    # TODO texte ersetzen?
+    # Accepts the "stay logged in" banner, if it exists.
+    if driver.find_elements_by_xpath("//*[text()='Als swp_ep_ig_1_test fortfahren']"):
+        driver.find_element_by_xpath("//*[text()='Als swp_ep_ig_1_test fortfahren']").click()
+        random_sleep(10)
+
     # Accepts the cookie banner, if it exists.
     if driver.find_elements_by_xpath("//*[text()='Akzeptieren' or text()='Accept']"):
         driver.find_element_by_xpath("//*[text()='Akzeptieren'  or text()='Accept']").click()
