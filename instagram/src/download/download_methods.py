@@ -36,8 +36,8 @@ def login(username, password):
     """
     # TODO texte ersetzen?
     # Accepts the "stay logged in" banner, if it exists.
-    if driver.find_elements_by_xpath("//*[text()='Als swp_ep_ig_1_test fortfahren']"):
-        driver.find_element_by_xpath("//*[text()='Als swp_ep_ig_1_test fortfahren']").click()
+    if driver.find_elements_by_xpath("//*[contains(text(),'Als') and contains(text(),'fortfahren')]"):
+        driver.find_element_by_xpath("//*[contains(text(),'Als') and contains(text(),'fortfahren')]").click()
         random_sleep(10)
 
     # Accepts the cookie banner, if it exists.
