@@ -15,7 +15,6 @@ class InstagramMonitor:
 
         for url in monitoring_map["instagram"]:
 
-            init_return_values(url)
             html_type = get_type(url)
             old_html_path = get_old_html_path(url)
             new_html_path = get_new_html_path(url)
@@ -31,7 +30,7 @@ class InstagramMonitor:
             ig = (InstagramObject(url, "new"), InstagramObject(url, "old"))
 
             compare_followers_following(url, ig)
-            compare_stories(ig)
+            compare_stories(url, ig)
 
             if html_type == "posts":
                 compare_posts(url, ig)

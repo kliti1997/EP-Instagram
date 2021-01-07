@@ -250,7 +250,7 @@ def compare_tagged(url, ig):
     ig[NEW].write(url)
 
 
-def compare_stories(ig):
+def compare_stories(url, ig):
     old_timestamp = ig[OLD].get_profile_pic_modify().attrib["data-story-timestamp"]
     new_timestamp = ig[NEW].get_profile_pic_modify().attrib["data-story-timestamp"]
 
