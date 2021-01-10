@@ -92,12 +92,12 @@ def convert_links(source):
     return source
 
 
-def add_html_tags(type: str, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
+def add_html_tags(url, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
     """
     Adding the number of views and comments for videos or likes and comments for photos when they have changed.
     Adding a handle to the profile data for easier identification later.
     """
-    if type == "posts":
+    if url["type"] == "posts":
         for i, post in enumerate(ig_obj.get_posts()):
             if post.xpath(".//span[@aria-label='Video']"):
                 post.attrib["data-view-count"] = str(prof_data.posts[i]["view_count"])
@@ -106,7 +106,7 @@ def add_html_tags(type: str, ig_obj: InstagramObject, prof_data: ProfileData) ->
                 post.attrib["data-liked-by"] = str(prof_data.posts[i]["likes"])
             post.attrib["data-comment"] = str(prof_data.posts[i]["comments"])
 
-    if type == "tagged":
+    if url["type"] == "tagged":
         for i, tag in enumerate(ig_obj.get_tags()):
             if tag.xpath(".//span[@aria-label='Video']"):
                 tag.attrib["data-view-count"] = str(prof_data.tagged[i]["view_count"])
@@ -114,7 +114,7 @@ def add_html_tags(type: str, ig_obj: InstagramObject, prof_data: ProfileData) ->
                 tag.attrib["data-liked-by"] = str(prof_data.tagged[i]["likes"])
             tag.attrib["data-comment"] = str(prof_data.tagged[i]["comments"])
 
-    elif type == "igtv":
+    elif url["type"] == "igtv":
         for i, igtv in enumerate(ig_obj.get_igtvs()):
             igtv.attrib["data-view-count"] = str(prof_data.igtvs[i]["view_count"])
             igtv.attrib["data-comment"] = str(prof_data.igtvs[i]["likes"])
@@ -126,6 +126,7 @@ def add_html_tags(type: str, ig_obj: InstagramObject, prof_data: ProfileData) ->
     # Setting the instagram.com/stories/profile_name url
     # TODO
     """
+    ig_obj.write(url)
 
 def save_html(url):
     """
