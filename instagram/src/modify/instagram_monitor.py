@@ -30,7 +30,7 @@ class InstagramMonitor:
             ig = (InstagramObject(url, "new"), InstagramObject(url, "old"))
 
             compare_followers_following(url, ig)
-            compare_stories(url, ig)
+            # TODO throws lsit index out of bounds exception compare_stories(url, ig)
 
             if html_type == "posts":
                 compare_posts(url, ig)

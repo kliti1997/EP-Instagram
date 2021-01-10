@@ -10,8 +10,7 @@ url1 = {"id": "polizei.hannover",
         "href": "https://www.instagram.com/polizei.hannover/",
         #"type": "posts", "mode": "1", "monitoring_folder": "./polizei.hannover/posts/",
         "type": "posts", "mode": "1", "monitoring_folder": "polizei.hannover/posts/",
-        "change": "", "notify": "", "err": ""}
-        
+        "change": "", "notify": "", "err": ""}      
 url2 = {"id": "polizei.hannover",
         "href": "https://www.instagram.com/polizei.hannover/channel/",
         "type": "igtv", "mode": "1", "monitoring_folder": "polizei.hannover/igtv/",
@@ -21,7 +20,7 @@ url3 = {"id": "polizei.hannover",
         "href": "https://www.instagram.com/polizei.hannover/tagged/",
         "type": "tagged", "mode": "1", "monitoring_folder": "polizei.hannover/tagged/",
         "change": "", "notify": "", "err": ""}
-
+        
 monitoring_map["instagram"].append(url1)
 monitoring_map["instagram"].append(url2)
 monitoring_map["instagram"].append(url3)

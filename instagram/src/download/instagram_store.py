@@ -5,6 +5,8 @@ from instagram.src.helper import set_err
 from instagram.src.instagram_object import InstagramObject
 from instagram.src.download.profile_data import ProfileData
 
+MAX_RUNS = 10
+
 class InstagramStore:
     def __init__(self, monitoring_map):
         logger = logging.getLogger('instagram')
@@ -19,20 +21,33 @@ class InstagramStore:
             logger.info("OR in " + url["monitoring_folder"] + "new.html")
             logger.info("--------------------------------------------\n")
 
-            try:
-                init_return_values(url)
-                pre_download(url)
-                random_sleep(5)
-                save_html(url)
-            except Exception as e:
-                eType = e.__class__.__name__
-                logger.error("downloading the html files.\nException message: " + eType + ": " + str(e))
-                set_err(url)
+            for i in range(MAX_RUNS):
+                try: # Versuche Content von isntagram in ig_object zu speichern.
+                    try:
+                        init_return_values(url)
+                        pre_download(url)
+                        random_sleep(5)
+                        save_html(url)
+                    except Exception as e:
+                        eType = e.__class__.__name__
+                        logger.error("downloading the html files.\nException message: " + eType + ": " + str(e))
+                        set_err(url)
+                    ig = InstagramObject(url, "new")
 
-            ig = InstagramObject(url, "new")
-            initial = driver.execute_script("return window._sharedData;")
-            profile = ProfileData(initial_data=initial, requests=driver.requests)
-            add_html_tags(url["type"], ig, profile)
-            ig.write(url)
+                    initial = driver.execute_script("return window._sharedData;")
+                    profile = ProfileData(initial_data=initial, requests=driver.requests)
+                    add_html_tags(url["type"], ig, profile)
+                    ig.write(url)
+                    print("break")
+                    break
+                except Exception as e: # Instagram-Seite wurde nicht erfolgreich geladen
+                    if i == MAX_RUNS - 1:
+                        driver.quit()
+                        url["err"] = True
+                        exit(1)
+                    print("Exception:" + str(e))
+                    print(i)
+                    print("continue")
+                    continue
 
         driver.quit()
