@@ -32,22 +32,18 @@ class InstagramStore:
                         eType = e.__class__.__name__
                         logger.error("downloading the html files.\nException message: " + eType + ": " + str(e))
                         set_err(url)
+                        
                     ig = InstagramObject(url, "new")
 
                     initial = driver.execute_script("return window._sharedData;")
                     profile = ProfileData(initial_data=initial, requests=driver.requests)
                     add_html_tags(url["type"], ig, profile)
-                    ig.write(url)
-                    print("break")
                     break
                 except Exception as e: # Instagram-Seite wurde nicht erfolgreich geladen
                     if i == MAX_RUNS - 1:
                         driver.quit()
                         url["err"] = True
                         exit(1)
-                    print("Exception:" + str(e))
-                    print(i)
-                    print("continue")
                     continue
 
         driver.quit()
