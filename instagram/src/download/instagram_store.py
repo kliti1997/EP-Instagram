@@ -5,7 +5,7 @@ from instagram.src.helper import set_err
 from instagram.src.instagram_object import InstagramObject
 from instagram.src.download.profile_data import ProfileData
 
-MAX_RUNS = 10
+MAX_RUNS = 1
 
 class InstagramStore:
     def __init__(self, monitoring_map):
