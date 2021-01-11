@@ -118,14 +118,12 @@ def add_html_tags(url, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
         for i, igtv in enumerate(ig_obj.get_igtvs()):
             igtv.attrib["data-view-count"] = str(prof_data.igtvs[i]["view_count"])
             igtv.attrib["data-comment"] = str(prof_data.igtvs[i]["likes"])
-    # TODO get_profile_pic throws lsit index out of range exception.
-    """
+    # TODO get_profile_pic throws list index out of range exception.
     # Setting a handle to the profile picture
     ig_obj.get_profile_pic_download(prof_data.profile_pic_url).attrib["data-story-timestamp"] = str(prof_data.story_timestamp)
 
     # Setting the instagram.com/stories/profile_name url
     # TODO
-    """
     ig_obj.write(url)
 
 def save_html(url):
