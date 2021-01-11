@@ -30,9 +30,11 @@ Different path variables.
 """
 
 Path(profile_folder).mkdir(parents=True, exist_ok=True)
+options = Options()
+options.headless = True
 driver_profile = webdriver.FirefoxProfile(profile_folder)
 driver_profile.set_preference('intl.accept_languages','de')
-driver = webdriver.Firefox(firefox_profile=driver_profile, executable_path = geckodriver, log_path=geckodriver_log)
+driver = webdriver.Firefox(firefox_profile=driver_profile, executable_path = geckodriver, log_path=geckodriver_log, options=options)
 #driver = webdriver.Firefox(executable_path = os.path.join(config_folder, "geckodriver_macOS"))
 """
 Seleniumwire driver and it's options.
