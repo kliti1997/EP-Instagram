@@ -1,11 +1,11 @@
 8
 
 https://www.instagram.com/
-https://www.instagram.com/service-worker-prod-es6.js?x-user-agent=&enableHtmlCaching=false&enableAddToHomeScreen=false&__rollout=2102073a1373
+https://www.instagram.com/service-worker-prod-es6.js?x-user-agent=&enableHtmlCaching=false&enableAddToHomeScreen=false&__rollout=818fed40bc2e
 false
-{cee4d1b2-0b7c-47ba-9cca-ff8b04fb78e9}
+{9fe979ad-b3d0-4659-b3a8-3fde810be901}
 0
-1607956539131068
-1607956539134699
-1607956538997810
+1610377225499895
+1610377225501417
+1610377225396807
 #

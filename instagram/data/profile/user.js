@@ -66,7 +66,7 @@ user_pref("intl.accept_languages", "de");
 user_pref("javascript.enabled", true);
 user_pref("javascript.options.showInConsole", true);
 user_pref("marionette.log.level", "Info");
-user_pref("marionette.port", 46725);
+user_pref("marionette.port", 37345);
 user_pref("media.gmp-manager.updateEnabled", false);
 user_pref("media.sanity-test.disabled", true);
 user_pref("network.captive-portal-service.enabled", false);
