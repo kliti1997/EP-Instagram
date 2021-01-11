@@ -25,8 +25,6 @@ class InstagramObject:
         self.video_thumbnail_path = os.path.join(config_folder, "video_thumbnail.jpeg")
 
         self.__set_tree(url, content)
-        open("/Users/timo/Documents/Uni/SP/EP-Instagramm-1/test.html", "wb").write(etree.tostring(self.tree, method="html"))
-
         self.__set_followers(url)
         self.__set_following(url)
         if url["type"] == "posts":
@@ -137,8 +135,7 @@ class InstagramObject:
     def __set_tree(self, url, content) -> None:
         if content is not None:
             html_parser = html.HTMLParser()
-            print(content)
-            self.tree = etree.parse(io.StringIO(content), parser=html_parser)
+            self.tree = etree.HTML(content, parser=html_parser)
         else:
             if self.flag == NEW:
                 self.tree = html.parse(get_new_html_path(url))
