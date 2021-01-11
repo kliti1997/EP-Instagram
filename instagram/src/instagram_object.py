@@ -2,6 +2,7 @@ from instagram.data.config import *
 from instagram.src.helper import get_new_html_path, get_old_html_path
 from lxml import etree, html
 
+logger = logging.getLogger('instagram')
 NEW = 0
 OLD = 1
 
