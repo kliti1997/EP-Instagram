@@ -36,7 +36,7 @@ class InstagramStore:
                     if i == MAX_RUNS - 1:
                         driver.quit()
                         url["err"] = True
-                        exit(1)
+                        raise RuntimeError
                     continue
 
             pre_download(url)
