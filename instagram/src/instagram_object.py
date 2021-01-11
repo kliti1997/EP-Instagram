@@ -7,7 +7,7 @@ OLD = 1
 
 
 class InstagramObject:
-    def __init__(self, url, flag):
+    def __init__(self, url, flag, content=None):
         if flag == "new":
             self.flag = NEW
         else:
@@ -19,6 +19,7 @@ class InstagramObject:
         self.posts = None
         self.igtvs = None
         self.tags = None
+        self.content = content
         # Default Video thumbnail path
         self.video_thumbnail_path = os.path.join(config_folder, "video_thumbnail.jpeg")
 

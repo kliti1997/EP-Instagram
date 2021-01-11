@@ -25,10 +25,9 @@ class InstagramStore:
             for i in range(MAX_RUNS):
                 try:
                     init_return_values(url)
-                    pre_download(url)
                     random_sleep(5)
-                    save_html(url)
-                    ig = InstagramObject(url, "new")
+                    content = save_html(url)
+                    ig = InstagramObject(url, "new", content)
                     break
                 except Exception as e:
                     eType = e.__class__.__name__
@@ -39,6 +38,9 @@ class InstagramStore:
                         url["err"] = True
                         exit(1)
                     continue
+
+            pre_download(url)
+            ig.write(url)
 
             initial = driver.execute_script("return window._sharedData;")
             profile = ProfileData(initial_data=initial, requests=driver.requests)

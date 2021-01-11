@@ -141,10 +141,10 @@ def save_html(url):
     driver.get(get_href(url))
     random_sleep(10)
 
-    content = convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
+    return convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
 
-    with open(get_new_html_path(url), "w") as f:
-        f.write(content)
+    #with open(get_new_html_path(url), "w") as f:
+        #f.write(content)
 
 
 def random_sleep(max_time):
