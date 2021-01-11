@@ -1621,3 +1621,58 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 
 ###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
 
+1610400910791	geckodriver	INFO	Listening on 127.0.0.1:40895
+1610400912138	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileXKZ23x"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1610400928501	geckodriver	INFO	Listening on 127.0.0.1:33555
+1610400929859	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileUKtQzF"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1610400986947	geckodriver	INFO	Listening on 127.0.0.1:35447
+1610400987956	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilepgc1nO"
+Sandbox: unsupported fd-relative fstatat(25, "", 0x7FFF066453B0, 4096)
+Sandbox: seccomp sandbox violation: pid 6677, tid 6677, syscall 262, args 25 140636855948030 140733300626352 4096 4096 1.
+Sandbox: unsupported fd-relative fstatat(24, "", 0x7FFD698B23B0, 4096)
+Sandbox: seccomp sandbox violation: pid 6689, tid 6689, syscall 262, args 24 140080507212542 140726374179760 4096 4096 1.
+1610400991485	Marionette	INFO	Listening on port 39147
+1610400991578	Marionette	WARN	TLS certificate errors will be ignored for this session
+1610400991588	Marionette	INFO	Proxy settings initialised: {"proxyType":"manual","httpProxy":"127.0.0.1:39665","noProxy":[],"sslProxy":"127.0.0.1:39665"}
+1610401049322	Marionette	INFO	Stopped listening on port 39147
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x39012B,name=PContent::Msg_ScriptError) Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0xB40006,name=PWebSocket::Msg_DeleteSelf) Channel closing: too late to send/recv, messages will be lost
+
+1610401114974	geckodriver	INFO	Listening on 127.0.0.1:47253
+1610401115983	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilet7ryyI"
+Sandbox: unsupported fd-relative fstatat(25, "", 0x7FFCAB3950C0, 4096)
+Sandbox: seccomp sandbox violation: pid 7201, tid 7201, syscall 262, args 25 139925367362302 140723181146304 4096 4096 1.
+Sandbox: unsupported fd-relative fstatat(24, "", 0x7FFC7E20F980, 4096)
+Sandbox: seccomp sandbox violation: pid 7214, tid 7214, syscall 262, args 24 139802946593534 140722424576384 4096 4096 1.
+1610401119080	Marionette	INFO	Listening on port 43975
+1610401119104	Marionette	WARN	TLS certificate errors will be ignored for this session
+1610401119111	Marionette	INFO	Proxy settings initialised: {"proxyType":"manual","httpProxy":"127.0.0.1:46357","noProxy":[],"sslProxy":"127.0.0.1:46357"}
+1610401151964	Marionette	INFO	Stopped listening on port 43975
+1610401194203	geckodriver	INFO	Listening on 127.0.0.1:56701
+1610401195212	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilencFXhL"
+Sandbox: unsupported fd-relative fstatat(25, "", 0x7FFF0EB0D580, 4096)
+Sandbox: seccomp sandbox violation: pid 7397, tid 7397, syscall 262, args 25 140108734391038 140733439858048 4096 4096 1.
+Sandbox: unsupported fd-relative fstatat(24, "", 0x7FFCAFA1B720, 4096)
+Sandbox: seccomp sandbox violation: pid 7410, tid 7410, syscall 262, args 24 140591200092926 140723255097120 4096 4096 1.
+1610401198157	Marionette	INFO	Listening on port 45423
+1610401198224	Marionette	WARN	TLS certificate errors will be ignored for this session
+1610401198230	Marionette	INFO	Proxy settings initialised: {"proxyType":"manual","httpProxy":"127.0.0.1:37687","noProxy":[],"sslProxy":"127.0.0.1:37687"}
+1610401261368	Marionette	INFO	Stopped listening on port 45423
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
