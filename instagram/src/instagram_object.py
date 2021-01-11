@@ -132,10 +132,15 @@ class InstagramObject:
         return self.video_thumbnail_path
 
     def __set_tree(self, url) -> None:
-        if self.flag == NEW:
-            self.tree = html.parse(get_new_html_path(url))
+        if self.content is not None:
+            self.tree = etree.fromstring(self.content)
         else:
-            self.tree = html.parse(get_old_html_path(url))
+            if self.flag == NEW:
+                self.tree = html.parse(get_new_html_path(url))
+            elif self.flag == OLD:
+                self.tree = html.parse(get_old_html_path(url))
+            else:
+                logger.error("Flag was not set.")
 
     def __set_followers(self, url) -> None:
         self.followers = list(
