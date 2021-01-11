@@ -20,11 +20,10 @@ class InstagramObject:
         self.posts = None
         self.igtvs = None
         self.tags = None
-        self.content = content
         # Default Video thumbnail path
         self.video_thumbnail_path = os.path.join(config_folder, "video_thumbnail.jpeg")
 
-        self.__set_tree(url)
+        self.__set_tree(url, content)
         self.__set_followers(url)
         self.__set_following(url)
         if url["type"] == "posts":
@@ -132,9 +131,13 @@ class InstagramObject:
     def get_video_thumbnail_path(self):
         return self.video_thumbnail_path
 
-    def __set_tree(self, url) -> None:
-        if self.content is not None:
-            self.tree = etree.fromstring(self.content)
+    def __set_tree(self, url, content) -> None:
+        if content is not None:
+            print("Test 0")
+            print("self.content")
+            print(content)
+            html_parser = html.HTMLParser()
+            self.tree = etree.fromstring(content, parser=html_parser)
         else:
             if self.flag == NEW:
                 self.tree = html.parse(get_new_html_path(url))
