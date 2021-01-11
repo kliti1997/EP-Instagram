@@ -191,5 +191,5 @@ def pre_download(url):
 def replace_video_thumbnail(ig, post_object):
     video_object = post_object
     video_div = video_object.xpath(".//img[@src]")[0]
-    video_div.attrib["src"] = ig.get_video_thumbnail_path()
-    video_div.attrib["srcset"] = ""
+    video_div.attrib["onerror"] = "this.src='" + ig.get_video_thumbnail_path() + "';this.srcset='';"
+    
