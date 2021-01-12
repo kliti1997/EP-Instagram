@@ -40,6 +40,11 @@ def login(username, password):
         driver.find_element_by_xpath("//*[contains(text(),'Als') and contains(text(),'fortfahren')]").click()
         random_sleep(10)
 
+    # Accepts the "stay logged in" banner, if it exists. (english)
+    if driver.find_elements_by_xpath("//*[contains(text(),'Continue as')]"):
+        driver.find_element_by_xpath("//*[contains(text(),'Continue as')]").click()
+        random_sleep(10)
+
     # Accepts the cookie banner, if it exists.
     if driver.find_elements_by_xpath("//*[text()='Akzeptieren' or text()='Accept']"):
         driver.find_element_by_xpath("//*[text()='Akzeptieren' or text()='Accept']").click()
@@ -58,8 +63,8 @@ def login(username, password):
         random_sleep(10)
 
     # Accepts the cookie banner, if it exists.
-    if driver.find_elements_by_xpath("//*[text()='Jetzt nicht']"):
-        driver.find_element_by_xpath("//*[text()='Jetzt nicht']").click()
+    if driver.find_elements_by_xpath("//*[text()='Jetzt nicht' or 'Not Now']"):
+        driver.find_element_by_xpath("//*[text()='Jetzt nicht' or 'Not Now']").click()
         random_sleep(10)
 
 

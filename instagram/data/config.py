@@ -34,9 +34,12 @@ options = Options()
 options.headless = True
 driver_profile = webdriver.FirefoxProfile(profile_folder)
 driver_profile.set_preference('intl.accept_languages','de')
+#headless
 driver = webdriver.Firefox(firefox_profile=driver_profile, executable_path = geckodriver, log_path=geckodriver_log, options=options)
-#driver = webdriver.Firefox(executable_path = os.path.join(config_folder, "geckodriver_macOS"))
+#default selenium
 #driver = webdriver.Firefox(executable_path = geckodriver, log_path=geckodriver_log)
+#macOS
+#driver = webdriver.Firefox(executable_path = os.path.join(config_folder, "geckodriver_macOS"), log_path=geckodriver_log)
 """
 Seleniumwire driver and it's options.
 """
@@ -115,7 +118,7 @@ Error logging, including options to represent the output and an output file.
 """
 
 base_url = "https://www.instagram.com/"
-login_url = "https://www.instagram.com/accounts/login/?next=%2Fexplore%2F&source=desktop_nav"  # TODO: Randomize 'next' page
+login_url = "https://www.instagram.com/accounts/login/?next=%2Fexplore%2F&source=desktop_nav"
 ig_credentials = {"user": "swp_ep_ig_1_test",
                   "pass": "Test123!"}
 """
