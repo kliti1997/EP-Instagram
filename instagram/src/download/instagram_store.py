@@ -53,5 +53,6 @@ class InstagramStore:
             initial = driver.execute_script("return window._sharedData;")
             profile = ProfileData(initial_data=initial, requests=driver.requests)
             add_html_tags(url, ig, profile)
+            del driver.requests
 
         driver.quit()
