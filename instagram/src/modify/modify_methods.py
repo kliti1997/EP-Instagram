@@ -160,8 +160,10 @@ def compare_hover_items(url, ig):
 
                 if new_ele.xpath(".//span[@aria-label='Video']") or url["type"] == "igtv":  # If the current object is a video, compare the view-count.
                     to_cmp = "data-view-count"
+                    sprite = "coreSpritePlayIconSmall"
                 else:
                     to_cmp = "data-liked-by"
+                    sprite = "coreSpriteHeartSmall"
 
                 if url["type"] != "igtv":
                     if new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] and new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
@@ -169,7 +171,7 @@ def compare_hover_items(url, ig):
                         new_ele.append(
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
-                                             icon_likes_views="coreSpritePlayIconSmall",
+                                             icon_likes_views=sprite,
                                              comments=new_ele.attrib["data-comment"],
                                              style_likes_views=add_border,
                                              style_comments=add_border)
@@ -181,7 +183,7 @@ def compare_hover_items(url, ig):
                         new_ele.append(  # Only views- XOR likes-count changed.
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
-                                             icon_likes_views="coreSpritePlayIconSmall",
+                                             icon_likes_views=sprite,
                                              comments=new_ele.attrib["data-comment"],
                                              style_likes_views=add_border,
                                              style_comments="")
@@ -194,7 +196,7 @@ def compare_hover_items(url, ig):
                         new_ele.append(  # Only the comment-count changed.
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
-                                             icon_likes_views="coreSpritePlayIconSmall",
+                                             icon_likes_views=sprite,
                                              comments=new_ele.attrib["data-comment"],
                                              style_likes_views="",
                                              style_comments=add_border)
@@ -215,7 +217,7 @@ def compare_hover_items(url, ig):
                         new_ele.getchildren()[0].append(
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
-                                             icon_likes_views="coreSpritePlayIconSmall",
+                                             icon_likes_views=sprite,
                                              comments=new_ele.attrib["data-comment"],
                                              style_likes_views=add_border,
                                              style_comments=add_border)
@@ -227,7 +229,7 @@ def compare_hover_items(url, ig):
                         new_ele.getchildren()[0].append(  # Only views- XOR likes-count changed.
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
-                                             icon_likes_views="coreSpritePlayIconSmall",
+                                             icon_likes_views=sprite,
                                              comments=new_ele.attrib["data-comment"],
                                              style_likes_views=add_border,
                                              style_comments="")
@@ -240,7 +242,7 @@ def compare_hover_items(url, ig):
                         new_ele.getchildren()[0].append(  # Only the comment-count changed.
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
-                                             icon_likes_views="coreSpritePlayIconSmall",
+                                             icon_likes_views=sprite,
                                              comments=new_ele.attrib["data-comment"],
                                              style_likes_views="",
                                              style_comments=add_border)
