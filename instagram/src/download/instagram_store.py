@@ -41,7 +41,7 @@ class InstagramStore:
                 except Exception as e:
                     eType = e.__class__.__name__
                     logger.error("downloading the html files.\nException message: " + eType + ": " + str(e))
-                    actual = str(datetime.datetime.now()) + '.png'
+                    actual = config_folder + 'error_screenshots' + str(datetime.datetime.now()) + '.png'
                     driver.save_screenshot(actual)
                     set_err(url)
                     if i == MAX_RUNS - 1:
