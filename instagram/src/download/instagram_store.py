@@ -1,3 +1,8 @@
+"""
+The module is responsible for the downloading phase. 
+It saves the dom content of the instagram-subdirectory to be visited in an instagram class object, 
+by calling further functions which are located in the instagram_monitor module.
+"""
 from instagram.data.config import *
 from instagram.src.helper import *
 from instagram.src.download.download_methods import login, random_sleep, pre_download, save_html, add_html_tags
@@ -5,7 +10,10 @@ from instagram.src.helper import set_err
 from instagram.src.instagram_object import InstagramObject
 from instagram.src.download.profile_data import ProfileData
 
-MAX_RUNS = 1
+MAX_RUNS = 10
+"""
+Determines how often the website should be revisited in case of connection issues.
+"""
 
 class InstagramStore:
     def __init__(self, monitoring_map):
