@@ -1,5 +1,5 @@
 import json
-
+import re
 
 class ProfileData:
     """
@@ -31,7 +31,7 @@ class ProfileData:
         self.read_story()
         self.read_initial_nodes()
         self.read_additional_nodes()
-        self.read_profile_pic_url()
+        self.read_profile_pic_name()
 
     def __str__(self):
         res = f"followers: {self.num_followers}\nfollowing: {self.num_following}\nstory_timestamp: {str(self.story_timestamp)}\nnodes:\n"
@@ -45,9 +45,9 @@ class ProfileData:
     def read_followers(self):
         self.num_followers = self._user["edge_followed_by"]["count"]
 
-    def read_profile_pic_url(self):
+    def read_profile_pic_name(self):
         url = self._user['profile_pic_url']
-        self.profile_pic_url = url.split('?', 1)[0]  # url of the image, not containing any parameters
+        self.profile_pic_name = re.search("([^/]*).jpg", url).group()  # filename of the image
 
     @staticmethod
     def append_edges_to_list(parent_edge, target_list) -> None:

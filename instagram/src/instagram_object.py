@@ -120,7 +120,7 @@ class InstagramObject:
         """
         Returns the etree element of the profile picture in the original DOM.
         """
-        return self.tree.xpath(f"//img[starts-with(@src,'{picture_url}')]")[0].getparent()
+        return self.tree.xpath(f"//img[contains(@src,'{picture_url}')]")[0].getparent()
 
     def get_profile_pic_modify(self):
         """
