@@ -12,17 +12,17 @@ monitoring_map = defaultdict(list)
 url1 = {"id": "polizei.hannover",
         "href": "https://www.instagram.com/polizei.hannover/",
         #"type": "posts", "mode": "1", "monitoring_folder": "./polizei.hannover/posts/",
-        "type": "posts", "mode": "1", "monitoring_folder": "testfiles/polizei.hannover/posts/",
+        "type": "posts", "mode": "1", "monitoring_folder": "compare_test/polizei.hannover/posts/",
         "change": "", "notify": "", "err": ""}
         
 url2 = {"id": "polizei.hannover",
         "href": "https://www.instagram.com/polizei.hannover/channel/",
-        "type": "igtv", "mode": "1", "monitoring_folder": "testfiles/polizei.hannover/igtv/",
+        "type": "igtv", "mode": "1", "monitoring_folder": "compare_test/polizei.hannover/igtv/",
         "change": "", "notify": "", "err": ""}
         
 url3 = {"id": "polizei.hannover",
         "href": "https://www.instagram.com/polizei.hannover/tagged/",
-        "type": "tagged", "mode": "1", "monitoring_folder": "testfiles/polizei.hannover/tagged/",
+        "type": "tagged", "mode": "1", "monitoring_folder": "compare_test/polizei.hannover/tagged/",
         "change": "", "notify": "", "err": ""}
 
 monitoring_map["instagram"].append(url1)
@@ -64,6 +64,9 @@ def changes_counter(html_file) -> int:
 
 logger.info("\n\t************TEST PHASE************")
 tests_passed = True
+driver.quit()
+test_driver = webdriver.Firefox(executable_path = geckodriver, log_path="/dev/null")
+
 for url in monitoring_map["instagram"]:
     folder_path = get_folder_path(url)
     new_html_path = get_new_html_path(url)
@@ -81,7 +84,7 @@ for url in monitoring_map["instagram"]:
         logger.error("[FAILURE]    Compare test not succeed in file: " + new_html_path + "\n")
         tests_passed = False
     
-    driver.get('file://' + new_html_path)
+    test_driver.get('file://' + new_html_path)
     input("Press Enter to continue...")
 
 if tests_passed:
@@ -89,4 +92,4 @@ if tests_passed:
 else:
     logger.error("[FAILURE]   Some tests did not succeed\n")
 
-driver.quit()
+test_driver.quit()
