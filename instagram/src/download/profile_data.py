@@ -45,9 +45,9 @@ class ProfileData:
     def read_followers(self):
         self.num_followers = self._user["edge_followed_by"]["count"]
 
-    def read_profile_pic_name(self):
+    def read_profile_pic_url(self):
         url = self._user['profile_pic_url']
-        self.profile_pic_name = re.search("([^/]*).jpg", url).group()  # filename of the image
+        self.profile_pic_url = re.search("([^/]*).jpg", url).group()  # filename of the image
 
     @staticmethod
     def append_edges_to_list(parent_edge, target_list) -> None:
