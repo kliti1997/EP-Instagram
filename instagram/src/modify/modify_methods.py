@@ -252,17 +252,17 @@ def compare_hover_items(url, ig):
 
 def compare_tagged(url, ig):
     """
-            This function compares the posts in the Tagged section of the profile and marks
-             the new one with a green border.
+    This function compares the posts in the Tagged section of the profile and marks
+        the new one with a green border.
 
-            The href of each post in the old.html file are saved in the old_links_list. The same is done for
-            the new.html file in new_links_list. The lists are than compared with one another and the posts with new
-            href are marked with a green border to show that it is a new post. We than set change and notify to true.
+    The href of each post in the old.html file are saved in the old_links_list. The same is done for
+    the new.html file in new_links_list. The lists are than compared with one another and the posts with new
+    href are marked with a green border to show that it is a new post. We than set change and notify to true.
 
-            :param url: The url of the file
-            :param ig: The instagram profile
+    :param url: The url of the file
+    :param ig: The instagram profile
 
-            """
+    """
     # Take the links in the old file
     old_links_list = []  # Only holds hrefs
     for link in ig[OLD].get_tags():
