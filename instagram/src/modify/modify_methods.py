@@ -101,21 +101,18 @@ def compare_igtv(url, ig):
 
     ig[NEW].write(url)
 
-
-# TODO bei igtv und vll auch tagged müssen anscheinend andere html klassen fürs hover hinzugefügt werden
-# Ansicht ist komisch
 def compare_hover_items(url, ig):
     """
-    Benötigte html-Attribute:
-    - data-typename (GraphSidecar, GraphImage, GraphVideo)
-                                            => bereits vorhanden: aria-label="Video" == GraphVideo
-                                                                  aria-label="Carousel" == GraphSidecar
-                                                                  no aria-label == GraphImage
-    - data-id (unnötig, einfach href verwenden)
-    In Abhängigkeit vom typename:
-    - data-liked-by (GraphSidecar, GraphImage)
-    - data-view-count (GraphVideo)
-    - data-comment (GraphSidecar, GraphImage, GraphVideo)
+    The function checks whether there are any changes in the view-count, the like-count, or the
+    commented-count for any posts, igtv, or tagged objects.
+    In case of changes the function adds html code to the object that changed. 
+    For posts and tags the html code is added in the same way and for igtv objects it's required
+    to add the html code in a different way.
+    The neccessary css code is added in the header of the html file.
+
+    Args:
+        url (url): The url of the file
+        ig (InstagramObject): The instagram profile
     """
     if url["type"] == "posts":
         new_elements = ig[NEW].get_posts()
@@ -155,14 +152,14 @@ def compare_hover_items(url, ig):
         for old_ele in old_elements:
             if new_ele.attrib["href"] == old_ele.attrib["href"]:
 
-                if new_ele.xpath(".//span[@aria-label='Video']") or url["type"] == "igtv":  # Falls es ein Video ist, vergleiche view-count.
+                if new_ele.xpath(".//span[@aria-label='Video']") or url["type"] == "igtv":  # If the current object is a video, compare the view-count.
                     to_cmp = "data-view-count"
                 else:
                     to_cmp = "data-liked-by"
 
                 if url["type"] != "igtv":
                     if new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] and new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
-                        # Views und comments haben sich verändert.
+                        # Views- and comments-count changed.
                         new_ele.append(
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
@@ -175,7 +172,7 @@ def compare_hover_items(url, ig):
                         set_change(url)
                         set_notify(url)
                     elif new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp]:
-                        new_ele.append(  # Nur die views, oder likes, haben sich verändert.
+                        new_ele.append(  # Only views- XOR likes-count changed.
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
                                              icon_likes_views="coreSpritePlayIconSmall",
@@ -188,7 +185,7 @@ def compare_hover_items(url, ig):
                         if get_mode(url) == '1':
                             set_notify(url)
                     elif new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
-                        new_ele.append(  # Nur die comments haben sich verändert.
+                        new_ele.append(  # Only the comment-count changed.
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
                                              icon_likes_views="coreSpritePlayIconSmall",
@@ -200,7 +197,7 @@ def compare_hover_items(url, ig):
                         set_change(url)
                         set_notify(url)
                 else:
-                    # Bei IGTV existiert die Klasse qn-0x bereits und muss ersetzt werden für den hover effekt.
+                    # The class qn-0x already exists for igtv objects and needs to be replaced.
                     if new_ele.xpath(".//div[@class='qn-0x']") and (
                             new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] or new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]):
                         rmv_list = new_ele.xpath(".//div[@class='qn-0x']")
@@ -208,7 +205,7 @@ def compare_hover_items(url, ig):
                             to_rmv.getparent().remove(to_rmv)
 
                     if new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp] and new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
-                        # Views und comments haben sich verändert.
+                        # Views- and comments-count changed.
                         new_ele.getchildren()[0].append(
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
@@ -221,7 +218,7 @@ def compare_hover_items(url, ig):
                         set_change(url)
                         set_notify(url)
                     elif new_ele.attrib[to_cmp] != old_ele.attrib[to_cmp]:
-                        new_ele.getchildren()[0].append(  # Nur die views, oder likes, haben sich verändert.
+                        new_ele.getchildren()[0].append(  # Only views- XOR likes-count changed.
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
                                              icon_likes_views="coreSpritePlayIconSmall",
@@ -234,7 +231,7 @@ def compare_hover_items(url, ig):
                         if get_mode(url) == '1':
                             set_notify(url)
                     elif new_ele.attrib["data-comment"] != old_ele.attrib["data-comment"]:
-                        new_ele.getchildren()[0].append(  # Nur die comments haben sich verändert.
+                        new_ele.getchildren()[0].append(  # Only the comment-count changed.
                             etree.fromstring(
                                 hover.format(likes_views=new_ele.attrib[to_cmp],
                                              icon_likes_views="coreSpritePlayIconSmall",
