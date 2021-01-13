@@ -9,6 +9,7 @@ from instagram.src.download.download_methods import login, random_sleep, pre_dow
 from instagram.src.helper import set_err
 from instagram.src.instagram_object import InstagramObject
 from instagram.src.download.profile_data import ProfileData
+import datetime
 
 MAX_RUNS = 10
 """
@@ -40,6 +41,8 @@ class InstagramStore:
                 except Exception as e:
                     eType = e.__class__.__name__
                     logger.error("downloading the html files.\nException message: " + eType + ": " + str(e))
+                    actual = str(datetime.datetime.now()) + '.png'
+                    driver.save_screenshot(actual)
                     set_err(url)
                     if i == MAX_RUNS - 1:
                         driver.quit()
