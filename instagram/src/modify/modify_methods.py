@@ -1,10 +1,16 @@
+"""
+The module changes the new html file by comparing it's entries with the old html file.
+The functions in the module are called in the instagram_monitor module.
+"""
 from instagram.data.config import *
 from instagram.src.helper import *
 from lxml import etree, html
 
 NEW = 0
 OLD = 1
-
+"""
+Constants to determine whether the old, or new html-file is accessed.
+"""
 
 # from instagram.src.instagram import Instagram
 
