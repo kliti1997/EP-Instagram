@@ -16,6 +16,7 @@ from lxml import etree, html
 from pathlib import Path
 from .profile_data import ProfileData
 import json
+import lxml
 
 """
 Constants to calculate the sleep timer.
@@ -24,6 +25,7 @@ MIN_TIME = 5
 INCR_UPPER_BOUND = 10
 
 logger = logging.getLogger('instagram')
+
 
 def login(username, password):
     """
@@ -100,7 +102,7 @@ def convert_links(source):
 def add_html_tags(url, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
     """
     Adding the number of views and comments for videos or likes and comments for photos when they have changed.
-    Adding a handle to the profile data for easier identification later.
+    Additionally, the timestamp of the last posted story is added to the profile picture for comparison.
     """
     if url["type"] == "posts":
         for i, post in enumerate(ig_obj.get_posts()):
@@ -123,13 +125,19 @@ def add_html_tags(url, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
         for i, igtv in enumerate(ig_obj.get_igtvs()):
             igtv.attrib["data-view-count"] = str(prof_data.igtvs[i]["view_count"])
             igtv.attrib["data-comment"] = str(prof_data.igtvs[i]["likes"])
-    # TODO get_profile_pic throws list index out of range exception.
-    # Setting a handle to the profile picture
-    ig_obj.get_profile_pic_download(prof_data.profile_pic_url).attrib["data-story-timestamp"] = str(prof_data.story_timestamp)
+
+    profile_pic = ig_obj.get_profile_pic_download(prof_data.profile_pic_url)
+
+    # Adding the timestamp of the last posted story
+    profile_pic.attrib["data-story-timestamp"] = str(prof_data.story_timestamp)
 
     # Setting the instagram.com/stories/profile_name url
-    # TODO
+    anchor = lxml.etree.Element('a', href="https://instagram.com/stories/" + url["id"])
+    anchor.extend(profile_pic)
+    profile_pic.append(anchor)
+
     ig_obj.write(url)
+
 
 def save_html(url):
     """
@@ -148,8 +156,8 @@ def save_html(url):
 
     return convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
 
-    #with open(get_new_html_path(url), "w") as f:
-        #f.write(content)
+    # with open(get_new_html_path(url), "w") as f:
+    # f.write(content)
 
 
 def random_sleep(max_time):
@@ -187,12 +195,12 @@ def pre_download(url):
             os.rename(new_html_path, old_html_path)
 
     except Exception as e:
-        eType = e.__class__.__name__
-        logger.error("error in pre-download phase.\nException message: " + eType + ": " + str(e))
+        e_type = e.__class__.__name__
+        logger.error("error in pre-download phase.\nException message: " + e_type + ": " + str(e))
         set_err(url)
+
 
 def replace_video_thumbnail(ig, post_object):
     video_object = post_object
     video_div = video_object.xpath(".//img[@src]")[0]
     video_div.attrib["onerror"] = "this.src='" + ig.get_video_thumbnail_path() + "';this.srcset='';"
-    
