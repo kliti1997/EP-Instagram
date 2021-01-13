@@ -286,17 +286,17 @@ def compare_tagged(url, ig):
 
 def compare_stories(url, ig):
     """
-                This function compares the timestamps of the stories to check if a new story was published since the
-                last control.
+    This function compares the timestamps of the stories to check if a new story was published since the
+    last control.
 
-                The function gets the data-story-timestamp from both files and checks if new_timestamp is actually
-                newer than old_timestamp. If this is the case, the profile picture is marked with a green border.
-                The change and notify are than set to true.
+    The function gets the data-story-timestamp from both files and checks if new_timestamp is actually
+    newer than old_timestamp. If this is the case, the profile picture is marked with a green border.
+    The change and notify are than set to true.
 
-                :param url: The url of the file
-                :param ig: The instagram profile
+    :param url: The url of the file
+    :param ig: The instagram profile
 
-                """
+    """
     old_timestamp = ig[OLD].get_profile_pic_modify().attrib["data-story-timestamp"]
     new_timestamp = ig[NEW].get_profile_pic_modify().attrib["data-story-timestamp"]
 
