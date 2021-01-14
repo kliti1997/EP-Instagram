@@ -45,7 +45,7 @@ class ProfileData:
     def read_followers(self):
         self.num_followers = self._user["edge_followed_by"]["count"]
 
-    def read_profile_pic_url(self):
+    def read_profile_pic_name(self):
         url = self._user['profile_pic_url']
         self.profile_pic_url = re.search("([^/]*).jpg", url).group()  # filename of the image
 
