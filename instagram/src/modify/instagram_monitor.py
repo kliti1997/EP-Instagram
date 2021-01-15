@@ -20,7 +20,8 @@ class InstagramMonitor:
                 logger.info("compare ("+old_html_path+") with ("+new_html_path+")") 
                 
                 if not pre_modify(url):
-                    logger.info("error while compare: "+old_html_path+" or "+new_html_path+" is missing")
+                    logger.info("Error while modifying the html files.\n"+old_html_path+" or "+new_html_path+" is missing")
+                    logger.info("You can ignore this, if this profile was loaded for the first time. Otherwise check missing html.")
                     set_change(url)
                     logger.debug(url)
                     continue
@@ -40,7 +41,7 @@ class InstagramMonitor:
                     logger.debug(url)
                 except Exception as e:
                     eType = e.__class__.__name__
-                    logger.error("Error while modifying the html files.\nException message: " + eType + ": " + str(e))
+                    logger.error("Error while modifying the html files.\nException message: " + eType + ": " + str(e) + " [%(filename)s:%(lineno)s]")
                     set_err(url)
                     continue
             
