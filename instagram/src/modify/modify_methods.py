@@ -98,7 +98,7 @@ def compare_igtv(url, ig):
         new_igtv_href_list.append(link.attrib["href"])
 
     # Compare links, if a new one is found we mark it with a green border and set change and notify to true
-    # todo implementation check, get parent missing
+    # TODO implementation check, get parent missing
     for index in range(len(new_igtv_href_list)):
         if new_igtv_href_list[index] not in old_igtv_href_list:
             ig[NEW].get_igtvs()[index].attrib["style"] = "border: 4px solid green;"

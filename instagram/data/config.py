@@ -38,8 +38,8 @@ driver_profile.set_preference('intl.accept_languages','de')
 driver = webdriver.Firefox(firefox_profile=driver_profile, executable_path = geckodriver, log_path=geckodriver_log, options=options)
 #default selenium
 #driver = webdriver.Firefox(executable_path = geckodriver, log_path=geckodriver_log)
-#macOS
-#driver = webdriver.Firefox(executable_path = os.path.join(config_folder, "geckodriver_macOS"), log_path=geckodriver_log)
+#macOS                                                                                                                          #TODO REMOVE_MARKER
+#driver = webdriver.Firefox(executable_path = os.path.join(config_folder, "geckodriver_macOS"), log_path=geckodriver_log)       #TODO REMOVE_MARKER
 """
 Seleniumwire driver and it's options.
 """
@@ -53,7 +53,7 @@ LOGGING_CONFIG = {
             'datefmt': '%Y.%m.%d %H:%M:%S'
         },
         'detailed': {
-            'format': '[%(asctime)s]\t%(levelname)s -- %(processName)s %(filename)s:%(lineno)s -- %(message)s',
+            'format': '[%(asctime)s]\t%(levelname)s -- %(filename)s:%(lineno)s -- %(message)s',
             'datefmt': '%Y.%m.%d %H:%M:%S'
         }
     },
@@ -96,15 +96,7 @@ LOGGING_CONFIG = {
             'level': 'INFO',
             'handlers': ['console', 'testing']
         },
-        'basic_test': {
-            'level': 'DEBUG',
-            'handlers': ['console', 'testing']
-        },
-        'download_test': {
-            'level': 'DEBUG',
-            'handlers': ['console', 'testing']
-        },
-        'compare_test': {
+        'testing': {
             'level': 'DEBUG',
             'handlers': ['console', 'testing']
         }
@@ -121,6 +113,7 @@ base_url = "https://www.instagram.com/"
 login_url = "https://www.instagram.com/accounts/login/?next=%2Fexplore%2F&source=desktop_nav"
 ig_credentials = {"user": "swp_ep_ig_1_test",
                   "pass": "Test123!"}
+
 """
 Instagram credentials and other login information.
 """

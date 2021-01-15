@@ -6,7 +6,7 @@ from instagram.data.config import *
 from instagram.src.helper import *
 from instagram.src.instagram_object import InstagramObject
 
-logger = logging.getLogger('compare_test')
+logger = logging.getLogger('testing')
 
 monitoring_map = defaultdict(list)
 url1 = {"id": "polizei.hannover",

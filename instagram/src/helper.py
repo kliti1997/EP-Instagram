@@ -1,5 +1,7 @@
 from instagram.data.config import *
 
+logger = logging.getLogger('instagram')
+
 def get_folder_path(url):
     return os.path.join(monitoring_folder, url["monitoring_folder"])
     
@@ -30,4 +32,10 @@ def set_notify(url):
     url["notify"] = True
 
 def set_err(url):
+    url["change"] = False
+    url["notify"] = False
     url["err"] = True
+    logger.error('Error while processing. URL: ' + get_href(url))
+
+def get_err(url):
+    return url["err"]

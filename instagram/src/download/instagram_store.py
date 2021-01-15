@@ -11,7 +11,7 @@ from instagram.src.instagram_object import InstagramObject
 from instagram.src.download.profile_data import ProfileData
 import datetime
 
-MAX_RUNS = 10
+MAX_RUNS = 10               #how often the programm should retry to download a profile, if an error occurs
 """
 Determines how often the website should be revisited in case of connection issues.
 """
@@ -21,41 +21,41 @@ class InstagramStore:
         logger = logging.getLogger('instagram')
         logger.info("\n\n")
         logger.info("\t************STORING PHASE************\n")
-        driver.get(base_url)
-        random_sleep(5)
-        login(ig_credentials["user"], ig_credentials["pass"])
+        try:
+            driver.get(base_url)
+            random_sleep(6)
+            login(ig_credentials["user"], ig_credentials["pass"])
+        except:
+            logger.error("Please check your internet connection.")
 
         for url in monitoring_map["instagram"]:
             ig = None
             logger.info("store the html code of : (" + url["href"] + ") in " + url["monitoring_folder"] + "old.html")
             logger.info("OR in " + url["monitoring_folder"] + "new.html")
             logger.info("--------------------------------------------\n")
-
-            for i in range(MAX_RUNS):
-                try:
-                    init_return_values(url)
-                    random_sleep(5)
+            
+            try:
+                init_return_values(url)
+                for i in range(MAX_RUNS):
+                    random_sleep(6)
                     content = save_html(url)
                     ig = InstagramObject(url, "new", content)
                     break
-                except Exception as e:
-                    eType = e.__class__.__name__
-                    logger.error("downloading the html files.\nException message: " + eType + ": " + str(e))
-                    actual = config_folder + '/error_screenshots/' + str(datetime.datetime.now()) + '.png'
-                    driver.save_screenshot(actual)
-                    set_err(url)
-                    if i == MAX_RUNS - 1:
-                        driver.quit()
-                        url["err"] = True
-                        raise RuntimeError
-                    continue
 
-            pre_download(url)
-            ig.write(url)
+                pre_download(url)
+                ig.write(url)
 
-            initial = driver.execute_script("return window._sharedData;")
-            profile = ProfileData(initial_data=initial, requests=driver.requests)
-            add_html_tags(url, ig, profile)
-            del driver.requests
+                initial = driver.execute_script("return window._sharedData;")
+                profile = ProfileData(initial_data=initial, requests=driver.requests)
+                add_html_tags(url, ig, profile)
+                del driver.requests
+
+            except Exception as e:
+                eType = e.__class__.__name__
+                logger.error("Error while downloading the html files.\nException message: " + eType + ": " + str(e))
+                actual = config_folder + '/error_screenshots/' + str(datetime.datetime.now()) + '.png'      #only for debug in headless mode        #TODO REMOVE_MARKER
+                driver.save_screenshot(actual)                                                                                                      #TODO REMOVE_MARKER
+                set_err(url)
+                continue
 
         driver.quit()

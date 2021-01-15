@@ -3,7 +3,7 @@ from instagram.src.download.instagram_store import InstagramStore
 from instagram.src.helper import *
 import time, sys
 
-logger = logging.getLogger('download_test')
+logger = logging.getLogger('testing')
 
 monitoring_map = defaultdict(list)
 url1 = {"id": "polizei.hannover",

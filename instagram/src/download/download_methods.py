@@ -17,6 +17,7 @@ from pathlib import Path
 from .profile_data import ProfileData
 import json
 import lxml
+import datetime
 
 """
 Constants to calculate the sleep timer.
@@ -50,7 +51,7 @@ def login(username, password):
     # Accepts the cookie banner, if it exists.
     if driver.find_elements_by_xpath("//*[text()='Akzeptieren' or text()='Accept']"):
         driver.find_element_by_xpath("//*[text()='Akzeptieren' or text()='Accept']").click()
-        random_sleep(5)
+        random_sleep(6)
 
     # Log into account only if not already logged in.
     if driver.find_elements_by_xpath("//*[text()='Anmelden' or text()='Log In']"):
@@ -176,9 +177,10 @@ def random_sleep(max_time):
 
 def pre_download(url):
     """
-    If a file already exists in the monitoring folder, it's name will be changed
+    If new.html already exists in the monitoring folder, it's name will be changed
     to old.html.
     If there is already an old file, it will be deleted.
+    If the new.html is missing, nothing will be deleted to avoid data loss.
 
     Args:
         url (dict): Containts the path of the monitoring folder and one of the types
@@ -187,12 +189,15 @@ def pre_download(url):
     folder_path = get_folder_path(url)
     old_html_path = get_old_html_path(url)
     new_html_path = get_new_html_path(url)
+    dt = str(datetime.datetime.now()) + '.html'                                                                         #TODO REMOVE_MARKER
     try:
-        Path(folder_path).mkdir(parents=True, exist_ok=True)
-        if os.path.exists(old_html_path):
-            os.remove(old_html_path)
-        if os.path.exists(new_html_path):
-            os.rename(new_html_path, old_html_path)
+        Path(folder_path).mkdir(parents=True, exist_ok=True)        #if folder doesn't exists, it will create it
+        if os.path.exists(new_html_path):                           #if new.html ist missing, nothing will be deleted
+            if os.path.exists(old_html_path):
+                os.remove(old_html_path)
+                #os.rename(old_html_path, os.path.join(folder_path, dt))                                                #TODO REMOVE_MARKER
+            if os.path.exists(new_html_path):
+                os.rename(new_html_path, old_html_path)
 
     except Exception as e:
         e_type = e.__class__.__name__
