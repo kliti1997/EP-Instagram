@@ -34,28 +34,27 @@ class InstagramStore:
             logger.info("OR in " + url["monitoring_folder"] + "new.html")
             logger.info("--------------------------------------------\n")
             
-            try:
-                init_return_values(url)
-                for i in range(MAX_RUNS):
+            for i in range(MAX_RUNS):
+                try:
+                    init_return_values(url)
                     random_sleep(6)
                     content = save_html(url)
                     ig = InstagramObject(url, "new", content)
+                    
+
+                    pre_download(url)
+                    ig.write(url)
+
+                    initial = driver.execute_script("return window._sharedData;")
+                    profile = ProfileData(initial_data=initial, requests=driver.requests)
+                    add_html_tags(url, ig, profile)
+                    del driver.requests
                     break
+                except Exception as e:
+                    eType = e.__class__.__name__
+                    logger.error("Error while downloading the html files.\nException message: " + eType + ": " + str(e))
+                    actual = config_folder + '/error_screenshots/' + str(datetime.datetime.now()) + '.png'      #only for debug in headless mode        #TODO REMOVE_MARKER
+                    driver.save_screenshot(actual)                                                                                                      #TODO REMOVE_MARKER
+                    set_err(url)
 
-                pre_download(url)
-                ig.write(url)
-
-                initial = driver.execute_script("return window._sharedData;")
-                profile = ProfileData(initial_data=initial, requests=driver.requests)
-                add_html_tags(url, ig, profile)
-                del driver.requests
-
-            except Exception as e:
-                eType = e.__class__.__name__
-                logger.error("Error while downloading the html files.\nException message: " + eType + ": " + str(e))
-                actual = config_folder + '/error_screenshots/' + str(datetime.datetime.now()) + '.png'      #only for debug in headless mode        #TODO REMOVE_MARKER
-                driver.save_screenshot(actual)                                                                                                      #TODO REMOVE_MARKER
-                set_err(url)
-                continue
-
-        driver.quit()
+        driver.close()
