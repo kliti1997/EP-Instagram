@@ -4,7 +4,7 @@ It saves the dom content of the instagram-subdirectory to be visited in an insta
 by calling further functions which are located in the instagram_monitor module.
 """
 from instagram.src.helper import *
-from instagram.src.download.download_methods import login, random_sleep, pre_download, save_html, add_html_tags, delete_new_html
+from instagram.src.download.download_methods import login, random_sleep, pre_download, save_html, add_html_tags, delete_new_html, validate_obj
 from instagram.src.helper import set_err
 from instagram.src.instagram_object import InstagramObject
 from instagram.src.download.profile_data import ProfileData
@@ -42,7 +42,7 @@ class InstagramStore:
                     content = save_html(url)
                     ig = InstagramObject(url, "new", content)
                     validate_obj(ig, url)
-                    
+
                     #Download-Phase 2
                     actual_phase = 2
                     pre_download(url)
