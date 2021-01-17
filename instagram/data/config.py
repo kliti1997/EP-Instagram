@@ -19,6 +19,12 @@ import logging.config
 import re
 from pathlib import Path
 
+MAX_RUNS = 5               #how often the programm should retry to download a profile, if an error occurs
+RANDOM_SLEEP_MIN_TIME = 5
+"""
+General configuration values
+"""
+
 config_folder = os.path.dirname(os.path.abspath(__file__))
 monitoring_folder = os.path.join(config_folder, "files")
 profile_folder = os.path.join(config_folder, "profile")
@@ -31,7 +37,7 @@ Different path variables.
 
 Path(profile_folder).mkdir(parents=True, exist_ok=True)
 options = Options()
-options.headless = True
+#options.headless = True
 driver_profile = webdriver.FirefoxProfile(profile_folder)
 driver_profile.set_preference('intl.accept_languages','de')
 #headless

@@ -5,25 +5,20 @@ The core functionalities in this module are the login process at instagram and t
 downloading and saving of html files.
 
 """
-from instagram.data.config import *
 from instagram.src.helper import *
 from instagram.src.instagram_object import InstagramObject
 from random import randint
-from selenium.common.exceptions import NoSuchElementException
-from selenium import webdriver
-from pprint import pprint
-from lxml import etree, html
+from lxml import etree
 from pathlib import Path
 from .profile_data import ProfileData
-import json
 import lxml
 import datetime
+
+from ...data.config import RANDOM_SLEEP_MIN_TIME
 
 """
 Constants to calculate the sleep timer.
 """
-MIN_TIME = 5
-INCR_UPPER_BOUND = 10
 
 logger = logging.getLogger('instagram')
 
@@ -169,9 +164,9 @@ def random_sleep(max_time):
     Args:
         max_time (int): Determines how long the program sequence is paused at most.
     """
-    if max_time <= MIN_TIME:
-        max_time = MIN_TIME + INCR_UPPER_BOUND
-    random_time = randint(MIN_TIME, max_time)
+    if max_time <= RANDOM_SLEEP_MIN_TIME:
+        max_time = RANDOM_SLEEP_MIN_TIME + max_time
+    random_time = randint(RANDOM_SLEEP_MIN_TIME, max_time)
     sleep(random_time)
 
 
