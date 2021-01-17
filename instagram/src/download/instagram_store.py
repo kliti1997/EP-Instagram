@@ -11,7 +11,7 @@ from instagram.src.instagram_object import InstagramObject
 from instagram.src.download.profile_data import ProfileData
 import datetime
 
-MAX_RUNS = 10               #how often the programm should retry to download a profile, if an error occurs
+MAX_RUNS = 5               #how often the programm should retry to download a profile, if an error occurs
 """
 Determines how often the website should be revisited in case of connection issues.
 """
@@ -33,28 +33,36 @@ class InstagramStore:
             logger.info("store the html code of : (" + url["href"] + ") in " + url["monitoring_folder"] + "old.html")
             logger.info("OR in " + url["monitoring_folder"] + "new.html")
             logger.info("--------------------------------------------\n")
+            init_return_values(url)
+            actual_phase = 0
             
             for i in range(MAX_RUNS):
                 try:
-                    init_return_values(url)
+                    #Download-Phase 1
+                    actual_phase = 1
                     random_sleep(6)
                     content = save_html(url)
                     ig = InstagramObject(url, "new", content)
                     
-
+                    #Download-Phase 2
+                    actual_phase = 2
                     pre_download(url)
                     ig.write(url)
 
+                    #Download-Phase 3
+                    actual_phase = 3
                     initial = driver.execute_script("return window._sharedData;")
                     profile = ProfileData(initial_data=initial, requests=driver.requests)
                     add_html_tags(url, ig, profile)
                     del driver.requests
                     break
                 except Exception as e:
-                    eType = e.__class__.__name__
-                    logger.error("Error while downloading the html files.\nException message: " + eType + ": " + str(e))
-                    actual = config_folder + '/error_screenshots/' + str(datetime.datetime.now()) + '.png'      #only for debug in headless mode        #TODO REMOVE_MARKER
-                    driver.save_screenshot(actual)                                                                                                      #TODO REMOVE_MARKER
-                    set_err(url)
+                    logger.info("Download-Try: " + str(i) + " failed in Phase " + str(actual_phase) + ".")
+                    if i >= MAX_RUNS - 1:
+                        eType = e.__class__.__name__
+                        logger.error("Error while downloading the html files.\nException message: " + eType + ": " + str(e))
+                        set_err(url)
+                        actual = config_folder + '/error_screenshots/' + str(datetime.datetime.now()) + '.png'      #only for debug in headless mode        #TODO REMOVE_MARKER
+                        driver.save_screenshot(actual)                                                                                                      #TODO REMOVE_MARKER
 
         driver.close()

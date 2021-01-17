@@ -169,7 +169,7 @@ def random_sleep(max_time):
     Args:
         max_time (int): Determines how long the program sequence is paused at most.
     """
-    if max_time < MIN_TIME:
+    if max_time <= MIN_TIME:
         max_time = MIN_TIME + INCR_UPPER_BOUND
     random_time = randint(MIN_TIME, max_time)
     sleep(random_time)
@@ -192,7 +192,7 @@ def pre_download(url):
     dt = str(datetime.datetime.now()) + '.html'                                                                         #TODO REMOVE_MARKER
     try:
         Path(folder_path).mkdir(parents=True, exist_ok=True)        #if folder doesn't exists, it will create it
-        if os.path.exists(new_html_path):                           #if new.html ist missing, nothing will be deleted
+        if os.path.exists(new_html_path):                           #if new.html is missing, nothing will be deleted
             if os.path.exists(old_html_path):
                 os.remove(old_html_path)
                 #os.rename(old_html_path, os.path.join(folder_path, dt))                                                #TODO REMOVE_MARKER
