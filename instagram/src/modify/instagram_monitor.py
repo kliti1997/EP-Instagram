@@ -41,7 +41,7 @@ class InstagramMonitor:
                     logger.debug(url)
                 except Exception as e:
                     eType = e.__class__.__name__
-                    logger.error("Error while modifying the html files.\nException message: " + eType + ": " + str(e) + " [%(filename)s:%(lineno)s]")
+                    logger.error("Error while modifying the html files.\nException message: " + eType + ": " + str(e))
                     set_err(url)
                     continue
             
