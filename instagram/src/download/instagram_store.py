@@ -45,13 +45,14 @@ class InstagramStore:
 
                     #Download-Phase 2
                     actual_phase = 2
-                    pre_download(url)
-                    ig.write(url)
+                    initial = driver.execute_script("return window._sharedData;")
+                    profile = ProfileData(initial_data=initial, requests=driver.requests)
 
                     #Download-Phase 3
                     actual_phase = 3
-                    initial = driver.execute_script("return window._sharedData;")
-                    profile = ProfileData(initial_data=initial, requests=driver.requests)
+                    pre_download(url)
+                    ig.write(url)
+                    
                     
                     add_html_tags(url, ig, profile)
                     del driver.requests
