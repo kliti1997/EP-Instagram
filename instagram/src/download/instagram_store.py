@@ -57,7 +57,7 @@ class InstagramStore:
                     del driver.requests
                     break
                 except Exception as e:
-                    logger.info("Download-Try: " + str(i) + " failed in Phase " + str(actual_phase) + ".")
+                    logger.info("Download-Try: " + str(i + 1) + " of " + str(MAX_RUNS) + " failed in Phase " + str(actual_phase) + ".")
                     if i >= MAX_RUNS - 1:
                         eType = e.__class__.__name__
                         logger.error("Error while downloading the html files.\nException message: " + eType + ": " + str(e))
