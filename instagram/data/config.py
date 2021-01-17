@@ -19,6 +19,12 @@ import logging.config
 import re
 from pathlib import Path
 
+MAX_RUNS = 5               #how often the programm should retry to download a profile, if an error occurs
+RANDOM_SLEEP_MIN_TIME = 5
+"""
+General configuration values
+"""
+
 config_folder = os.path.dirname(os.path.abspath(__file__))
 monitoring_folder = os.path.join(config_folder, "files")
 profile_folder = os.path.join(config_folder, "profile")
@@ -31,7 +37,7 @@ Different path variables.
 
 Path(profile_folder).mkdir(parents=True, exist_ok=True)
 options = Options()
-options.headless = True
+#options.headless = True
 driver_profile = webdriver.FirefoxProfile(profile_folder)
 driver_profile.set_preference('intl.accept_languages','de')
 #headless
@@ -111,8 +117,8 @@ Error logging, including options to represent the output and an output file.
 
 base_url = "https://www.instagram.com/"
 login_url = "https://www.instagram.com/accounts/login/?next=%2Fexplore%2F&source=desktop_nav"
-ig_credentials = {"user": "swp_ep_ig_1_test",
-                  "pass": "Test123!"}
+ig_credentials = {"user": "ulferdowoff",
+                  "pass": "MTCooln1"}
 
 """
 Instagram credentials and other login information.
