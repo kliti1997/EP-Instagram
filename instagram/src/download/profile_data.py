@@ -47,7 +47,7 @@ class ProfileData:
 
     def read_profile_pic_name(self):
         url = self._user['profile_pic_url']
-        self.profile_pic_url = re.search("([^/]*).jpg", url).group()  # filename of the image
+        self.profile_pic_url = re.search(r"([^/]*).jpg", url).group()  # filename of the image
 
     @staticmethod
     def append_edges_to_list(parent_edge, target_list) -> None:
