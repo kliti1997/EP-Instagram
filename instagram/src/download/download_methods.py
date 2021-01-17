@@ -196,7 +196,27 @@ def pre_download(url):
 
     except Exception as e:
         e_type = e.__class__.__name__
-        logger.error("error in pre-download phase.\nException message: " + e_type + ": " + str(e))
+        logger.error("Error in pre-download phase.\nException message: " + e_type + ": " + str(e))
+        set_err(url)
+
+
+def delete_new_html(url):
+    """
+    Avoid data loss in multiple override of new.html.
+    If download fails, new.html will be deleted to skip renaming to old.html.
+
+    Args:
+        url (dict): Containts the path of the monitoring folder and one of the types
+                    "posts", "tagged", or "IGTV" to determine the file path.
+    """
+    try:
+        new_html_path = get_new_html_path(url)
+        if os.path.exists(new_html_path): 
+            os.remove(new_html_path)
+
+    except Exception as e:
+        e_type = e.__class__.__name__
+        logger.error("Error while trying to delete new.html.\nException message: " + e_type + ": " + str(e))
         set_err(url)
 
 

@@ -4,7 +4,7 @@ It saves the dom content of the instagram-subdirectory to be visited in an insta
 by calling further functions which are located in the instagram_monitor module.
 """
 from instagram.src.helper import *
-from instagram.src.download.download_methods import login, random_sleep, pre_download, save_html, add_html_tags
+from instagram.src.download.download_methods import login, random_sleep, pre_download, save_html, add_html_tags, delete_new_html
 from instagram.src.helper import set_err
 from instagram.src.instagram_object import InstagramObject
 from instagram.src.download.profile_data import ProfileData
@@ -56,6 +56,7 @@ class InstagramStore:
                     break
                 except Exception as e:
                     logger.info("Download-Try: " + str(i + 1) + " of " + str(MAX_RUNS) + " failed in Phase " + str(actual_phase) + ".")
+                    delete_new_html(url)
                     if i >= MAX_RUNS - 1:
                         eType = e.__class__.__name__
                         logger.error("Error while downloading the html files.\nException message: " + eType + ": " + str(e))
