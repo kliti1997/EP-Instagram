@@ -233,3 +233,20 @@ def replace_video_thumbnail(ig, post_object):
     video_object = post_object
     video_div = video_object.xpath(".//img[@src]")[0]
     video_div.attrib["onerror"] = "this.src='" + ig.get_video_thumbnail_path() + "';this.srcset='';"
+
+def validate_obj(ig, url):
+    if url["type"] == "posts":
+        posts = ig.get_posts()
+        logger.info("len(posts) = " + str(len(posts)))
+        if posts is None:
+            raise RuntimeError
+    if url["type"] == "igtv":
+        igtvs = ig.get_igtvs()
+        logger.info("len(igtvs) = " + str(len(igtvs)))
+        if igtvs is None:
+            raise RuntimeError
+    if url["type"] == "tagged":
+        tags = ig.get_tags()
+        logger.info("len(tags) = " + str(len(tags)))
+        if tags is None:
+            raise RuntimeError
