@@ -165,7 +165,7 @@ def random_sleep(max_time):
         max_time (int): Determines how long the program sequence is paused at most.
     """
     if max_time <= RANDOM_SLEEP_MIN_TIME:
-        max_time = RANDOM_SLEEP_MIN_TIME + max_time
+        max_time += RANDOM_SLEEP_MIN_TIME
     random_time = randint(RANDOM_SLEEP_MIN_TIME, max_time)
     sleep(random_time)
 
