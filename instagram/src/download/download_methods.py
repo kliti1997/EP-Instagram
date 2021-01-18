@@ -250,16 +250,16 @@ def validate_obj(ig, url):
     """
     if url["type"] == "posts":
         posts = ig.get_posts()
-        logger.info("len(posts) = " + str(len(posts)))
+        logger.debug("len(posts) = " + str(len(posts)))
         if posts is None:
             raise RuntimeError
     if url["type"] == "igtv":
         igtvs = ig.get_igtvs()
-        logger.info("len(igtvs) = " + str(len(igtvs)))
+        logger.debug("len(igtvs) = " + str(len(igtvs)))
         if igtvs is None:
             raise RuntimeError
     if url["type"] == "tagged":
         tags = ig.get_tags()
-        logger.info("len(tags) = " + str(len(tags)))
+        logger.debug("len(tags) = " + str(len(tags)))
         if tags is None:
             raise RuntimeError
