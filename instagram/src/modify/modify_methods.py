@@ -66,8 +66,8 @@ def compare_followers_following(url, ig):
     :param url: Url of the monitoring_map
     :param ig: The Instagram profile
     """
-    oldFollowersCnt = ig[OLD].get_followers()[0].attrib["title"]
-    newFollowersCnt = ig[NEW].get_followers()[0].attrib["title"]
+    oldFollowersCnt = ig[OLD].get_followers()[0].attrib["data-followers"]
+    newFollowersCnt = ig[NEW].get_followers()[0].attrib["data-followers"]
 
     # Substitute the compact Followers number with the precise one
     ig[NEW].get_followers()[0].text = newFollowersCnt
@@ -79,8 +79,8 @@ def compare_followers_following(url, ig):
             set_notify(url)
 
     # Following or Abonnierte
-    oldFollowingCnt = ig[OLD].get_following()[0].text
-    newFollowingCnt = ig[NEW].get_following()[0].text
+    oldFollowingCnt = ig[OLD].get_following()[0].attrib["data-following"]
+    newFollowingCnt = ig[NEW].get_following()[0].attrib["data-following"]
 
     if oldFollowingCnt != newFollowingCnt:
         ig[NEW].get_following().attrib['style'] = "background-color: green;"

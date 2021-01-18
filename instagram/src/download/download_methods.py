@@ -97,8 +97,10 @@ def convert_links(source):
 
 def add_html_tags(url, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
     """
-    Adding the number of views and comments for videos or likes and comments for photos when they have changed.
-    Additionally, the timestamp of the last posted story is added to the profile picture for comparison.
+    The following things are added to the XML tree:
+    - the number of views and comments for videos or likes and comments for photos when they have changed.
+    - the timestamp of the last posted story is added to the profile picture for comparison.
+    - the (exact) number of followers / following
     """
     if url["type"] == "posts":
         for i, post in enumerate(ig_obj.get_posts()):
@@ -122,15 +124,20 @@ def add_html_tags(url, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
             igtv.attrib["data-view-count"] = str(prof_data.igtvs[i]["view_count"])
             igtv.attrib["data-comment"] = str(prof_data.igtvs[i]["likes"])
 
-    profile_pic = ig_obj.get_profile_pic_download(prof_data.profile_pic_url)
-
     # Adding the timestamp of the last posted story
+    profile_pic = ig_obj.get_profile_pic_download(prof_data.profile_pic_url)
     profile_pic.attrib["data-story-timestamp"] = str(prof_data.story_timestamp)
 
     # Setting the instagram.com/stories/profile_name url
     anchor = lxml.etree.Element('a', href="https://instagram.com/stories/" + url["id"])
     anchor.extend(profile_pic)
     profile_pic.append(anchor)
+
+    # Adding the number of followers
+    ig_obj.get_followers()[0].attrib["data-followers"] = str(prof_data.num_followers)
+
+    #Adding the nummber of users followed
+    ig_obj.get_following()[0].attrib["data-following"] = str(prof_data.num_following)
 
     ig_obj.write(url)
 
