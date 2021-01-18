@@ -1,3 +1,7 @@
+"""
+This module has different getters und setter helper methods which we use to read different information and set
+the values for notify, error and change in the monitoring map.
+"""
 from instagram.data.config import *
 
 logger = logging.getLogger('instagram')
