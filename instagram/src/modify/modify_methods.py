@@ -174,11 +174,9 @@ def compare_hover_items(url, ig):
             if new_ele.attrib["href"] == old_ele.attrib["href"]:
 
                 if "data-view-count" in new_ele.attrib:  # If the current object is a video, compare the view-count.
-                    print("view-count")
                     to_cmp = "data-view-count"
                     sprite = "coreSpritePlayIconSmall"
                 else:
-                    print("liked by")
                     to_cmp = "data-liked-by"
                     sprite = "coreSpriteHeartSmall"
 
