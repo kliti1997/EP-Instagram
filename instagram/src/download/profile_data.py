@@ -24,7 +24,10 @@ class ProfileData:
         self.profile_pic_url = ''
 
         self._initial = initial_data
-        self._user = self._initial["entry_data"]["ProfilePage"][0]["graphql"]["user"]
+        try:
+            self._user = self._initial["entry_data"]["ProfilePage"][0]["graphql"]["user"]
+        except KeyError:
+            raise RuntimeError("Couldn't find edge 'ProfilePage' in XHR response. Checking own profile?")
         self._requests = requests
         self.read_followers()
         self.read_following()
