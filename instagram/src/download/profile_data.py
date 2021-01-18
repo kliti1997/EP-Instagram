@@ -40,17 +40,33 @@ class ProfileData:
         return res
 
     def read_following(self):
+        """
+        This function reads the count of the following users
+        """
         self.num_following = self._user["edge_follow"]["count"]
 
     def read_followers(self):
+        """
+        This function reads the count of followers
+        """
         self.num_followers = self._user["edge_followed_by"]["count"]
 
     def read_profile_pic_name(self):
+        """
+        This function reads the filename of the profile picture of the user.
+        :return:
+        """
         url = self._user['profile_pic_url']
         self.profile_pic_url = re.search(r"([^/]*).jpg", url).group()  # filename of the image
 
     @staticmethod
     def append_edges_to_list(parent_edge, target_list) -> None:
+        """
+        This function appends all posts in a list.
+        :param parent_edge: The edge from where we read the posts.
+        :param target_list: The list in which all post are saved.
+        :return: None
+        """
         for edge in parent_edge:
             child = edge["node"]
             item = {'type': 'video' if child["is_video"] else 'image',
