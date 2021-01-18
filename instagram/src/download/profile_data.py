@@ -79,7 +79,6 @@ class ProfileData:
             if child["is_video"]:
                 item.update({'view_count': child["video_view_count"]})
 
-
             target_list.append(item)
 
     def read_initial_nodes(self):

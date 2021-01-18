@@ -104,7 +104,7 @@ def add_html_tags(url, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
     """
     if url["type"] == "posts":
         for i, post in enumerate(ig_obj.get_posts()):
-            if post.xpath(".//span[@aria-label='Video']"):
+            if prof_data.posts[i]["type"] == 'video':
                 post.attrib["data-view-count"] = str(prof_data.posts[i]["view_count"])
                 replace_video_thumbnail(ig_obj, post)
             else:
@@ -113,7 +113,7 @@ def add_html_tags(url, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
 
     if url["type"] == "tagged":
         for i, tag in enumerate(ig_obj.get_tags()):
-            if tag.xpath(".//span[@aria-label='Video']"):
+            if prof_data.tagged[i]["type"] == 'video':
                 tag.attrib["data-view-count"] = str(prof_data.tagged[i]["view_count"])
             else:
                 tag.attrib["data-liked-by"] = str(prof_data.tagged[i]["likes"])
