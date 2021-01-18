@@ -122,7 +122,7 @@ def add_html_tags(url, ig_obj: InstagramObject, prof_data: ProfileData) -> None:
     elif url["type"] == "igtv":
         for i, igtv in enumerate(ig_obj.get_igtvs()):
             igtv.attrib["data-view-count"] = str(prof_data.igtvs[i]["view_count"])
-            igtv.attrib["data-comment"] = str(prof_data.igtvs[i]["likes"])
+            igtv.attrib["data-comment"] = str(prof_data.igtvs[i]["comments"])
 
     # Adding the timestamp of the last posted story
     profile_pic = ig_obj.get_profile_pic_download(prof_data.profile_pic_url)

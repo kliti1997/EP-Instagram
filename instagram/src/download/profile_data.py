@@ -78,10 +78,7 @@ class ProfileData:
                     'likes': child["edge_media_preview_like"]["count"]}
             if child["is_video"]:
                 item.update({'view_count': child["video_view_count"]})
-            if 'edge_media_preview_like' in child:
-                item.update({'likes': child["edge_media_preview_like"]["count"]})  # item 13-24
-            else:
-                item.update({'likes': child["edge_media_to_comment"]["count"]})  # item 1-12
+
 
             target_list.append(item)
 
