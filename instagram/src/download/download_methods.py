@@ -235,6 +235,12 @@ def replace_video_thumbnail(ig, post_object):
     video_div.attrib["onerror"] = "this.src='" + ig.get_video_thumbnail_path() + "';this.srcset='';"
 
 def validate_obj(ig, url):
+    """
+    This method validates the Instagram object and checks if the page was correctly downloaded, otherwise it raises
+    a Runtime Error.
+    :param ig: The Instagram profile
+    :param url: The url of the monitoring_map
+    """
     if url["type"] == "posts":
         posts = ig.get_posts()
         logger.info("len(posts) = " + str(len(posts)))

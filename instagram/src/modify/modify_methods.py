@@ -15,6 +15,10 @@ Constants to determine whether the old, or new html-file is accessed.
 # from instagram.src.instagram import Instagram
 
 def pre_modify(url):
+    """
+    This function checks if the old and new html file exist.
+    :param url: The url of the monitoring_map
+    """
     return os.path.isfile(get_old_html_path(url)) and os.path.isfile(get_new_html_path(url))
 
 
@@ -27,7 +31,7 @@ def compare_posts(url, ig):
     href are marked with a green border to show that it is a new post. We than set change and notify to true.
 
     Args:
-        url (url): The url of the file
+        url (url): The url of the monitoring monitoring_map
         ig (InstagramObject): The instagram profile
     """
     old_links_list = []  # Only holds hrefs
@@ -50,6 +54,18 @@ def compare_posts(url, ig):
 
 
 def compare_followers_following(url, ig):
+    """
+    This function compares the number of followers and following and marks them if they have changed.
+
+    The function gets the number of followers and following from the old and new files and compares them with one
+    another. Also it substitutes the compact number with the precise one.
+    Example: 12k will be substituted with 12491. This is made to display changes more correctly.
+    The change would be set to true. Depending on the mode, if it is mode 1, the notify would also be set to true,
+    if there have been changes.
+
+    :param url: Url of the monitoring_map
+    :param ig: The Instagram profile
+    """
     oldFollowersCnt = ig[OLD].get_followers()[0].attrib["title"]
     newFollowersCnt = ig[NEW].get_followers()[0].attrib["title"]
 
@@ -84,7 +100,7 @@ def compare_igtv(url, ig):
     href are marked with a green border to show that it is a new post. We than set change and notify to true.
 
     Args:
-        url (url): The url of the file
+        url (url): The url of the monitoring_map
         ig (InstagramObject): The instagram profile
     """
     # Getting all links in old igtv html file
@@ -98,7 +114,6 @@ def compare_igtv(url, ig):
         new_igtv_href_list.append(link.attrib["href"])
 
     # Compare links, if a new one is found we mark it with a green border and set change and notify to true
-    # TODO implementation check, get parent missing
     for index in range(len(new_igtv_href_list)):
         if new_igtv_href_list[index] not in old_igtv_href_list:
             ig[NEW].get_igtvs()[index].attrib["style"] = "border: 4px solid green;"
@@ -117,7 +132,7 @@ def compare_hover_items(url, ig):
     The neccessary css code is added in the header of the html file.
 
     Args:
-        url (url): The url of the file
+        url (url): The url of the monitoring_map
         ig (InstagramObject): The instagram profile
     """
     if url["type"] == "posts":
@@ -265,7 +280,7 @@ def compare_tagged(url, ig):
     href are marked with a green border to show that it is a new post. We than set change and notify to true.
 
     Args:
-        url (url): The url of the file
+        url (url): The url of the monitoring_map
         ig (InstagramObject): The instagram profile
     """
     # Take the links in the old file
@@ -299,7 +314,7 @@ def compare_stories(url, ig):
     The change and notify are than set to true.
 
     Args:
-        url (url): The url of the file
+        url (url): The url of the monitoring_map
         ig (InstagramObject): The instagram profile
     """
     old_timestamp = ig[OLD].get_profile_pic_modify().attrib["data-story-timestamp"]
