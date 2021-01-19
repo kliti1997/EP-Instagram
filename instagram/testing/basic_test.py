@@ -1,37 +1,30 @@
 from collections import defaultdict
-from instagram.src.download.instagram_store import InstagramStore
-from instagram.src.modify.instagram_monitor import InstagramMonitor
+from instagram.src.instagram import Instagram
 import logging
 
 logger = logging.getLogger('testing')
 
 monitoring_map = defaultdict(list)
-url1 = {"id": "polizei.hannover",
-        "href": "https://www.instagram.com/polizei.hannover/",
-        "type": "posts", "mode": "2", "monitoring_folder": "polizei.hannover/posts/",
+url1 = {"id": "ulferdowoff",
+        "href": "https://www.instagram.com/ulferdowoff/",
+        "type": "posts", "mode": "1", "monitoring_folder": "ulferdowoff/posts/",
         "change": "", "notify": "", "err": ""}      
-url2 = {"id": "polizei.hannover",
-        "href": "https://www.instagram.com/polizei.hannover/channel/",
-        "type": "igtv", "mode": "1", "monitoring_folder": "polizei.hannover/igtv/",
+url2 = {"id": "ulferdowoff",
+        "href": "https://www.instagram.com/ulferdowoff/channel/",
+        "type": "igtv", "mode": "1", "monitoring_folder": "ulferdowoff/igtv/",
         "change": "", "notify": "", "err": ""}        
-url3 = {"id": "polizei.hannover",
-        "href": "https://www.instagram.com/polizei.hannover/tagged/",
-        "type": "tagged", "mode": "1", "monitoring_folder": "polizei.hannover/tagged/",
-        "change": "", "notify": "", "err": ""}
-url4 = {"id": "frieda_rudi_make_oink",
-        "href": "https://www.instagram.com/frieda_rudi_make_oink/",
-        "type": "posts", "mode": "1", "monitoring_folder": "frieda_rudi_make_oink/posts/",
+url3 = {"id": "ulferdowoff",
+        "href": "https://www.instagram.com/ulferdowoff/tagged/",
+        "type": "tagged", "mode": "2", "monitoring_folder": "ulferdowoff/tagged/",
         "change": "", "notify": "", "err": ""}
         
 monitoring_map["instagram"].append(url1)
 monitoring_map["instagram"].append(url2)
 monitoring_map["instagram"].append(url3)
-monitoring_map["instagram"].append(url4)
 
 logger.info("\t\t{{{BASIC TEST}}}")
 
-InstagramStore(monitoring_map)
-InstagramMonitor(monitoring_map)
+Instagram(monitoring_map)
 
 logger.info("\t\t{{{RESULT}}}")
 for url in monitoring_map["instagram"]:

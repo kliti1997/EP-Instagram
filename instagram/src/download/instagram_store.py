@@ -5,7 +5,6 @@ by calling further functions which are located in the instagram_monitor module.
 """
 from instagram.src.helper import *
 from instagram.src.download.download_methods import login, random_sleep, pre_download, save_html, add_html_tags, delete_new_html, validate_obj
-from instagram.src.helper import set_err
 from instagram.src.instagram_object import InstagramObject
 from instagram.src.download.profile_data import ProfileData
 import datetime
@@ -51,20 +50,18 @@ class InstagramStore:
                     #Download-Phase 3
                     actual_phase = 3
                     pre_download(url)
-                    ig.write(url)
-                    
+                    ig.write(url)                    
                     
                     add_html_tags(url, ig, profile)
                     del driver.requests
                     break
                 except Exception as e:
                     logger.info("Download-Try: " + str(i + 1) + " of " + str(MAX_RUNS) + " failed in Phase " + str(actual_phase) + ".")
-                    delete_new_html(url)
+                    if actual_phase == 3:
+                        delete_new_html(url)
                     if i >= MAX_RUNS - 1:
                         eType = e.__class__.__name__
                         logger.error("Error while downloading the html files.\nException message: " + eType + ": " + str(e))
                         set_err(url)
-                        actual = config_folder + '/error_screenshots/' + str(datetime.datetime.now()) + '.png'      #only for debug in headless mode        #TODO REMOVE_MARKER
-                        driver.save_screenshot(actual)                                                                                                      #TODO REMOVE_MARKER
 
         driver.close()
