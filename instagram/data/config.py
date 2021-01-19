@@ -117,8 +117,8 @@ Error logging, including options to represent the output and an output file.
 
 base_url = "https://www.instagram.com/"
 login_url = "https://www.instagram.com/accounts/login/?next=%2Fexplore%2F&source=desktop_nav"
-ig_credentials = {"user": "swp_ep_ig_1_test",
-                  "pass": "Test123!"}
+ig_credentials = {"user": "",
+                  "pass": ""}
 
 """
 Instagram credentials and other login information.
