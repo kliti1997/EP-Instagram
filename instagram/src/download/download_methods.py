@@ -32,7 +32,6 @@ def login(username, password):
         username (str): The username which is used to log in.
         password (str): The password which is used to log in.
     """
-    # TODO texte ersetzen?
     # Accepts the "stay logged in" banner, if it exists.
     if driver.find_elements_by_xpath("//*[contains(text(),'Als') and contains(text(),'fortfahren')]"):
         driver.find_element_by_xpath("//*[contains(text(),'Als') and contains(text(),'fortfahren')]").click()
@@ -50,6 +49,7 @@ def login(username, password):
 
     # Log into account only if not already logged in.
     if driver.find_elements_by_xpath("//*[text()='Anmelden' or text()='Log In']"):
+        logger.warn('Wasn\'t logged in already. Please check your Firefox-Profile.')
         driver.find_element_by_name("username").send_keys(username)
         driver.find_element_by_name("password").send_keys(password)
         driver.find_element_by_xpath("//*[text()='Anmelden' or text()='Log In']").click()
@@ -159,9 +159,6 @@ def save_html(url):
 
     return convert_links(driver.execute_script("return new XMLSerializer().serializeToString(document);"))
 
-    # with open(get_new_html_path(url), "w") as f:
-    # f.write(content)
-
 
 def random_sleep(max_time):
     """
@@ -191,13 +188,11 @@ def pre_download(url):
     folder_path = get_folder_path(url)
     old_html_path = get_old_html_path(url)
     new_html_path = get_new_html_path(url)
-    dt = str(datetime.datetime.now()) + '.html'                                                                         #TODO REMOVE_MARKER
     try:
         Path(folder_path).mkdir(parents=True, exist_ok=True)        #if folder doesn't exists, it will create it
         if os.path.exists(new_html_path):                           #if new.html is missing, nothing will be deleted
             if os.path.exists(old_html_path):
                 os.remove(old_html_path)
-                #os.rename(old_html_path, os.path.join(folder_path, dt))                                                #TODO REMOVE_MARKER
             if os.path.exists(new_html_path):
                 os.rename(new_html_path, old_html_path)
 
