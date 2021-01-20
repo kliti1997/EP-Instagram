@@ -31,7 +31,14 @@
           <div class="body" role="main">
             
   <h1>Source code for instagram.src.download.profile_data</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The profile_data module is used to store profile information, which is accessable at instagram.com</span>
+<span class="sd">in the window._sharedData variable. The information are stored in a ProfileData object.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    The like, view and comment count for posts, igtv and tag objects are stored in a ProfileData object.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
 <div class="viewcode-block" id="ProfileData"><a class="viewcode-back" href="../../../../instagram.src.download.html#instagram.src.download.profile_data.ProfileData">[docs]</a><span class="k">class</span> <span class="nc">ProfileData</span><span class="p">:</span>
@@ -41,13 +48,13 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_data</span><span class="p">,</span> <span class="n">requests</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">                posts / igtvs / tagged structure:</span>
-<span class="sd">                    type (str): &#39;image&#39; or &#39;video&#39;</span>
-<span class="sd">                    id (str): alphabetical URL id</span>
-<span class="sd">                    comments (int): number of comments</span>
-<span class="sd">                    likes (int): number of likes</span>
-<span class="sd">                    view_count (int): number of views (for videos only)</span>
-<span class="sd">                &quot;&quot;&quot;</span>
+<span class="sd">        posts / igtvs / tagged structure:</span>
+<span class="sd">            type (str): &#39;image&#39; or &#39;video&#39;</span>
+<span class="sd">            id (str): alphabetical URL id</span>
+<span class="sd">            comments (int): number of comments</span>
+<span class="sd">            likes (int): number of likes</span>
+<span class="sd">            view_count (int): number of views (for videos only)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_followers</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_following</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">story_timestamp</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
