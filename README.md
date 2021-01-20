@@ -4,10 +4,10 @@
 Das Python-Modul `instagram` speichert Instagram-Benutzerseiten als HTML-Dateien ab und stellt Änderungen zu Vorgängerversionen grafisch dar.
 
 Es werden pro Instagram-Profil und pro Kategorie (Posts, IGTV, Markiert) maximal 2 Versionen gespeichert. Es werden keine keine Bilder oder Videos gespeichert, sondern lediglich der statische Seitenquelltext.
+
 # Developer Guide
 
 ## Schnittstelle
-
 Das Hauptmodul `Instagram` wird über `instagram.src.instagram` erreicht. Bei dem Aufruf wird eine Liste defaultdict(list) mit den URLs übergeben.
 
 Eine URL wie wie folgt definiert:
@@ -23,22 +23,20 @@ url = {
 ```
 
 ## Rückgabewerte
-
 Mögliche Veränderungen auf einer Instagram Seite: {Abonnenten, Abonnierte, Likes, Views, Kommentare, Stories, Beiträge (posts*oder* igtv *oder* tagged)}
 
-*change:*   Wird bei jeder Veränderung zwischen der old.html und new.html auf True gesetzt, ansonsten False.
-*notify:*   mode 1: Immer True, falls change True ist, ansonten False.
+* *change:*   Wird bei jeder Veränderung zwischen der old.html und new.html auf True gesetzt, ansonsten False.
+* *notify:*   mode 1: Immer True, falls change True ist, ansonten False.
             mode 2: Identisch zu mode 1 außer, dass folgende Änderungen: {Likes, Views, Abonnenten, Abonnierte} ignoriert werden.
-*err:*      Wird auf True gesetzt, falls ein Fehler bei der Verarbeitung auftritt, sonst False.
+* *err:*      Wird auf True gesetzt, falls ein Fehler bei der Verarbeitung auftritt, sonst False.
 
 ## Einstellungen
-
 Die Einstellungen werden in instagram/data/config.py gespeichert.
 Wichtige Variablen sind dabei:
 
-*ig_credentials:*       Zugangsdaten für den Instagram Account, der zum Aufrufen der Seiten benutzt wird.
-*monitoring_folder:*    Setzt in Kombination mit dem monitoring_folder der jeweiligen URL den Pfad, wo die html Dateien gespeichert werden.
-*profile_folder:*       Pfad zu dem Firefox-Profil.
+* *ig_credentials:*       Zugangsdaten für den Instagram Account, der zum Aufrufen der Seiten benutzt wird.
+* *monitoring_folder:*    Setzt in Kombination mit dem monitoring_folder der jeweiligen URL den Pfad, wo die html Dateien gespeichert werden.
+* *profile_folder:*       Pfad zu dem Firefox-Profil.
 
 ## Datenquellen
 Die Daten zum Vergleich kommen aus zwei Quellen, die über die Klasse ProfileData (profile_data.py) zusammengetragen werden:
@@ -57,3 +55,18 @@ Es werden zusätzlich in der Download-Phase alle relativen Links zu absoluten Li
 ## Monitoring/Modify-Phase
 In der Monitoring- bzw Modify-Phase werden die zuvor erstellten HTML-Dateien miteinenander verglichen und änderungen entsprechend der Vorgaben grafisch dargestellt.  
 Hierzu wird häufig auf die InstagramObject-Klasse zurückgegriffen, über die in den HTML-Dateien navigiert werden kann.
+
+## Mögliche Fehlerquellen
+Folgende Methoden könnten von zukünftigen Instagram Veränderungen betroffen sein:
+
+[Download-Phase]
+* Eine Benutzerseite kann nicht aufgerufen werden
+    * Firefox-Profil überprüfen
+    * URL überprüfen
+* Benutzerseite wird aufgerufen aber nicht gespeichert
+    * `InstagramObject` Klasse auf mögliche Veränderungen anpassen
+    * `ProfileData` Klasse auf mögliche Veränderungen anpassen
+
+[Monitor-Phase]
+* Change wird True gesetzt, aber in der new.html sind keine Markierungen
+    * Die jeweilige compare Methode in modify_methods.py prüfen
