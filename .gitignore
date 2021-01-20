@@ -36,7 +36,7 @@ var/
 *.spec
 
 # Installer logs
-pip-log.txt
+pip-log.txt..
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
@@ -81,3 +81,8 @@ pip-selfcheck.json
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+
+/instagram/data/profile/
+/instagram/data/files/
+/instagram/data/logs/
