@@ -25,6 +25,15 @@ RANDOM_SLEEP_MIN_TIME = 5
 General configuration values
 """
 
+base_url = "https://www.instagram.com/"
+login_url = "https://www.instagram.com/accounts/login/?next=%2Fexplore%2F&source=desktop_nav"
+ig_credentials = {"user": "",
+                  "pass": ""}
+
+"""
+Instagram credentials and other login information.
+"""
+
 config_folder = os.path.dirname(os.path.abspath(__file__))
 monitoring_folder = os.path.join(config_folder, "files")
 profile_folder = os.path.join(config_folder, "profile")
@@ -111,11 +120,3 @@ logging.config.dictConfig(LOGGING_CONFIG)
 Error logging, including options to represent the output and an output file.
 """
 
-base_url = "https://www.instagram.com/"
-login_url = "https://www.instagram.com/accounts/login/?next=%2Fexplore%2F&source=desktop_nav"
-ig_credentials = {"user": "",
-                  "pass": ""}
-
-"""
-Instagram credentials and other login information.
-"""
