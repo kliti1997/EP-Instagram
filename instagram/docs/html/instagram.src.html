@@ -133,6 +133,9 @@ which are implemented in the classes InstagramStore, respectively InstagramMonit
 </div>
 <div class="section" id="module-instagram.src.instagram_object">
 <span id="instagram-src-instagram-object-module"></span><h2>instagram.src.instagram_object module<a class="headerlink" href="#module-instagram.src.instagram_object" title="Permalink to this headline">¶</a></h2>
+<p>The instagram_object module is used to store the information of a certain instagram page in an InstagramObject object.
+Basically the whole dom representation of the instagram page and certain information which will be tracked
+are stored in the InstagramObject to make these information easily accessable.</p>
 <dl class="py class">
 <dt id="instagram.src.instagram_object.InstagramObject">
 <em class="property">class </em><code class="sig-prename descclassname">instagram.src.instagram_object.</code><code class="sig-name descname">InstagramObject</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">flag</span></em>, <em class="sig-param"><span class="n">content</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/instagram_object.html#InstagramObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.instagram_object.InstagramObject" title="Permalink to this definition">¶</a></dt>
@@ -158,12 +161,12 @@ file are stored in the current instance.</p>
 <dd><p>The method returns the parent node, which is an a-tag, of the followers count.
 The followers count is the text attribute of the first and only child element,
 which is a span-tag.</p>
-<p>Example:
-&lt;a class=”-nal3 ” href=”/polizei.hannover/followers/” tabindex=”0”&gt;</p>
-<blockquote>
-<div><p>&lt;span class=”g47SY ” title=”28,324”&gt;28.3k&lt;/span&gt;
+<p class="rubric">Example</p>
+<dl class="simple">
+<dt>&lt;a class=”-nal3 ” href=”<a class="reference external" href="https://www.instagram.com/polizei.hannover/followers/">https://www.instagram.com/polizei.hannover/followers/</a>” tabindex=”0”&gt;</dt><dd><p>&lt;span class=”g47SY ” title=”28,324”&gt;28.3k&lt;/span&gt;
 followers</p>
-</div></blockquote>
+</dd>
+</dl>
 <p>&lt;/a&gt;</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -181,12 +184,12 @@ followers</p>
 <dd><p>The method returns the parent node, which is an a-tag, of the followers count.
 The followers count is the text attribute of the first and only child element,
 which is a span-tag.</p>
-<p>Example:
-&lt;a class=”-nal3 ” href=”/polizei.hannover/following/” tabindex=”0”&gt;</p>
-<blockquote>
-<div><p>&lt;span class=”g47SY “&gt;122&lt;/span&gt;
+<p class="rubric">Example</p>
+<dl class="simple">
+<dt>&lt;a class=”-nal3 ” href=”<a class="reference external" href="https://www.instagram.com/polizei.hannover/following/">https://www.instagram.com/polizei.hannover/following/</a>” tabindex=”0”&gt;</dt><dd><p>&lt;span class=”g47SY “&gt;122&lt;/span&gt;
 following</p>
-</div></blockquote>
+</dd>
+</dl>
 <p>&lt;/a&gt;</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -201,7 +204,45 @@ following</p>
 <dl class="py method">
 <dt id="instagram.src.instagram_object.InstagramObject.get_igtvs">
 <code class="sig-name descname">get_igtvs</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/instagram/src/instagram_object.html#InstagramObject.get_igtvs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.instagram_object.InstagramObject.get_igtvs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The method returns a list which contains the igtv-objects.
+The a-tag element is the root element, just like with posts.</p>
+<p class="rubric">Example</p>
+<dl>
+<dt>&lt;a class=”_bz0w” href=”<a class="reference external" href="https://www.instagram.com/tv/CJGRpW8gyao/">https://www.instagram.com/tv/CJGRpW8gyao/</a>” tabindex=”0”&gt;</dt><dd><dl>
+<dt>&lt;div class=”A-NpN” role=”button” tabindex=”0”&gt;</dt><dd><p>&lt;div class=”lVhHa RNL1l” &gt;&lt;/div&gt;
+&lt;div class=”qn-0x”&gt;</p>
+<blockquote>
+<div><dl>
+<dt>&lt;div class=”_5cOAs”&gt;</dt><dd><dl class="simple">
+<dt>&lt;div class=”Rsx-c”&gt;</dt><dd><p>&lt;div class=”zncDM”&gt;19:41&lt;/div&gt;</p>
+</dd>
+</dl>
+<p>&lt;/div&gt;
+&lt;div class=”pu1E0”&gt;</p>
+<blockquote>
+<div><p>&lt;div class=”_2XLe_”&gt;Was passiert, wenn bei mir eingebrochen wurde?&lt;/div&gt;</p>
+</div></blockquote>
+<p>&lt;/div&gt;</p>
+</dd>
+</dl>
+<p>&lt;/div&gt;</p>
+</div></blockquote>
+<p>&lt;/div&gt;</p>
+</dd>
+</dl>
+<p>&lt;/div&gt;</p>
+</dd>
+</dl>
+<p>&lt;/a&gt;</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The list contains etree-elements, each element is a igtv object.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="instagram.src.instagram_object.InstagramObject.get_posts">
@@ -211,10 +252,9 @@ in the dom tree.
 We set the first a-tag element as the root element of the post, because it contains
 the most important data like the unique href-attribute, which is referring to the
 thumbnail of the post.</p>
-<p>Example:
-&lt;a href=”/p/CInvvcLqYWw/” tabindex=”0”&gt;</p>
-<blockquote>
-<div><dl>
+<p class="rubric">Example</p>
+<dl>
+<dt>&lt;a href=”<a class="reference external" href="https://www.instagram.com/p/CInvvcLqYWw/">https://www.instagram.com/p/CInvvcLqYWw/</a>” tabindex=”0”&gt;</dt><dd><dl>
 <dt>&lt;div class=”eLAPa”&gt;</dt><dd><dl class="simple">
 <dt>&lt;div class=”KL4Bh”&gt;</dt><dd><p>&lt;img alt=”Photo by Polizei Hannover ” class=”FFVAD” …&gt;</p>
 </dd>
@@ -224,7 +264,8 @@ thumbnail of the post.</p>
 </dd>
 </dl>
 <p>&lt;/div&gt;</p>
-</div></blockquote>
+</dd>
+</dl>
 <p>&lt;/a&gt;</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -252,7 +293,28 @@ The get_profile_pic_download can’t be used because the picture url is not avai
 <dl class="py method">
 <dt id="instagram.src.instagram_object.InstagramObject.get_tags">
 <code class="sig-name descname">get_tags</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/instagram/src/instagram_object.html#InstagramObject.get_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.instagram_object.InstagramObject.get_tags" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The method returns a list which contains the tag-objects.
+The a-tag element is the root element, just like with posts.</p>
+<p class="rubric">Example</p>
+<dl>
+<dt>&lt;a href=”<a class="reference external" href="https://www.instagram.com/p/CKPAMNejX6a/">https://www.instagram.com/p/CKPAMNejX6a/</a>” tabindex=”0”&gt;</dt><dd><dl class="simple">
+<dt>&lt;div class=”eLAPa”&gt;</dt><dd><p>&lt;div class=”KL4Bh”&gt;&lt;img alt=”sample description”&gt;&lt;/div&gt;
+&lt;div class=”_9AhH0”&gt;&lt;/div&gt;</p>
+</dd>
+</dl>
+<p>&lt;/div&gt;</p>
+</dd>
+</dl>
+<p>&lt;/a&gt;</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The list contains etree-elements, each element is a tag object.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="instagram.src.instagram_object.InstagramObject.get_tree">
@@ -271,13 +333,22 @@ The get_profile_pic_download can’t be used because the picture url is not avai
 <dl class="py method">
 <dt id="instagram.src.instagram_object.InstagramObject.get_video_thumbnail_path">
 <code class="sig-name descname">get_video_thumbnail_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/instagram_object.html#InstagramObject.get_video_thumbnail_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.instagram_object.InstagramObject.get_video_thumbnail_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the path of the thumbinail picture which is used to replace video pictures with an expired timestamp.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="instagram.src.instagram_object.InstagramObject.write">
 <code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/instagram_object.html#InstagramObject.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.instagram_object.InstagramObject.write" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Saves the etree in a HTML file after the changes were executed. It is important for the download
+phase after inserting the HTML Tags like data-liked-by.</p>
+</dd></dl>
 
+</dd></dl>
+
+<dl class="py data">
+<dt id="instagram.src.instagram_object.OLD">
+<code class="sig-prename descclassname">instagram.src.instagram_object.</code><code class="sig-name descname">OLD</code><em class="property"> = 1</em><a class="headerlink" href="#instagram.src.instagram_object.OLD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Module level constants.</p>
 </dd></dl>
 
 </div>

@@ -1,3 +1,10 @@
+"""
+The profile_data module is used to store profile information, which is accessable at instagram.com
+in the window._sharedData variable. The information are stored in a ProfileData object.
+
+Example:
+    The like, view and comment count for posts, igtv and tag objects are stored in a ProfileData object.
+"""
 import json
 import re
 
@@ -8,13 +15,13 @@ class ProfileData:
 
     def __init__(self, initial_data, requests):
         """
-                posts / igtvs / tagged structure:
-                    type (str): 'image' or 'video'
-                    id (str): alphabetical URL id
-                    comments (int): number of comments
-                    likes (int): number of likes
-                    view_count (int): number of views (for videos only)
-                """
+        posts / igtvs / tagged structure:
+            type (str): 'image' or 'video'
+            id (str): alphabetical URL id
+            comments (int): number of comments
+            likes (int): number of likes
+            view_count (int): number of views (for videos only)
+        """
         self.num_followers = -1
         self.num_following = -1
         self.story_timestamp = -1

@@ -31,15 +31,21 @@
           <div class="body" role="main">
             
   <h1>Source code for instagram.src.instagram_object</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">instagram.data.config</span> <span class="kn">import</span> <span class="o">*</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The instagram_object module is used to store the information of a certain instagram page in an InstagramObject object.</span>
+<span class="sd">Basically the whole dom representation of the instagram page and certain information which will be tracked</span>
+<span class="sd">are stored in the InstagramObject to make these information easily accessable.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">instagram.data.config</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">instagram.src.helper</span> <span class="kn">import</span> <span class="n">get_new_html_path</span><span class="p">,</span> <span class="n">get_old_html_path</span>
 <span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span><span class="p">,</span> <span class="n">html</span>
-<span class="kn">import</span> <span class="nn">io</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;instagram&#39;</span><span class="p">)</span>
 <span class="n">NEW</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">OLD</span> <span class="o">=</span> <span class="mi">1</span>
-
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module level constants.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="InstagramObject"><a class="viewcode-back" href="../../../instagram.src.html#instagram.src.instagram_object.InstagramObject">[docs]</a><span class="k">class</span> <span class="nc">InstagramObject</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -93,10 +99,10 @@
 <span class="sd">        which is a span-tag.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">        &lt;a class=&quot;-nal3 &quot; href=&quot;/polizei.hannover/followers/&quot; tabindex=&quot;0&quot;&gt;</span>
-<span class="sd">            &lt;span class=&quot;g47SY &quot; title=&quot;28,324&quot;&gt;28.3k&lt;/span&gt; </span>
-<span class="sd">            followers</span>
-<span class="sd">        &lt;/a&gt;</span>
+<span class="sd">            &lt;a class=&quot;-nal3 &quot; href=&quot;https://www.instagram.com/polizei.hannover/followers/&quot; tabindex=&quot;0&quot;&gt;</span>
+<span class="sd">                &lt;span class=&quot;g47SY &quot; title=&quot;28,324&quot;&gt;28.3k&lt;/span&gt; </span>
+<span class="sd">                followers</span>
+<span class="sd">            &lt;/a&gt;</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            etree: The parent node which includes the followers count.</span>
@@ -110,10 +116,10 @@
 <span class="sd">        which is a span-tag.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">        &lt;a class=&quot;-nal3 &quot; href=&quot;/polizei.hannover/following/&quot; tabindex=&quot;0&quot;&gt;</span>
-<span class="sd">            &lt;span class=&quot;g47SY &quot;&gt;122&lt;/span&gt; </span>
-<span class="sd">            following</span>
-<span class="sd">        &lt;/a&gt;</span>
+<span class="sd">            &lt;a class=&quot;-nal3 &quot; href=&quot;https://www.instagram.com/polizei.hannover/following/&quot; tabindex=&quot;0&quot;&gt;</span>
+<span class="sd">                &lt;span class=&quot;g47SY &quot;&gt;122&lt;/span&gt; </span>
+<span class="sd">                following</span>
+<span class="sd">            &lt;/a&gt;</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            etree: The parent node which includes the following count.</span>
@@ -129,14 +135,14 @@
 <span class="sd">        thumbnail of the post.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">        &lt;a href=&quot;/p/CInvvcLqYWw/&quot; tabindex=&quot;0&quot;&gt;</span>
-<span class="sd">            &lt;div class=&quot;eLAPa&quot;&gt;</span>
-<span class="sd">                &lt;div class=&quot;KL4Bh&quot;&gt;</span>
-<span class="sd">                    &lt;img alt=&quot;Photo by Polizei Hannover &quot; class=&quot;FFVAD&quot; ...&gt;</span>
+<span class="sd">            &lt;a href=&quot;https://www.instagram.com/p/CInvvcLqYWw/&quot; tabindex=&quot;0&quot;&gt;</span>
+<span class="sd">                &lt;div class=&quot;eLAPa&quot;&gt;</span>
+<span class="sd">                    &lt;div class=&quot;KL4Bh&quot;&gt;</span>
+<span class="sd">                        &lt;img alt=&quot;Photo by Polizei Hannover &quot; class=&quot;FFVAD&quot; ...&gt;</span>
+<span class="sd">                    &lt;/div&gt;</span>
+<span class="sd">                    &lt;div class=&quot;_9AhH0&quot;&gt;&lt;/div&gt;</span>
 <span class="sd">                &lt;/div&gt;</span>
-<span class="sd">                &lt;div class=&quot;_9AhH0&quot;&gt;&lt;/div&gt;</span>
-<span class="sd">            &lt;/div&gt;</span>
-<span class="sd">        &lt;/a&gt;</span>
+<span class="sd">            &lt;/a&gt;</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: The list contains etree-elements, each element is a post.</span>
@@ -144,9 +150,48 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">posts</span></div>
 
 <div class="viewcode-block" id="InstagramObject.get_igtvs"><a class="viewcode-back" href="../../../instagram.src.html#instagram.src.instagram_object.InstagramObject.get_igtvs">[docs]</a>    <span class="k">def</span> <span class="nf">get_igtvs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The method returns a list which contains the igtv-objects.</span>
+<span class="sd">        The a-tag element is the root element, just like with posts.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &lt;a class=&quot;_bz0w&quot; href=&quot;https://www.instagram.com/tv/CJGRpW8gyao/&quot; tabindex=&quot;0&quot;&gt;</span>
+<span class="sd">                &lt;div class=&quot;A-NpN&quot; role=&quot;button&quot; tabindex=&quot;0&quot;&gt;</span>
+<span class="sd">                    &lt;div class=&quot;lVhHa RNL1l&quot; &gt;&lt;/div&gt;</span>
+<span class="sd">                    &lt;div class=&quot;qn-0x&quot;&gt;</span>
+<span class="sd">                        &lt;div class=&quot;_5cOAs&quot;&gt;</span>
+<span class="sd">                            &lt;div class=&quot;Rsx-c&quot;&gt;</span>
+<span class="sd">                                &lt;div class=&quot;zncDM&quot;&gt;19:41&lt;/div&gt;</span>
+<span class="sd">                            &lt;/div&gt;</span>
+<span class="sd">                            &lt;div class=&quot;pu1E0&quot;&gt;</span>
+<span class="sd">                                &lt;div class=&quot;_2XLe_&quot;&gt;Was passiert, wenn bei mir eingebrochen wurde?&lt;/div&gt;</span>
+<span class="sd">                            &lt;/div&gt;</span>
+<span class="sd">                        &lt;/div&gt;</span>
+<span class="sd">                    &lt;/div&gt;</span>
+<span class="sd">                &lt;/div&gt;</span>
+<span class="sd">            &lt;/a&gt;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: The list contains etree-elements, each element is a igtv object.        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">igtvs</span></div>
 
 <div class="viewcode-block" id="InstagramObject.get_tags"><a class="viewcode-back" href="../../../instagram.src.html#instagram.src.instagram_object.InstagramObject.get_tags">[docs]</a>    <span class="k">def</span> <span class="nf">get_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The method returns a list which contains the tag-objects.</span>
+<span class="sd">        The a-tag element is the root element, just like with posts.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &lt;a href=&quot;https://www.instagram.com/p/CKPAMNejX6a/&quot; tabindex=&quot;0&quot;&gt;</span>
+<span class="sd">                &lt;div class=&quot;eLAPa&quot;&gt;</span>
+<span class="sd">                    &lt;div class=&quot;KL4Bh&quot;&gt;&lt;img alt=&quot;sample description&quot;&gt;&lt;/div&gt;</span>
+<span class="sd">                    &lt;div class=&quot;_9AhH0&quot;&gt;&lt;/div&gt;</span>
+<span class="sd">                &lt;/div&gt;</span>
+<span class="sd">            &lt;/a&gt;</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            list: The list contains etree-elements, each element is a tag object.        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags</span></div>
 
 <div class="viewcode-block" id="InstagramObject.get_profile_pic_download"><a class="viewcode-back" href="../../../instagram.src.html#instagram.src.instagram_object.InstagramObject.get_profile_pic_download">[docs]</a>    <span class="k">def</span> <span class="nf">get_profile_pic_download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">picture_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">etree</span><span class="p">:</span>
@@ -163,9 +208,20 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;//span[@data-story-timestamp]&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="InstagramObject.get_video_thumbnail_path"><a class="viewcode-back" href="../../../instagram.src.html#instagram.src.instagram_object.InstagramObject.get_video_thumbnail_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_video_thumbnail_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the path of the thumbinail picture which is used to replace video pictures with an expired timestamp.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">video_thumbnail_path</span></div>
 
     <span class="k">def</span> <span class="nf">__set_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses the etree-tree element.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (url): The url determines whether the tree is parsed using the path of the old, or</span>
+<span class="sd">                       new html file. The argument is only used, if the content variable is None.</span>
+<span class="sd">            content (str): If the content argument is not None, the tree is parsed using the content variable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">html_parser</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">HTMLParser</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">HTML</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">html_parser</span><span class="p">)</span>
@@ -178,27 +234,48 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Flag was not set.&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__set_followers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the followers-element.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (url): The url is used to get the instagram profile name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">followers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;//a[@href=&#39;https://www.instagram.com/&quot;</span> <span class="o">+</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/followers/&#39;]&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iter</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__set_following</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the following-element.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (url): The url is used to get the instagram profile name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">following</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;//a[@href=&#39;https://www.instagram.com/&quot;</span> <span class="o">+</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/following/&#39;]&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iter</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__set_posts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the post elements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">posts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;//div[@id=&#39;react-root&#39;]//article//a&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__set_igtvs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the igtv elements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">all_links</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;//div[@id=&#39;react-root&#39;]//main//div//a&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">igtvs</span> <span class="o">=</span> <span class="p">[</span><span class="n">igtv_ele</span> <span class="k">for</span> <span class="n">igtv_ele</span> <span class="ow">in</span> <span class="n">all_links</span> <span class="k">if</span> <span class="n">igtv_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;https://www.instagram.com/tv/&quot;</span><span class="p">)]</span>
 
     <span class="k">def</span> <span class="nf">__set_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the tag elements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;//div[@id=&#39;react-root&#39;]//article//a&quot;</span><span class="p">)</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the Tree,flag, posts etc.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__tostr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the string representation for the Tree, flag, posts etc.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;flag&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_flag</span><span class="p">()</span>
@@ -219,11 +296,11 @@
                 <span class="n">ret</span> <span class="o">+=</span> <span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Saves the etree in a HTML file after the changes were executed. It is important for the download</span>
-<span class="sd">    phase after inserting the HTML Tags like data-liked-by.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="InstagramObject.write"><a class="viewcode-back" href="../../../instagram.src.html#instagram.src.instagram_object.InstagramObject.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves the etree in a HTML file after the changes were executed. It is important for the download</span>
+<span class="sd">        phase after inserting the HTML Tags like data-liked-by.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_flag</span><span class="p">()</span> <span class="o">==</span> <span class="n">NEW</span><span class="p">:</span>
             <span class="nb">open</span><span class="p">(</span><span class="n">get_new_html_path</span><span class="p">(</span><span class="n">url</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;html&quot;</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
