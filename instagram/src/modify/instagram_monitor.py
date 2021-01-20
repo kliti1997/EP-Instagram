@@ -1,3 +1,7 @@
+"""
+The module is responsible for the monitoring phase of the instagram monitor.
+In case of changes, the module highlights these changes by calling functions in the modify_methods module.
+"""
 from instagram.data.config import *
 from instagram.src.helper import *
 from instagram.src.modify.modify_methods import pre_modify, compare_posts, compare_followers_following, compare_igtv,compare_tagged, compare_hover_items, compare_stories
@@ -48,9 +52,3 @@ class InstagramMonitor:
             else:
                 logger.error("Skip modifying the html files of href: " + get_href(url) + ". [Download Error]")
                 continue
-
-""" Circular import
-if __name__ == "__main__":
-    Instagram(monitoring_map)
-    print("\n\n")
-"""
