@@ -1,0 +1,344 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>instagram.src.download package &#8212; instagram  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="instagram.src.modify package" href="instagram.src.modify.html" />
+    <link rel="prev" title="instagram.src package" href="instagram.src.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="instagram-src-download-package">
+<h1>instagram.src.download package<a class="headerlink" href="#instagram-src-download-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-instagram.src.download.download_methods">
+<span id="instagram-src-download-download-methods-module"></span><h2>instagram.src.download.download_methods module<a class="headerlink" href="#module-instagram.src.download.download_methods" title="Permalink to this headline">¶</a></h2>
+<p>This module is used to provide functionalities to perform the storing phase of the package.</p>
+<p>The core functionalities in this module are the login process at instagram and the
+downloading and saving of html files.</p>
+<dl class="py function">
+<dt id="instagram.src.download.download_methods.add_html_tags">
+<code class="sig-prename descclassname">instagram.src.download.download_methods.</code><code class="sig-name descname">add_html_tags</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">ig_obj</span><span class="p">:</span> <span class="n"><a class="reference internal" href="instagram.src.html#instagram.src.instagram_object.InstagramObject" title="instagram.src.instagram_object.InstagramObject">instagram.src.instagram_object.InstagramObject</a></span></em>, <em class="sig-param"><span class="n">prof_data</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#instagram.src.download.profile_data.ProfileData" title="instagram.src.download.profile_data.ProfileData">instagram.src.download.profile_data.ProfileData</a></span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/instagram/src/download/download_methods.html#add_html_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.download_methods.add_html_tags" title="Permalink to this definition">¶</a></dt>
+<dd><p>The following things are added to the XML tree:
+- the number of views and comments for videos or likes and comments for photos when they have changed.
+- the timestamp of the last posted story is added to the profile picture for comparison.
+- the (exact) number of followers / following</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.download.download_methods.convert_links">
+<code class="sig-prename descclassname">instagram.src.download.download_methods.</code><code class="sig-name descname">convert_links</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/download_methods.html#convert_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.download_methods.convert_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts relative to absolute links in a given string by appending a base-url, which is specified
+in the config-file.
+Only links which are the content of the html attributes href, src, or srcset, or of a dictionary
+will be changed.</p>
+<p class="rubric">Example</p>
+<p>Let’s assume the base_url is <a class="reference external" href="https://instagram.com">https://instagram.com</a>
+&lt;a href=”/sta/exmpl.css”&gt; will be converted to &lt;a href=”<a class="reference external" href="https://instagram.com/sta/exmpl.css">https://instagram.com/sta/exmpl.css</a>”&gt;
+dic = {a: “/sta/exmpl.css”} will be converted to dic = {a: “<a class="reference external" href="https://instagram.com/sta/exmpl.css">https://instagram.com/sta/exmpl.css</a>”}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>source</strong> (<em>str</em>) – The string representation of the parsed html file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same string as source, but with converted links.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.download.download_methods.delete_new_html">
+<code class="sig-prename descclassname">instagram.src.download.download_methods.</code><code class="sig-name descname">delete_new_html</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/download_methods.html#delete_new_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.download_methods.delete_new_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Avoid data loss in multiple override of new.html.
+If download fails, new.html will be deleted to skip renaming to old.html.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>dict</em>) – Containts the path of the monitoring folder and one of the types
+“posts”, “tagged”, or “IGTV” to determine the file path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.download.download_methods.login">
+<code class="sig-prename descclassname">instagram.src.download.download_methods.</code><code class="sig-name descname">login</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span></em>, <em class="sig-param"><span class="n">password</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/download_methods.html#login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.download_methods.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function is used to perform the login process at instagram.com.
+It also accepts the cookie banner and saves the login information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>str</em>) – The username which is used to log in.</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – The password which is used to log in.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.download.download_methods.pre_download">
+<code class="sig-prename descclassname">instagram.src.download.download_methods.</code><code class="sig-name descname">pre_download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/download_methods.html#pre_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.download_methods.pre_download" title="Permalink to this definition">¶</a></dt>
+<dd><p>If new.html already exists in the monitoring folder, it’s name will be changed
+to old.html.
+If there is already an old file, it will be deleted.
+If the new.html is missing, nothing will be deleted to avoid data loss.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>dict</em>) – Containts the path of the monitoring folder and one of the types
+“posts”, “tagged”, or “IGTV” to determine the file path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.download.download_methods.random_sleep">
+<code class="sig-prename descclassname">instagram.src.download.download_methods.</code><code class="sig-name descname">random_sleep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">max_time</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/download_methods.html#random_sleep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.download_methods.random_sleep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pauses the program sequence for a pseudo random time, depending on the input.
+The program sequence will be paused for at least 3 seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_time</strong> (<em>int</em>) – Determines how long the program sequence is paused at most.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.download.download_methods.replace_video_thumbnail">
+<code class="sig-prename descclassname">instagram.src.download.download_methods.</code><code class="sig-name descname">replace_video_thumbnail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ig</span></em>, <em class="sig-param"><span class="n">post_object</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/download_methods.html#replace_video_thumbnail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.download_methods.replace_video_thumbnail" title="Permalink to this definition">¶</a></dt>
+<dd><p>In case the video thumbnails are broken (the thumbnails are dynamically generated by instagram and get deleted after ca. 1 day), we replace the broken thumbnails
+with our default thumbnail. The default thumbnail is just a black picture with the label “VIDEO” in the upper part.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ig</strong> (<a class="reference internal" href="instagram.src.html#instagram.src.instagram_object.InstagramObject" title="instagram.src.instagram_object.InstagramObject"><em>InstagramObject</em></a>) – Contains the path to the default thumbnail</p></li>
+<li><p><strong>post_object</strong> (<em>lxml.etree</em>) – Is the part of the etree, that contains the posts. We use it to access its &lt;img&gt; tag and to change the thumbnail if</p></li>
+<li><p><strong>error occurs</strong><strong> (</strong><strong>means</strong> (<em>a</em>) – the dynamically thumbnail is expired).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.download.download_methods.save_html">
+<code class="sig-prename descclassname">instagram.src.download.download_methods.</code><code class="sig-name descname">save_html</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/download_methods.html#save_html"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.download_methods.save_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the html content of a website and saves it in a file.
+Depending on the input, the function will either save the content of the “posts” intsagram subdirectory,
+the “tagged” subdirectory, or the “IGTV” subdirectory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>dict</em>) – Containts the url to the website that has to be saved, as well as the type in terms of
+“posts”, “tagged”, or “IGTV”. It also contains a path where the generated files are going
+to be saved.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.download.download_methods.validate_obj">
+<code class="sig-prename descclassname">instagram.src.download.download_methods.</code><code class="sig-name descname">validate_obj</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ig</span></em>, <em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/download_methods.html#validate_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.download_methods.validate_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method validates the Instagram object and checks if the page was correctly downloaded, otherwise it raises
+a Runtime Error.
+:param ig: The Instagram profile
+:param url: The url of the monitoring_map</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-instagram.src.download.instagram_store">
+<span id="instagram-src-download-instagram-store-module"></span><h2>instagram.src.download.instagram_store module<a class="headerlink" href="#module-instagram.src.download.instagram_store" title="Permalink to this headline">¶</a></h2>
+<p>The module is responsible for the downloading phase.
+It saves the dom content of the instagram-subdirectory to be visited in an instagram class object,
+by calling further functions which are located in the instagram_monitor module.</p>
+<dl class="py class">
+<dt id="instagram.src.download.instagram_store.InstagramStore">
+<em class="property">class </em><code class="sig-prename descclassname">instagram.src.download.instagram_store.</code><code class="sig-name descname">InstagramStore</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">monitoring_map</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/instagram_store.html#InstagramStore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.instagram_store.InstagramStore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-instagram.src.download.profile_data">
+<span id="instagram-src-download-profile-data-module"></span><h2>instagram.src.download.profile_data module<a class="headerlink" href="#module-instagram.src.download.profile_data" title="Permalink to this headline">¶</a></h2>
+<p>The profile_data module is used to store profile information, which is accessable at instagram.com
+in the window._sharedData variable. The information are stored in a ProfileData object.</p>
+<p class="rubric">Example</p>
+<p>The like, view and comment count for posts, igtv and tag objects are stored in a ProfileData object.</p>
+<dl class="py class">
+<dt id="instagram.src.download.profile_data.ProfileData">
+<em class="property">class </em><code class="sig-prename descclassname">instagram.src.download.profile_data.</code><code class="sig-name descname">ProfileData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">initial_data</span></em>, <em class="sig-param"><span class="n">requests</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/profile_data.html#ProfileData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.profile_data.ProfileData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to wrap all profile data.</p>
+<dl class="py method">
+<dt id="instagram.src.download.profile_data.ProfileData.append_edges_to_list">
+<em class="property">static </em><code class="sig-name descname">append_edges_to_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent_edge</span></em>, <em class="sig-param"><span class="n">target_list</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/instagram/src/download/profile_data.html#ProfileData.append_edges_to_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.profile_data.ProfileData.append_edges_to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function appends all posts in a list.
+:param parent_edge: The edge from where we read the posts.
+:param target_list: The list in which all post are saved.
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="instagram.src.download.profile_data.ProfileData.read_additional_nodes">
+<code class="sig-name descname">read_additional_nodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/instagram/src/download/profile_data.html#ProfileData.read_additional_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.profile_data.ProfileData.read_additional_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identifies responses to requests that contain data about posts / IGTVs / tagged and saves that data to corresponding lists.
+Responses can be clearly identified by the existence (and abundance) of JSON nodes like ‘edge_owner_to_timeline_media’ for posts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="instagram.src.download.profile_data.ProfileData.read_followers">
+<code class="sig-name descname">read_followers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/profile_data.html#ProfileData.read_followers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.profile_data.ProfileData.read_followers" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads the count of followers</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="instagram.src.download.profile_data.ProfileData.read_following">
+<code class="sig-name descname">read_following</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/profile_data.html#ProfileData.read_following"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.profile_data.ProfileData.read_following" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads the count of the following users</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="instagram.src.download.profile_data.ProfileData.read_initial_nodes">
+<code class="sig-name descname">read_initial_nodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/profile_data.html#ProfileData.read_initial_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.profile_data.ProfileData.read_initial_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the first 12 posts / IGTVs from ‘window._sharedData’
+Tagged posts are only loaded via additional requests.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="instagram.src.download.profile_data.ProfileData.read_profile_pic_name">
+<code class="sig-name descname">read_profile_pic_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/profile_data.html#ProfileData.read_profile_pic_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.profile_data.ProfileData.read_profile_pic_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reads the filename of the profile picture of the user.
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="instagram.src.download.profile_data.ProfileData.read_story">
+<code class="sig-name descname">read_story</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/download/profile_data.html#ProfileData.read_story"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.download.profile_data.ProfileData.read_story" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if an active story exists.
+Sets story timestamp accordingly.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-instagram.src.download">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-instagram.src.download" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">instagram</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="instagram.html">instagram package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="instagram.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="instagram.data.html">instagram.data package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="instagram.src.html">instagram.src package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="instagram.src.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="instagram.src.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="instagram.src.html#module-instagram.src.helper">instagram.src.helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="instagram.src.html#module-instagram.src.instagram">instagram.src.instagram module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="instagram.src.html#module-instagram.src.instagram_object">instagram.src.instagram_object module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="instagram.src.html#module-instagram.src">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="instagram.testing.html">instagram.testing package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="instagram.html#module-instagram">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="instagram.html">instagram package</a><ul>
+  <li><a href="instagram.src.html">instagram.src package</a><ul>
+      <li>Previous: <a href="instagram.src.html" title="previous chapter">instagram.src package</a></li>
+      <li>Next: <a href="instagram.src.modify.html" title="next chapter">instagram.src.modify package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Timo Balke, Dustin Erdner, Kliti Nikollau, Marlon Tiedemann, Timo Kubera.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/instagram.src.download.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

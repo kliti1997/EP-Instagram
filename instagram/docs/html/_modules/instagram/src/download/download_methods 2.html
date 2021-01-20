@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>instagram.src.download.download_methods &#8212; instagram  documentation</title>
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for instagram.src.download.download_methods</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module is used to provide functionalities to perform the storing phase of the package.</span>
+
+<span class="sd">The core functionalities in this module are the login process at instagram and the</span>
+<span class="sd">downloading and saving of html files.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">instagram.src.helper</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">instagram.src.instagram_object</span> <span class="kn">import</span> <span class="n">InstagramObject</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">.profile_data</span> <span class="kn">import</span> <span class="n">ProfileData</span>
+<span class="kn">import</span> <span class="nn">lxml</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">...data.config</span> <span class="kn">import</span> <span class="n">RANDOM_SLEEP_MIN_TIME</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Constants to calculate the sleep timer.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;instagram&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="login"><a class="viewcode-back" href="../../../../instagram.src.download.html#instagram.src.download.download_methods.login">[docs]</a><span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function is used to perform the login process at instagram.com.</span>
+<span class="sd">    It also accepts the cookie banner and saves the login information.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        username (str): The username which is used to log in.</span>
+<span class="sd">        password (str): The password which is used to log in.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Accepts the &quot;stay logged in&quot; banner, if it exists.</span>
+    <span class="k">if</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[contains(text(),&#39;Als&#39;) and contains(text(),&#39;fortfahren&#39;)]&quot;</span><span class="p">):</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[contains(text(),&#39;Als&#39;) and contains(text(),&#39;fortfahren&#39;)]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+        <span class="n">random_sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># Accepts the &quot;stay logged in&quot; banner, if it exists. (english)</span>
+    <span class="k">if</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[contains(text(),&#39;Continue as&#39;)]&quot;</span><span class="p">):</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[contains(text(),&#39;Continue as&#39;)]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+        <span class="n">random_sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># Accepts the cookie banner, if it exists.</span>
+    <span class="k">if</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[text()=&#39;Akzeptieren&#39; or text()=&#39;Accept&#39;]&quot;</span><span class="p">):</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[text()=&#39;Akzeptieren&#39; or text()=&#39;Accept&#39;]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+        <span class="n">random_sleep</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+
+    <span class="c1"># Log into account only if not already logged in.</span>
+    <span class="k">if</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[text()=&#39;Anmelden&#39; or text()=&#39;Log In&#39;]&quot;</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Wasn</span><span class="se">\&#39;</span><span class="s1">t logged in already. Please check your Firefox-Profile.&#39;</span><span class="p">)</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_name</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_name</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[text()=&#39;Anmelden&#39; or text()=&#39;Log In&#39;]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+        <span class="n">random_sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># Accepts the stay logged in banner, if it exists.</span>
+    <span class="k">if</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[text()=&#39;Informationen speichern&#39; or text()=&#39;Save Info&#39;]&quot;</span><span class="p">):</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[text()=&#39;Informationen speichern&#39; or text()=&#39;Save Info&#39;]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+        <span class="n">random_sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># Accepts the cookie banner, if it exists.</span>
+    <span class="k">if</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[text()=&#39;Jetzt nicht&#39; or &#39;Not Now&#39;]&quot;</span><span class="p">):</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[text()=&#39;Jetzt nicht&#39; or &#39;Not Now&#39;]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+        <span class="n">random_sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="convert_links"><a class="viewcode-back" href="../../../../instagram.src.download.html#instagram.src.download.download_methods.convert_links">[docs]</a><span class="k">def</span> <span class="nf">convert_links</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts relative to absolute links in a given string by appending a base-url, which is specified</span>
+<span class="sd">    in the config-file.</span>
+<span class="sd">    Only links which are the content of the html attributes href, src, or srcset, or of a dictionary</span>
+<span class="sd">    will be changed.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        Let&#39;s assume the base_url is https://instagram.com</span>
+<span class="sd">        &lt;a href=&quot;/sta/exmpl.css&quot;&gt; will be converted to &lt;a href=&quot;https://instagram.com/sta/exmpl.css&quot;&gt;</span>
+<span class="sd">        dic = {a: &quot;/sta/exmpl.css&quot;} will be converted to dic = {a: &quot;https://instagram.com/sta/exmpl.css&quot;}</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        source (str): The string representation of the parsed html file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The same string as source, but with converted links.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># remove javascript inline script parts</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?is)&lt;script[^&gt;]*&gt;(.*?)&lt;/script&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+
+    <span class="c1"># remove javascript import links</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&lt;link.*?type=&quot;text/javascript&quot;.*?/&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+
+    <span class="c1"># converts relative to absolute links</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(href=&quot;|src=&quot;|srcset=&quot;|:&quot;)/&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1&#39;</span> <span class="o">+</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">source</span></div>
+
+
+<div class="viewcode-block" id="add_html_tags"><a class="viewcode-back" href="../../../../instagram.src.download.html#instagram.src.download.download_methods.add_html_tags">[docs]</a><span class="k">def</span> <span class="nf">add_html_tags</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">ig_obj</span><span class="p">:</span> <span class="n">InstagramObject</span><span class="p">,</span> <span class="n">prof_data</span><span class="p">:</span> <span class="n">ProfileData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The following things are added to the XML tree:</span>
+<span class="sd">    - the number of views and comments for videos or likes and comments for photos when they have changed.</span>
+<span class="sd">    - the timestamp of the last posted story is added to the profile picture for comparison.</span>
+<span class="sd">    - the (exact) number of followers / following</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;posts&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">post</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ig_obj</span><span class="o">.</span><span class="n">get_posts</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">prof_data</span><span class="o">.</span><span class="n">posts</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;video&#39;</span><span class="p">:</span>
+                <span class="n">post</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-view-count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">posts</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;view_count&quot;</span><span class="p">])</span>
+                <span class="n">replace_video_thumbnail</span><span class="p">(</span><span class="n">ig_obj</span><span class="p">,</span> <span class="n">post</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">post</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-liked-by&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">posts</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;likes&quot;</span><span class="p">])</span>
+            <span class="n">post</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">posts</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;comments&quot;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;tagged&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ig_obj</span><span class="o">.</span><span class="n">get_tags</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">prof_data</span><span class="o">.</span><span class="n">tagged</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;video&#39;</span><span class="p">:</span>
+                <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-view-count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">tagged</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;view_count&quot;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-liked-by&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">tagged</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;likes&quot;</span><span class="p">])</span>
+            <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">tagged</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;comments&quot;</span><span class="p">])</span>
+
+    <span class="k">elif</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;igtv&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">igtv</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ig_obj</span><span class="o">.</span><span class="n">get_igtvs</span><span class="p">()):</span>
+            <span class="n">igtv</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-view-count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">igtvs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;view_count&quot;</span><span class="p">])</span>
+            <span class="n">igtv</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">igtvs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;comments&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Adding the timestamp of the last posted story</span>
+    <span class="n">profile_pic</span> <span class="o">=</span> <span class="n">ig_obj</span><span class="o">.</span><span class="n">get_profile_pic_download</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">profile_pic_url</span><span class="p">)</span>
+    <span class="n">profile_pic</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-story-timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">story_timestamp</span><span class="p">)</span>
+
+    <span class="c1"># Setting the instagram.com/stories/profile_name url</span>
+    <span class="n">anchor</span> <span class="o">=</span> <span class="n">lxml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;https://instagram.com/stories/&quot;</span> <span class="o">+</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+    <span class="n">anchor</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">profile_pic</span><span class="p">)</span>
+    <span class="n">profile_pic</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anchor</span><span class="p">)</span>
+
+    <span class="c1"># Adding the number of followers</span>
+    <span class="n">ig_obj</span><span class="o">.</span><span class="n">get_followers</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-followers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">num_followers</span><span class="p">)</span>
+
+    <span class="c1">#Adding the nummber of users followed</span>
+    <span class="n">ig_obj</span><span class="o">.</span><span class="n">get_following</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-following&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prof_data</span><span class="o">.</span><span class="n">num_following</span><span class="p">)</span>
+
+    <span class="n">ig_obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="save_html"><a class="viewcode-back" href="../../../../instagram.src.download.html#instagram.src.download.download_methods.save_html">[docs]</a><span class="k">def</span> <span class="nf">save_html</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Saves the html content of a website and saves it in a file.</span>
+<span class="sd">    Depending on the input, the function will either save the content of the &quot;posts&quot; intsagram subdirectory,</span>
+<span class="sd">    the &quot;tagged&quot; subdirectory, or the &quot;IGTV&quot; subdirectory.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url (dict): Containts the url to the website that has to be saved, as well as the type in terms of</span>
+<span class="sd">                    &quot;posts&quot;, &quot;tagged&quot;, or &quot;IGTV&quot;. It also contains a path where the generated files are going</span>
+<span class="sd">                    to be saved.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">get_href</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+    <span class="n">random_sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">convert_links</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;return new XMLSerializer().serializeToString(document);&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="random_sleep"><a class="viewcode-back" href="../../../../instagram.src.download.html#instagram.src.download.download_methods.random_sleep">[docs]</a><span class="k">def</span> <span class="nf">random_sleep</span><span class="p">(</span><span class="n">max_time</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pauses the program sequence for a pseudo random time, depending on the input.</span>
+<span class="sd">    The program sequence will be paused for at least 3 seconds.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        max_time (int): Determines how long the program sequence is paused at most.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">max_time</span> <span class="o">&lt;=</span> <span class="n">RANDOM_SLEEP_MIN_TIME</span><span class="p">:</span>
+        <span class="n">max_time</span> <span class="o">+=</span> <span class="n">RANDOM_SLEEP_MIN_TIME</span>
+    <span class="n">random_time</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="n">RANDOM_SLEEP_MIN_TIME</span><span class="p">,</span> <span class="n">max_time</span><span class="p">)</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="n">random_time</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="pre_download"><a class="viewcode-back" href="../../../../instagram.src.download.html#instagram.src.download.download_methods.pre_download">[docs]</a><span class="k">def</span> <span class="nf">pre_download</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If new.html already exists in the monitoring folder, it&#39;s name will be changed</span>
+<span class="sd">    to old.html.</span>
+<span class="sd">    If there is already an old file, it will be deleted.</span>
+<span class="sd">    If the new.html is missing, nothing will be deleted to avoid data loss.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url (dict): Containts the path of the monitoring folder and one of the types</span>
+<span class="sd">                    &quot;posts&quot;, &quot;tagged&quot;, or &quot;IGTV&quot; to determine the file path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">folder_path</span> <span class="o">=</span> <span class="n">get_folder_path</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">old_html_path</span> <span class="o">=</span> <span class="n">get_old_html_path</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">new_html_path</span> <span class="o">=</span> <span class="n">get_new_html_path</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>        <span class="c1">#if folder doesn&#39;t exists, it will create it</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">new_html_path</span><span class="p">):</span>                           <span class="c1">#if new.html is missing, nothing will be deleted</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">old_html_path</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">old_html_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">new_html_path</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">new_html_path</span><span class="p">,</span> <span class="n">old_html_path</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">e_type</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error in pre-download phase.</span><span class="se">\n</span><span class="s2">Exception message: &quot;</span> <span class="o">+</span> <span class="n">e_type</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">set_err</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="delete_new_html"><a class="viewcode-back" href="../../../../instagram.src.download.html#instagram.src.download.download_methods.delete_new_html">[docs]</a><span class="k">def</span> <span class="nf">delete_new_html</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Avoid data loss in multiple override of new.html.</span>
+<span class="sd">    If download fails, new.html will be deleted to skip renaming to old.html.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url (dict): Containts the path of the monitoring folder and one of the types</span>
+<span class="sd">                    &quot;posts&quot;, &quot;tagged&quot;, or &quot;IGTV&quot; to determine the file path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">new_html_path</span> <span class="o">=</span> <span class="n">get_new_html_path</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">new_html_path</span><span class="p">):</span> 
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">new_html_path</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">e_type</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error while trying to delete new.html.</span><span class="se">\n</span><span class="s2">Exception message: &quot;</span> <span class="o">+</span> <span class="n">e_type</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">set_err</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="replace_video_thumbnail"><a class="viewcode-back" href="../../../../instagram.src.download.html#instagram.src.download.download_methods.replace_video_thumbnail">[docs]</a><span class="k">def</span> <span class="nf">replace_video_thumbnail</span><span class="p">(</span><span class="n">ig</span><span class="p">,</span> <span class="n">post_object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    In case the video thumbnails are broken (the thumbnails are dynamically generated by instagram and get deleted after ca. 1 day), we replace the broken thumbnails</span>
+<span class="sd">    with our default thumbnail. The default thumbnail is just a black picture with the label &quot;VIDEO&quot; in the upper part.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        ig(InstagramObject): Contains the path to the default thumbnail</span>
+<span class="sd">        post_object(lxml.etree): Is the part of the etree, that contains the posts. We use it to access its &lt;img&gt; tag and to change the thumbnail if</span>
+<span class="sd">        a error occurs (means: the dynamically thumbnail is expired).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">video_object</span> <span class="o">=</span> <span class="n">post_object</span>
+    <span class="n">video_div</span> <span class="o">=</span> <span class="n">video_object</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;.//img[@src]&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">video_div</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;onerror&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;this.src=&#39;&quot;</span> <span class="o">+</span> <span class="n">ig</span><span class="o">.</span><span class="n">get_video_thumbnail_path</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;&#39;;this.srcset=&#39;&#39;;&quot;</span></div>
+
+<div class="viewcode-block" id="validate_obj"><a class="viewcode-back" href="../../../../instagram.src.download.html#instagram.src.download.download_methods.validate_obj">[docs]</a><span class="k">def</span> <span class="nf">validate_obj</span><span class="p">(</span><span class="n">ig</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This method validates the Instagram object and checks if the page was correctly downloaded, otherwise it raises</span>
+<span class="sd">    a Runtime Error.</span>
+<span class="sd">    :param ig: The Instagram profile</span>
+<span class="sd">    :param url: The url of the monitoring_map</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;posts&quot;</span><span class="p">:</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">ig</span><span class="o">.</span><span class="n">get_posts</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;len(posts) = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">posts</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">posts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span>
+    <span class="k">if</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;igtv&quot;</span><span class="p">:</span>
+        <span class="n">igtvs</span> <span class="o">=</span> <span class="n">ig</span><span class="o">.</span><span class="n">get_igtvs</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;len(igtvs) = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">igtvs</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">igtvs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span>
+    <span class="k">if</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;tagged&quot;</span><span class="p">:</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="n">ig</span><span class="o">.</span><span class="n">get_tags</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;len(tags) = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tags</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">instagram</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../instagram.html">instagram package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Timo Balke, Dustin Erdner, Kliti Nikollau, Marlon Tiedemann, Timo Kubera.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
