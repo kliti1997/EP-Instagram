@@ -1,12 +1,18 @@
+"""
+The instagram_object module is used to store the information of a certain instagram page in an InstagramObject object.
+Basically the whole dom representation of the instagram page and certain information which will be tracked
+are stored in the InstagramObject to make these information easily accessable.
+"""
 from instagram.data.config import *
 from instagram.src.helper import get_new_html_path, get_old_html_path
 from lxml import etree, html
-import io
 
 logger = logging.getLogger('instagram')
 NEW = 0
 OLD = 1
-
+"""
+Module level constants.
+"""
 
 class InstagramObject:
     def __init__(self, url, flag, content=None):
@@ -60,10 +66,10 @@ class InstagramObject:
         which is a span-tag.
 
         Example:
-        <a class="-nal3 " href="/polizei.hannover/followers/" tabindex="0">
-            <span class="g47SY " title="28,324">28.3k</span> 
-            followers
-        </a>
+            <a class="-nal3 " href="https://www.instagram.com/polizei.hannover/followers/" tabindex="0">
+                <span class="g47SY " title="28,324">28.3k</span> 
+                followers
+            </a>
 
         Returns:
             etree: The parent node which includes the followers count.
@@ -77,10 +83,10 @@ class InstagramObject:
         which is a span-tag.
 
         Example:
-        <a class="-nal3 " href="/polizei.hannover/following/" tabindex="0">
-            <span class="g47SY ">122</span> 
-            following
-        </a>
+            <a class="-nal3 " href="https://www.instagram.com/polizei.hannover/following/" tabindex="0">
+                <span class="g47SY ">122</span> 
+                following
+            </a>
 
         Returns:
             etree: The parent node which includes the following count.
@@ -96,14 +102,14 @@ class InstagramObject:
         thumbnail of the post.
 
         Example:
-        <a href="/p/CInvvcLqYWw/" tabindex="0">
-            <div class="eLAPa">
-                <div class="KL4Bh">
-                    <img alt="Photo by Polizei Hannover " class="FFVAD" ...>
+            <a href="https://www.instagram.com/p/CInvvcLqYWw/" tabindex="0">
+                <div class="eLAPa">
+                    <div class="KL4Bh">
+                        <img alt="Photo by Polizei Hannover " class="FFVAD" ...>
+                    </div>
+                    <div class="_9AhH0"></div>
                 </div>
-                <div class="_9AhH0"></div>
-            </div>
-        </a>
+            </a>
 
         Returns:
             list: The list contains etree-elements, each element is a post.
@@ -111,9 +117,48 @@ class InstagramObject:
         return self.posts
 
     def get_igtvs(self) -> list:
+        """
+        The method returns a list which contains the igtv-objects.
+        The a-tag element is the root element, just like with posts.
+
+        Example:
+            <a class="_bz0w" href="https://www.instagram.com/tv/CJGRpW8gyao/" tabindex="0">
+                <div class="A-NpN" role="button" tabindex="0">
+                    <div class="lVhHa RNL1l" ></div>
+                    <div class="qn-0x">
+                        <div class="_5cOAs">
+                            <div class="Rsx-c">
+                                <div class="zncDM">19:41</div>
+                            </div>
+                            <div class="pu1E0">
+                                <div class="_2XLe_">Was passiert, wenn bei mir eingebrochen wurde?</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        Returns:
+            list: The list contains etree-elements, each element is a igtv object.        
+        """
         return self.igtvs
 
     def get_tags(self) -> list:
+        """
+        The method returns a list which contains the tag-objects.
+        The a-tag element is the root element, just like with posts.
+
+        Example:
+            <a href="https://www.instagram.com/p/CKPAMNejX6a/" tabindex="0">
+                <div class="eLAPa">
+                    <div class="KL4Bh"><img alt="sample description"></div>
+                    <div class="_9AhH0"></div>
+                </div>
+            </a>
+            
+        Returns:
+            list: The list contains etree-elements, each element is a tag object.        
+        """
         return self.tags
 
     def get_profile_pic_download(self, picture_url: str) -> etree:
@@ -130,9 +175,20 @@ class InstagramObject:
         return self.tree.xpath("//span[@data-story-timestamp]")[0]
 
     def get_video_thumbnail_path(self):
+        """
+        Returns the path of the thumbinail picture which is used to replace video pictures with an expired timestamp.
+        """
         return self.video_thumbnail_path
 
     def __set_tree(self, url, content) -> None:
+        """
+        Parses the etree-tree element.
+
+        Args:
+            url (url): The url determines whether the tree is parsed using the path of the old, or
+                       new html file. The argument is only used, if the content variable is None.
+            content (str): If the content argument is not None, the tree is parsed using the content variable.
+        """
         if content is not None:
             html_parser = html.HTMLParser()
             self.tree = etree.HTML(content, parser=html_parser)
@@ -145,27 +201,48 @@ class InstagramObject:
                 logger.error("Flag was not set.")
 
     def __set_followers(self, url) -> None:
+        """
+        Sets the followers-element.
+
+        Args:
+            url (url): The url is used to get the instagram profile name.
+        """
         self.followers = list(
             self.tree.xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/followers/']")[0].iter())[0]
 
     def __set_following(self, url) -> None:
+        """
+        Sets the following-element.
+
+        Args:
+            url (url): The url is used to get the instagram profile name.
+        """
         self.following = list(
             self.tree.xpath("//a[@href='https://www.instagram.com/" + url["id"] + "/following/']")[0].iter())[0]
 
     def __set_posts(self) -> None:
+        """
+        Sets the post elements.
+        """
         self.posts = self.tree.xpath("//div[@id='react-root']//article//a")
 
     def __set_igtvs(self) -> None:
+        """
+        Sets the igtv elements.
+        """
         all_links = self.tree.xpath("//div[@id='react-root']//main//div//a")
         self.igtvs = [igtv_ele for igtv_ele in all_links if igtv_ele.attrib["href"].startswith("https://www.instagram.com/tv/")]
 
     def __set_tags(self) -> None:
+        """
+        Sets the tag elements.
+        """
         self.tags = self.tree.xpath("//div[@id='react-root']//article//a")
 
-    """
-    Returns the Tree,flag, posts etc.
-    """
     def __tostr__(self, attr):
+        """
+        Returns the string representation for the Tree, flag, posts etc.
+        """
         ret = b""
         if attr == "flag":
             return self.get_flag()
@@ -186,11 +263,11 @@ class InstagramObject:
                 ret += etree.tostring(tag, pretty_print=True)
         return ret
 
-    """
-    Saves the etree in a HTML file after the changes were executed. It is important for the download
-    phase after inserting the HTML Tags like data-liked-by.
-    """
     def write(self, url):
+        """
+        Saves the etree in a HTML file after the changes were executed. It is important for the download
+        phase after inserting the HTML Tags like data-liked-by.
+        """
         if self.get_flag() == NEW:
             open(get_new_html_path(url), "wb").write(etree.tostring(self.tree, method="html"))
         else:
