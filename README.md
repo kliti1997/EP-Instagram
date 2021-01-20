@@ -14,11 +14,11 @@ Eine URL wie wie folgt definiert:
 ```python
 url = {
     "id": "user_id",
-    "href": "https://www.instagram.com/user_id",            #->  ggf. /user_id/channel *oder* /user_id/tagged
+    "href": "https://www.instagram.com/user_id",            # ggf. /user_id/channel *oder* /user_id/tagged
     "type": "posts" *oder* "igtv" *oder* "tagged",
-    "mode": "1" *oder* "2",                                 #->  mode 1: change == notify *oder* mode 2: Likes und Views setzen notify nicht auf True
-    "monitoring_folder": "ulferdowoff/tagged/",             #->  Pfad der html Dateien, wird kombiniert mit dem Pfad aus den Einstellungen
-    "change": "", "notify": "", "err": ""                   #->  Rückgabewerte
+    "mode": "1" *oder* "2",                                 # mode 1: change == notify *oder* mode 2: Likes und Views setzen notify nicht auf True
+    "monitoring_folder": "ulferdowoff/tagged/",             # Pfad der html Dateien, wird kombiniert mit dem Pfad aus den Einstellungen
+    "change": "", "notify": "", "err": ""                   # Rückgabewerte
 }
 ```
 
