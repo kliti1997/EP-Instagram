@@ -27,8 +27,8 @@ General configuration values
 
 base_url = "https://www.instagram.com/"
 login_url = "https://www.instagram.com/accounts/login/?next=%2Fexplore%2F&source=desktop_nav"
-ig_credentials = {"user": "ig_demo_account_1234867",
-                  "pass": "NLp_2eX&/S"}
+ig_credentials = {"user": "",
+                  "pass": ""}
 
 """
 Instagram credentials and other login information.
