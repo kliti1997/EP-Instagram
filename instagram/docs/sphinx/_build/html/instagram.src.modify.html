@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>instagram.src.modify package &#8212; instagram  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="instagram.testing package" href="instagram.testing.html" />
+    <link rel="prev" title="instagram.src.download package" href="instagram.src.download.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="instagram-src-modify-package">
+<h1>instagram.src.modify package<a class="headerlink" href="#instagram-src-modify-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-instagram.src.modify.instagram_monitor">
+<span id="instagram-src-modify-instagram-monitor-module"></span><h2>instagram.src.modify.instagram_monitor module<a class="headerlink" href="#module-instagram.src.modify.instagram_monitor" title="Permalink to this headline">¶</a></h2>
+<p>The module is responsible for the monitoring phase of the instagram monitor.
+In case of changes, the module highlights these changes by calling functions in the modify_methods module.</p>
+<dl class="py class">
+<dt id="instagram.src.modify.instagram_monitor.InstagramMonitor">
+<em class="property">class </em><code class="sig-prename descclassname">instagram.src.modify.instagram_monitor.</code><code class="sig-name descname">InstagramMonitor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">monitoring_map</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/modify/instagram_monitor.html#InstagramMonitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.modify.instagram_monitor.InstagramMonitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-instagram.src.modify.modify_methods">
+<span id="instagram-src-modify-modify-methods-module"></span><h2>instagram.src.modify.modify_methods module<a class="headerlink" href="#module-instagram.src.modify.modify_methods" title="Permalink to this headline">¶</a></h2>
+<p>The module changes the new html file by comparing it’s entries with the old html file.
+The functions in the module are called in the instagram_monitor module.</p>
+<dl class="py data">
+<dt id="instagram.src.modify.modify_methods.OLD">
+<code class="sig-prename descclassname">instagram.src.modify.modify_methods.</code><code class="sig-name descname">OLD</code><em class="property"> = 1</em><a class="headerlink" href="#instagram.src.modify.modify_methods.OLD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constants to determine whether the old, or new html-file is accessed.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.modify.modify_methods.compare_followers_following">
+<code class="sig-prename descclassname">instagram.src.modify.modify_methods.</code><code class="sig-name descname">compare_followers_following</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">ig</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/modify/modify_methods.html#compare_followers_following"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.modify.modify_methods.compare_followers_following" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function compares the number of followers and following and marks them if they have changed.</p>
+<p>The function gets the number of followers and following from the old and new files and compares them with one
+another. Also it substitutes the compact number with the precise one.
+Example: 12k will be substituted with 12491. This is made to display changes more correctly.
+The change would be set to true. Depending on the mode, if it is mode 1, the notify would also be set to true,
+if there have been changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – Url of the monitoring_map</p></li>
+<li><p><strong>ig</strong> – The Instagram profile</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.modify.modify_methods.compare_hover_items">
+<code class="sig-prename descclassname">instagram.src.modify.modify_methods.</code><code class="sig-name descname">compare_hover_items</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">ig</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/modify/modify_methods.html#compare_hover_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.modify.modify_methods.compare_hover_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function checks whether there are any changes in the view-count, the like-count, or the
+commented-count for any posts, igtv, or tagged objects.
+In case of changes the function adds html code to the object that changed.
+For posts and tags the html code is added in the same way and for igtv objects it’s required
+to add the html code in a different way.
+The neccessary css code is added in the header of the html file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>url</em>) – The url of the monitoring_map</p></li>
+<li><p><strong>ig</strong> (<a class="reference internal" href="instagram.src.html#instagram.src.instagram_object.InstagramObject" title="instagram.src.instagram_object.InstagramObject"><em>InstagramObject</em></a>) – The instagram profile</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.modify.modify_methods.compare_igtv">
+<code class="sig-prename descclassname">instagram.src.modify.modify_methods.</code><code class="sig-name descname">compare_igtv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">ig</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/modify/modify_methods.html#compare_igtv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.modify.modify_methods.compare_igtv" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function compares the posts in the IGTV section of the profile and marks the new one with a green border.</p>
+<p>The href of each IGTV post in the old.html file are saved in the old_igtv_href_list. The same is done for
+the new.html file in new_igtv_href_list. The lists are than compared with one another and the posts with new
+href are marked with a green border to show that it is a new post. We than set change and notify to true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>url</em>) – The url of the monitoring_map</p></li>
+<li><p><strong>ig</strong> (<a class="reference internal" href="instagram.src.html#instagram.src.instagram_object.InstagramObject" title="instagram.src.instagram_object.InstagramObject"><em>InstagramObject</em></a>) – The instagram profile</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.modify.modify_methods.compare_posts">
+<code class="sig-prename descclassname">instagram.src.modify.modify_methods.</code><code class="sig-name descname">compare_posts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">ig</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/modify/modify_methods.html#compare_posts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.modify.modify_methods.compare_posts" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function compares the posts of the profile and marks the new one with a green border.</p>
+<p>The href of each post in the old.html file are saved in the old_links_list. The same is done for
+the new.html file in new_links_list. The lists are than compared with one another and the posts with new
+href are marked with a green border to show that it is a new post. We than set change and notify to true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>url</em>) – The url of the monitoring monitoring_map</p></li>
+<li><p><strong>ig</strong> (<a class="reference internal" href="instagram.src.html#instagram.src.instagram_object.InstagramObject" title="instagram.src.instagram_object.InstagramObject"><em>InstagramObject</em></a>) – The instagram profile</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.modify.modify_methods.compare_stories">
+<code class="sig-prename descclassname">instagram.src.modify.modify_methods.</code><code class="sig-name descname">compare_stories</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">ig</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/modify/modify_methods.html#compare_stories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.modify.modify_methods.compare_stories" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function compares the timestamps of the stories to check if a new story was published since the
+last control.</p>
+<p>The function gets the data-story-timestamp from both files and checks if new_timestamp is actually
+newer than old_timestamp. If this is the case, the profile picture is marked with a green border.
+The change and notify are than set to true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>url</em>) – The url of the monitoring_map</p></li>
+<li><p><strong>ig</strong> (<a class="reference internal" href="instagram.src.html#instagram.src.instagram_object.InstagramObject" title="instagram.src.instagram_object.InstagramObject"><em>InstagramObject</em></a>) – The instagram profile</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.modify.modify_methods.compare_tagged">
+<code class="sig-prename descclassname">instagram.src.modify.modify_methods.</code><code class="sig-name descname">compare_tagged</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">ig</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/modify/modify_methods.html#compare_tagged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.modify.modify_methods.compare_tagged" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function compares the posts in the Tagged section of the profile and marks
+the new one with a green border.</p>
+<p>The href of each post in the old.html file are saved in the old_links_list. The same is done for
+the new.html file in new_links_list. The lists are than compared with one another and the posts with new
+href are marked with a green border to show that it is a new post. We than set change and notify to true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>url</em>) – The url of the monitoring_map</p></li>
+<li><p><strong>ig</strong> (<a class="reference internal" href="instagram.src.html#instagram.src.instagram_object.InstagramObject" title="instagram.src.instagram_object.InstagramObject"><em>InstagramObject</em></a>) – The instagram profile</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="instagram.src.modify.modify_methods.pre_modify">
+<code class="sig-prename descclassname">instagram.src.modify.modify_methods.</code><code class="sig-name descname">pre_modify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/instagram/src/modify/modify_methods.html#pre_modify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instagram.src.modify.modify_methods.pre_modify" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks if the old and new html file exist.
+:param url: The url of the monitoring_map</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-instagram.src.modify">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-instagram.src.modify" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">instagram</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="instagram.html">instagram package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="instagram.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="instagram.data.html">instagram.data package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="instagram.src.html">instagram.src package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="instagram.src.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="instagram.src.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="instagram.src.html#module-instagram.src.helper">instagram.src.helper module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="instagram.src.html#module-instagram.src.instagram">instagram.src.instagram module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="instagram.src.html#module-instagram.src.instagram_object">instagram.src.instagram_object module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="instagram.src.html#module-instagram.src">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="instagram.testing.html">instagram.testing package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="instagram.html#module-instagram">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="instagram.html">instagram package</a><ul>
+  <li><a href="instagram.src.html">instagram.src package</a><ul>
+      <li>Previous: <a href="instagram.src.download.html" title="previous chapter">instagram.src.download package</a></li>
+      <li>Next: <a href="instagram.testing.html" title="next chapter">instagram.testing package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Timo Balke, Dustin Erdner, Kliti Nikollau, Marlon Tiedemann, Timo Kubera.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/instagram.src.modify.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

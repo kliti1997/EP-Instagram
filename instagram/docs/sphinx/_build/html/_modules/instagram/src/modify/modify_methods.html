@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>instagram.src.modify.modify_methods &#8212; instagram  documentation</title>
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for instagram.src.modify.modify_methods</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The module changes the new html file by comparing it&#39;s entries with the old html file.</span>
+<span class="sd">The functions in the module are called in the instagram_monitor module.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">instagram.data.config</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">instagram.src.helper</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span><span class="p">,</span> <span class="n">html</span>
+
+<span class="n">NEW</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">OLD</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Constants to determine whether the old, or new html-file is accessed.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># from instagram.src.instagram import Instagram</span>
+
+<div class="viewcode-block" id="pre_modify"><a class="viewcode-back" href="../../../../instagram.src.modify.html#instagram.src.modify.modify_methods.pre_modify">[docs]</a><span class="k">def</span> <span class="nf">pre_modify</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function checks if the old and new html file exist.</span>
+<span class="sd">    :param url: The url of the monitoring_map</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">get_old_html_path</span><span class="p">(</span><span class="n">url</span><span class="p">))</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">get_new_html_path</span><span class="p">(</span><span class="n">url</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="compare_posts"><a class="viewcode-back" href="../../../../instagram.src.modify.html#instagram.src.modify.modify_methods.compare_posts">[docs]</a><span class="k">def</span> <span class="nf">compare_posts</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">ig</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function compares the posts of the profile and marks the new one with a green border.</span>
+
+<span class="sd">    The href of each post in the old.html file are saved in the old_links_list. The same is done for</span>
+<span class="sd">    the new.html file in new_links_list. The lists are than compared with one another and the posts with new</span>
+<span class="sd">    href are marked with a green border to show that it is a new post. We than set change and notify to true.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url (url): The url of the monitoring monitoring_map</span>
+<span class="sd">        ig (InstagramObject): The instagram profile</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">old_links_list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Only holds hrefs</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">ig</span><span class="p">[</span><span class="n">OLD</span><span class="p">]</span><span class="o">.</span><span class="n">get_posts</span><span class="p">():</span>
+        <span class="n">old_links_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">])</span>
+
+    <span class="n">new_links_list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Only holds hrefs</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_posts</span><span class="p">():</span>
+        <span class="n">new_links_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Compare links, if a new one is found we mark it with a green border</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new_links_list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">new_links_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">old_links_list</span><span class="p">:</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_posts</span><span class="p">()[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;border: 4px solid green;&quot;</span>
+            <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compare_followers_following"><a class="viewcode-back" href="../../../../instagram.src.modify.html#instagram.src.modify.modify_methods.compare_followers_following">[docs]</a><span class="k">def</span> <span class="nf">compare_followers_following</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">ig</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function compares the number of followers and following and marks them if they have changed.</span>
+
+<span class="sd">    The function gets the number of followers and following from the old and new files and compares them with one</span>
+<span class="sd">    another. Also it substitutes the compact number with the precise one.</span>
+<span class="sd">    Example: 12k will be substituted with 12491. This is made to display changes more correctly.</span>
+<span class="sd">    The change would be set to true. Depending on the mode, if it is mode 1, the notify would also be set to true,</span>
+<span class="sd">    if there have been changes.</span>
+
+<span class="sd">    :param url: Url of the monitoring_map</span>
+<span class="sd">    :param ig: The Instagram profile</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">oldFollowersCnt</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">OLD</span><span class="p">]</span><span class="o">.</span><span class="n">get_followers</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-followers&quot;</span><span class="p">]</span>
+    <span class="n">newFollowersCnt</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_followers</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-followers&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Substitute the compact Followers number with the precise one</span>
+    <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_followers</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">newFollowersCnt</span>
+
+    <span class="k">if</span> <span class="n">oldFollowersCnt</span> <span class="o">!=</span> <span class="n">newFollowersCnt</span><span class="p">:</span>
+        <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_followers</span><span class="p">()</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;style&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;background-color: green;&quot;</span>
+        <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">get_mode</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+            <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="c1"># Following or Abonnierte</span>
+    <span class="n">oldFollowingCnt</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">OLD</span><span class="p">]</span><span class="o">.</span><span class="n">get_following</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-following&quot;</span><span class="p">]</span>
+    <span class="n">newFollowingCnt</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_following</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-following&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">oldFollowingCnt</span> <span class="o">!=</span> <span class="n">newFollowingCnt</span><span class="p">:</span>
+        <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_following</span><span class="p">()</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;style&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;background-color: green;&quot;</span>
+        <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">get_mode</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+            <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compare_igtv"><a class="viewcode-back" href="../../../../instagram.src.modify.html#instagram.src.modify.modify_methods.compare_igtv">[docs]</a><span class="k">def</span> <span class="nf">compare_igtv</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">ig</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function compares the posts in the IGTV section of the profile and marks the new one with a green border.</span>
+
+<span class="sd">    The href of each IGTV post in the old.html file are saved in the old_igtv_href_list. The same is done for</span>
+<span class="sd">    the new.html file in new_igtv_href_list. The lists are than compared with one another and the posts with new</span>
+<span class="sd">    href are marked with a green border to show that it is a new post. We than set change and notify to true.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url (url): The url of the monitoring_map</span>
+<span class="sd">        ig (InstagramObject): The instagram profile</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Getting all links in old igtv html file</span>
+    <span class="n">old_igtv_href_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">ig</span><span class="p">[</span><span class="n">OLD</span><span class="p">]</span><span class="o">.</span><span class="n">get_igtvs</span><span class="p">():</span>
+        <span class="n">old_igtv_href_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Getting all links in new igtv html file</span>
+    <span class="n">new_igtv_href_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_igtvs</span><span class="p">():</span>
+        <span class="n">new_igtv_href_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Compare links, if a new one is found we mark it with a green border and set change and notify to true</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new_igtv_href_list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">new_igtv_href_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">old_igtv_href_list</span><span class="p">:</span>
+            <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_igtvs</span><span class="p">()[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;border: 4px solid green;&quot;</span>
+            <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="compare_hover_items"><a class="viewcode-back" href="../../../../instagram.src.modify.html#instagram.src.modify.modify_methods.compare_hover_items">[docs]</a><span class="k">def</span> <span class="nf">compare_hover_items</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">ig</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The function checks whether there are any changes in the view-count, the like-count, or the</span>
+<span class="sd">    commented-count for any posts, igtv, or tagged objects.</span>
+<span class="sd">    In case of changes the function adds html code to the object that changed. </span>
+<span class="sd">    For posts and tags the html code is added in the same way and for igtv objects it&#39;s required</span>
+<span class="sd">    to add the html code in a different way.</span>
+<span class="sd">    The neccessary css code is added in the header of the html file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url (url): The url of the monitoring_map</span>
+<span class="sd">        ig (InstagramObject): The instagram profile</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;posts&quot;</span><span class="p">:</span>
+        <span class="n">new_elements</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_posts</span><span class="p">()</span>
+        <span class="n">old_elements</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">OLD</span><span class="p">]</span><span class="o">.</span><span class="n">get_posts</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;igtv&quot;</span><span class="p">:</span>
+        <span class="n">new_elements</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_igtvs</span><span class="p">()</span>
+        <span class="n">old_elements</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">OLD</span><span class="p">]</span><span class="o">.</span><span class="n">get_igtvs</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">new_elements</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_tags</span><span class="p">()</span>
+        <span class="n">old_elements</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">OLD</span><span class="p">]</span><span class="o">.</span><span class="n">get_tags</span><span class="p">()</span>
+
+    <span class="n">head</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_tree</span><span class="p">()</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;//head&quot;</span><span class="p">)</span>
+
+    <span class="n">css</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; &lt;style&gt;</span>
+<span class="s2">                  .qn-0x{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;bottom:0;left:0;position:absolute;right:0;top:0}</span>
+<span class="s2">                  .Ln-UN{-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;color:#fff;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;font-size:16px;font-weight:600;height:100%;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;width:100%}</span>
+<span class="s2">                  .-V_eO{display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-orient:horizontal;-webkit-box-direction:reverse;-webkit-flex-direction:row-reverse;-ms-flex-direction:row-reverse;flex-direction:row-reverse;margin-right:30px}</span>
+<span class="s2">                  .-V_eO:last-child{margin-right:0}</span>
+<span class="s2">              &lt;/style&gt;&quot;&quot;&quot;</span>
+
+    <span class="n">hover</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; &lt;div class=&quot;qn-0x&quot; style=&quot;background-color: rgba(0, 0, 0, 0.3);&quot;&gt;</span>
+<span class="s2">                    &lt;ul class=&quot;Ln-UN&quot;&gt;</span>
+<span class="s2">                        &lt;li class=&quot;-V_eO&quot; </span><span class="si">{style_likes_views}</span><span class="s2">&gt;</span>
+<span class="s2">                            &lt;span&gt;</span><span class="si">{likes_views}</span><span class="s2">&lt;/span&gt;</span>
+<span class="s2">                            &lt;span class=&quot;_1P1TY </span><span class="si">{icon_likes_views}</span><span class="s2">&quot;&gt;&lt;/span&gt;</span>
+<span class="s2">                        &lt;/li&gt;</span>
+<span class="s2">                        &lt;li class=&quot;-V_eO&quot; </span><span class="si">{style_comments}</span><span class="s2">&gt;</span>
+<span class="s2">                            &lt;span&gt;</span><span class="si">{comments}</span><span class="s2">&lt;/span&gt;</span>
+<span class="s2">                            &lt;span class=&quot;_1P1TY coreSpriteSpeechBubbleSmall&quot;&gt;&lt;/span&gt;</span>
+<span class="s2">                        &lt;/li&gt;</span>
+<span class="s2">                    &lt;/ul&gt;</span>
+<span class="s2">                &lt;/div&gt;&quot;&quot;&quot;</span>
+
+    <span class="n">add_border</span> <span class="o">=</span> <span class="s2">&quot;style=&#39;background-color: green;&#39;&quot;</span>
+
+    <span class="k">for</span> <span class="n">new_ele</span> <span class="ow">in</span> <span class="n">new_elements</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">old_ele</span> <span class="ow">in</span> <span class="n">old_elements</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">old_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]:</span>
+
+                <span class="k">if</span> <span class="s2">&quot;data-view-count&quot;</span> <span class="ow">in</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>  <span class="c1"># If the current object is a video, compare the view-count.</span>
+                    <span class="n">to_cmp</span> <span class="o">=</span> <span class="s2">&quot;data-view-count&quot;</span>
+                    <span class="n">sprite</span> <span class="o">=</span> <span class="s2">&quot;coreSpritePlayIconSmall&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">to_cmp</span> <span class="o">=</span> <span class="s2">&quot;data-liked-by&quot;</span>
+                    <span class="n">sprite</span> <span class="o">=</span> <span class="s2">&quot;coreSpriteHeartSmall&quot;</span>
+
+                <span class="k">if</span> <span class="n">url</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;igtv&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">]</span> <span class="o">!=</span> <span class="n">old_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">]</span> <span class="ow">and</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">old_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]:</span>
+                        <span class="c1"># Views- and comments-count changed.</span>
+                        <span class="n">new_ele</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+                                <span class="n">hover</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">likes_views</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">],</span>
+                                             <span class="n">icon_likes_views</span><span class="o">=</span><span class="n">sprite</span><span class="p">,</span>
+                                             <span class="n">comments</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">],</span>
+                                             <span class="n">style_likes_views</span><span class="o">=</span><span class="n">add_border</span><span class="p">,</span>
+                                             <span class="n">style_comments</span><span class="o">=</span><span class="n">add_border</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                        <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">]</span> <span class="o">!=</span> <span class="n">old_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">]:</span>
+                        <span class="n">new_ele</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>  <span class="c1"># Only views- XOR likes-count changed.</span>
+                            <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+                                <span class="n">hover</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">likes_views</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">],</span>
+                                             <span class="n">icon_likes_views</span><span class="o">=</span><span class="n">sprite</span><span class="p">,</span>
+                                             <span class="n">comments</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">],</span>
+                                             <span class="n">style_likes_views</span><span class="o">=</span><span class="n">add_border</span><span class="p">,</span>
+                                             <span class="n">style_comments</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">get_mode</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+                            <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">old_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]:</span>
+                        <span class="n">new_ele</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>  <span class="c1"># Only the comment-count changed.</span>
+                            <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+                                <span class="n">hover</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">likes_views</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">],</span>
+                                             <span class="n">icon_likes_views</span><span class="o">=</span><span class="n">sprite</span><span class="p">,</span>
+                                             <span class="n">comments</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">],</span>
+                                             <span class="n">style_likes_views</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                             <span class="n">style_comments</span><span class="o">=</span><span class="n">add_border</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                        <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># The class qn-0x already exists for igtv objects and needs to be replaced.</span>
+                    <span class="k">if</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;.//div[@class=&#39;qn-0x&#39;]&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                            <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">]</span> <span class="o">!=</span> <span class="n">old_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">]</span> <span class="ow">or</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">old_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]):</span>
+                        <span class="n">rmv_list</span> <span class="o">=</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;.//div[@class=&#39;qn-0x&#39;]&quot;</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">to_rmv</span> <span class="ow">in</span> <span class="n">rmv_list</span><span class="p">:</span>
+                            <span class="n">to_rmv</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">to_rmv</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">]</span> <span class="o">!=</span> <span class="n">old_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">]</span> <span class="ow">and</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">old_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]:</span>
+                        <span class="c1"># Views- and comments-count changed.</span>
+                        <span class="n">new_ele</span><span class="o">.</span><span class="n">getchildren</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+                                <span class="n">hover</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">likes_views</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">],</span>
+                                             <span class="n">icon_likes_views</span><span class="o">=</span><span class="n">sprite</span><span class="p">,</span>
+                                             <span class="n">comments</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">],</span>
+                                             <span class="n">style_likes_views</span><span class="o">=</span><span class="n">add_border</span><span class="p">,</span>
+                                             <span class="n">style_comments</span><span class="o">=</span><span class="n">add_border</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                        <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">]</span> <span class="o">!=</span> <span class="n">old_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">]:</span>
+                        <span class="n">new_ele</span><span class="o">.</span><span class="n">getchildren</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>  <span class="c1"># Only views- XOR likes-count changed.</span>
+                            <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+                                <span class="n">hover</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">likes_views</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">],</span>
+                                             <span class="n">icon_likes_views</span><span class="o">=</span><span class="n">sprite</span><span class="p">,</span>
+                                             <span class="n">comments</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">],</span>
+                                             <span class="n">style_likes_views</span><span class="o">=</span><span class="n">add_border</span><span class="p">,</span>
+                                             <span class="n">style_comments</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">get_mode</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+                            <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">old_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">]:</span>
+                        <span class="n">new_ele</span><span class="o">.</span><span class="n">getchildren</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>  <span class="c1"># Only the comment-count changed.</span>
+                            <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+                                <span class="n">hover</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">likes_views</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">to_cmp</span><span class="p">],</span>
+                                             <span class="n">icon_likes_views</span><span class="o">=</span><span class="n">sprite</span><span class="p">,</span>
+                                             <span class="n">comments</span><span class="o">=</span><span class="n">new_ele</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-comment&quot;</span><span class="p">],</span>
+                                             <span class="n">style_likes_views</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                             <span class="n">style_comments</span><span class="o">=</span><span class="n">add_border</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                        <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="n">head</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">css</span><span class="p">))</span>
+    <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compare_tagged"><a class="viewcode-back" href="../../../../instagram.src.modify.html#instagram.src.modify.modify_methods.compare_tagged">[docs]</a><span class="k">def</span> <span class="nf">compare_tagged</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">ig</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function compares the posts in the Tagged section of the profile and marks</span>
+<span class="sd">    the new one with a green border.</span>
+
+<span class="sd">    The href of each post in the old.html file are saved in the old_links_list. The same is done for</span>
+<span class="sd">    the new.html file in new_links_list. The lists are than compared with one another and the posts with new</span>
+<span class="sd">    href are marked with a green border to show that it is a new post. We than set change and notify to true.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url (url): The url of the monitoring_map</span>
+<span class="sd">        ig (InstagramObject): The instagram profile</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Take the links in the old file</span>
+    <span class="n">old_links_list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Only holds hrefs</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">ig</span><span class="p">[</span><span class="n">OLD</span><span class="p">]</span><span class="o">.</span><span class="n">get_tags</span><span class="p">():</span>
+        <span class="n">old_links_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Take the links in the new file</span>
+    <span class="n">new_links_list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Only holds hrefs</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_tags</span><span class="p">():</span>
+        <span class="n">new_links_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Compare links, if there are new ones, mark them with a green border</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new_links_list</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">new_links_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">old_links_list</span><span class="p">:</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_tags</span><span class="p">()[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;border: 4px solid green;&quot;</span>
+            <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compare_stories"><a class="viewcode-back" href="../../../../instagram.src.modify.html#instagram.src.modify.modify_methods.compare_stories">[docs]</a><span class="k">def</span> <span class="nf">compare_stories</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">ig</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function compares the timestamps of the stories to check if a new story was published since the</span>
+<span class="sd">    last control.</span>
+
+<span class="sd">    The function gets the data-story-timestamp from both files and checks if new_timestamp is actually</span>
+<span class="sd">    newer than old_timestamp. If this is the case, the profile picture is marked with a green border.</span>
+<span class="sd">    The change and notify are than set to true.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        url (url): The url of the monitoring_map</span>
+<span class="sd">        ig (InstagramObject): The instagram profile</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">old_timestamp</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">OLD</span><span class="p">]</span><span class="o">.</span><span class="n">get_profile_pic_modify</span><span class="p">()</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-story-timestamp&quot;</span><span class="p">]</span>
+    <span class="n">new_timestamp</span> <span class="o">=</span> <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_profile_pic_modify</span><span class="p">()</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;data-story-timestamp&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">new_timestamp</span> <span class="o">&gt;</span> <span class="n">old_timestamp</span><span class="p">:</span>
+        <span class="n">ig</span><span class="p">[</span><span class="n">NEW</span><span class="p">]</span><span class="o">.</span><span class="n">get_profile_pic_modify</span><span class="p">()</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;style&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;border: 4px solid green; width: 150px; height: 150px;&quot;</span>
+        <span class="n">set_change</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">set_notify</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">instagram</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../instagram.html">instagram package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Timo Balke, Dustin Erdner, Kliti Nikollau, Marlon Tiedemann, Timo Kubera.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
