@@ -10,7 +10,7 @@ Es werden pro Instagram-Profil und pro Kategorie (Posts, IGTV, Markiert) maximal
 
 Das Hauptmodul `Instagram` wird über `instagram.src.instagram` erreicht. Bei dem Aufruf wird eine Liste defaultdict(list) mit den URLs übergeben.
 
-Eine URL wie wie folgt definiert:
+Eine URL wird wie folgt definiert:
 ```python
 url = {
     "id": "user_id",
@@ -24,7 +24,7 @@ url = {
 
 ## Rückgabewerte
 
-Mögliche Veränderungen auf einer Instagram Seite: {Abonnenten, Abonnierte, Likes, Views, Kommentare, Stories, Beiträge (posts*oder* igtv *oder* tagged)}
+Mögliche Veränderungen auf einer Instagram Seite: {Abonnenten, Abonnierte, Likes, Views, Kommentare, Stories, Beiträge (posts *oder* igtv *oder* tagged)}
 
 *change:*   Wird bei jeder Veränderung zwischen der old.html und new.html auf True gesetzt, ansonsten False.
 *notify:*   mode 1: Immer True, falls change True ist, ansonten False.
