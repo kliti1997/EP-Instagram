@@ -10,7 +10,7 @@ Es werden pro Instagram-Profil und pro Kategorie (Posts, IGTV, Markiert) maximal
 ## Schnittstelle
 Das Hauptmodul `Instagram` wird über `instagram.src.instagram` erreicht. Bei dem Aufruf wird eine Liste defaultdict(list) mit den URLs übergeben.
 
-Eine URL wie wie folgt definiert:
+Eine URL wird wie folgt definiert:
 ```python
 url = {
     "id": "user_id",
@@ -23,7 +23,8 @@ url = {
 ```
 
 ## Rückgabewerte
-Mögliche Veränderungen auf einer Instagram Seite: {Abonnenten, Abonnierte, Likes, Views, Kommentare, Stories, Beiträge (posts*oder* igtv *oder* tagged)}
+
+Mögliche Veränderungen auf einer Instagram Seite: {Abonnenten, Abonnierte, Likes, Views, Kommentare, Stories, Beiträge (posts *oder* igtv *oder* tagged)}
 
 * *change:*   Wird bei jeder Veränderung zwischen der old.html und new.html auf True gesetzt, ansonsten False.
 * *notify:*   mode 1: Immer True, falls change True ist, ansonten False.
@@ -49,7 +50,7 @@ Die Daten zum Vergleich kommen aus zwei Quellen, die über die Klasse ProfileDat
 In der Download-Phase (instagram_store.py) werden alle benötigten Informationen (DOM, Inhalt von 'window._sharedData', Requests) abgerufen.
 Anschließend werden mit Hilfe der ProfileData- und InstagramObject-Klassen die extrahierten Daten im DOM hinterlegt.
 Der fertige DOM wird abschließend in eine '_new.html_' geschrieben. Sollte diese schon existieren, wird sie zu '_old.html_' umbenannt und eine neue '_new.html_' wird angelegt ('_pre_download_', download_methods.py).   
-Es werden zusätzlich in der Download-Phase alle relativen Links zu absoluten Links umgewandelt und Video Thumbnails mit einem Standard Thumbnail ersetzt, da die Video Thumbnails nur für 24 Stunden gültig sind.
+Es werden zusätzlich in der Download-Phase alle relativen Links zu absoluten Links umgewandelt und Video Thumbnails mit einem Standard Thumbnail ersetzt, da die Video Thumbnails nur für eine begrenzte Dauer gültig sind.
 
 
 ## Monitoring/Modify-Phase
